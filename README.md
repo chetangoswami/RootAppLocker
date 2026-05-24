@@ -21,5 +21,3 @@ Xposed module to put any app behind a biometric lock. WIP
 ## License
 
 [![GPLv3](https://img.shields.io/badge/License-GPLv3-blue?style=flat-square)](LICENSE)
-
-GPLv3, see [LICENSE](LICENSE)
