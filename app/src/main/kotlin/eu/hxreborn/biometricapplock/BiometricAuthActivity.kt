@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.hardware.biometrics.BiometricPrompt
+import android.os.Binder
 import android.os.Bundle
 import android.os.CancellationSignal
+import android.os.Process
 import android.util.Log
 
 private const val TAG = "BiometricAppLock"
@@ -18,6 +20,13 @@ class BiometricAuthActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val callingUid = Binder.getCallingUid()
+        if (callingUid != Process.SYSTEM_UID) {
+            Log.w(TAG, "rejected caller uid=$callingUid")
+            finish()
+            return
+        }
+
         targetPkg = intent.getStringExtra(EXTRA_TARGET_PKG)
         targetCls = intent.getStringExtra(EXTRA_TARGET_CLS)
         authToken = intent.getStringExtra(EXTRA_AUTH_TOKEN)
@@ -97,13 +106,21 @@ class BiometricAuthActivity : Activity() {
                 Intent().apply { component = ComponentName(pkg, targetCls!!) }
             } else {
                 packageManager.getLaunchIntentForPackage(pkg)
-            } ?: return
+            }
+        if (target == null) {
+            Log.w(TAG, "no launch intent pkg=$pkg, going home")
+            goHome()
+            return
+        }
 
         target.putExtra(EXTRA_AUTH_TOKEN, nonce)
         target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         Log.i(TAG, "auth success, launching $pkg")
-        startActivity(target)
+        runCatching { startActivity(target) }.onFailure {
+            Log.w(TAG, "launch failed pkg=$pkg: ${it.message}")
+            goHome()
+        }
     }
 
     companion object {

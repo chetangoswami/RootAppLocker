@@ -28,6 +28,10 @@ internal class SystemServerReflection(
         cl.loadClass("com.android.server.wm.ActivityTaskSupervisor")
     private val activityTaskManagerServiceClass =
         cl.loadClass("com.android.server.wm.ActivityTaskManagerService")
+    private val activityRecordClass =
+        cl.loadClass("com.android.server.wm.ActivityRecord")
+
+    val activityRecordPackageNameField: Field = activityRecordClass.getField("packageName")
 
     val intentField: Field = activityStartInterceptorClass.getField("mIntent")
     val resolvedInfoField: Field = activityStartInterceptorClass.getField("mRInfo")

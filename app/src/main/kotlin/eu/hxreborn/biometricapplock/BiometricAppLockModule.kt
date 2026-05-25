@@ -46,7 +46,6 @@ class BiometricAppLockModule : XposedModule() {
         return true
     }
 
-    // onModuleLoaded + onSystemServerStarting are not replayed on hot reload
     override fun onHotReloaded(param: HotReloadedParam) {
         module = this
         Logger.inSystemServer = param.isSystemServer
@@ -91,7 +90,7 @@ class BiometricAppLockModule : XposedModule() {
                 ).classLoader
         }.getOrNull()
 
-    // TODO: not firing on 102.0.0-SNAPSHOT + LSPosed v2.0.3-it (7736), remove HotReloadTrigger call in ScopeViewModel.saveLockedPackages when it does
+    // TODO: LSPosed v2.0.3-it (7736) leaves this listener silent, so ScopeViewModel.saveLockedPackages forces a hot reload instead
     private fun registerPrefsListener() {
         runCatching {
             val prefs = getRemotePreferences(Prefs.GROUP)

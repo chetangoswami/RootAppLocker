@@ -123,7 +123,7 @@ private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
         hook(method).intercept { chain ->
             val awake = chain.args[0] as? Boolean
             if (awake == true && unlockedPackages.isNotEmpty()) {
-                unlockedPackages.clear()
+                clearUnlocked()
                 Logger.debug {
                     val topPkg =
                         runCatching {
@@ -147,9 +147,7 @@ private fun XposedModule.hookSnapshotProtection(classLoader: ClassLoader) {
                 0,
             )
         val packageNameField =
-            classLoader
-                .loadClass("com.android.server.wm.ActivityRecord")
-                .getField("packageName")
+            reflection?.activityRecordPackageNameField ?: error("reflection not ready")
 
         hook(method).intercept { chain ->
             val packageName = packageNameField.get(chain.thisObject) as? String

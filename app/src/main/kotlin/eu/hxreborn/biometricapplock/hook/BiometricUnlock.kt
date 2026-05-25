@@ -4,22 +4,45 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
+import android.os.SystemClock
 import android.util.Log
 import eu.hxreborn.biometricapplock.BiometricAuthActivity
 import eu.hxreborn.biometricapplock.util.Logger
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
-private val pendingTokens: MutableSet<String> = ConcurrentHashMap.newKeySet()
+private const val TOKEN_TTL_MS = 2 * 60 * 1000L
+
+private val pendingTokens = ConcurrentHashMap<String, Long>()
+
+private fun mintToken(): String {
+    sweepExpiredTokens()
+    val token = UUID.randomUUID().toString()
+    pendingTokens[token] = SystemClock.elapsedRealtime()
+    return token
+}
+
+private fun sweepExpiredTokens() {
+    val cutoff = SystemClock.elapsedRealtime() - TOKEN_TTL_MS
+    val iter = pendingTokens.entries.iterator()
+    while (iter.hasNext()) {
+        if (iter.next().value < cutoff) iter.remove()
+    }
+}
+
+private fun consumeToken(token: String): Boolean {
+    val issuedAt = pendingTokens.remove(token) ?: return false
+    return SystemClock.elapsedRealtime() - issuedAt <= TOKEN_TTL_MS
+}
 
 internal fun isValidAuthToken(
     intent: Intent?,
     packageName: String?,
 ): Boolean {
     val token = intent?.getStringExtra(BiometricAuthActivity.EXTRA_AUTH_TOKEN) ?: return false
-    if (packageName !in lockedPackages || !pendingTokens.remove(token)) return false
+    if (packageName !in lockedPackages || !consumeToken(token)) return false
     intent.removeExtra(BiometricAuthActivity.EXTRA_AUTH_TOKEN)
-    unlockedPackages.add(packageName!!)
+    addUnlocked(packageName!!)
     Logger.log(Log.INFO, "unlocked pkg=$packageName")
     return true
 }
@@ -30,8 +53,7 @@ internal fun tryRedirect(
     className: String,
 ): Boolean {
     val reflection = reflection ?: return false
-    val token = UUID.randomUUID().toString()
-    pendingTokens.add(token)
+    val token = mintToken()
 
     runCatching { applyRedirect(reflection, interceptor, packageName, className, token) }
         .onFailure {
@@ -95,8 +117,7 @@ internal fun postAuthLaunch(
     val handler = reflection.handlerField.get(activityTaskManagerService) as Handler
     val context = reflection.contextField.get(activityTaskManagerService) as Context
 
-    val token = UUID.randomUUID().toString()
-    pendingTokens.add(token)
+    val token = mintToken()
     val intent = buildAuthIntent(entry.packageName, entry.topActivityClassName, token)
 
     handler.post {
