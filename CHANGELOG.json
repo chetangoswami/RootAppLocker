@@ -42,56 +42,6 @@
       "breaking": false
     },
     {
-      "type": "misc",
-      "title": "bump gradle-wrapper from 9.4.1 to 9.5.1",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/6fdcec34a7abdcb83a1d028540d3c052454d2dd9",
-      "scope": null,
-      "breaking": false
-    },
-    {
-      "type": "misc",
-      "title": "bump the androidx group with 2 updates",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/b05d4ff4ac2d4e154287e52402a6b016a12ee9bc",
-      "scope": null,
-      "breaking": false
-    },
-    {
-      "type": "misc",
-      "title": "bump the compose group with 2 updates",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/3bd73e56382350d3836eef28dc4b6786025d8f83",
-      "scope": null,
-      "breaking": false
-    },
-    {
-      "type": "misc",
-      "title": "bump AGP from 9.2.0 to 9.2.1",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/f2bd982f3ac217c5a8cc6943316ef888c520f42d",
-      "scope": null,
-      "breaking": false
-    },
-    {
-      "type": "misc",
-      "title": "bump the actions group with 3 updates",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/15ebbd7ce1c4ef7348eace1759ab7388e712b936",
-      "scope": null,
-      "breaking": false
-    },
-    {
       "type": "feat",
       "title": "live config updates via prefs listener",
       "description": null,

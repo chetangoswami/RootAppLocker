@@ -72,6 +72,7 @@ commit_parsers = [
   { message = "^refactor", group = "<!-- 04 -->Refactor" },
   { message = "^[Rr]evert", group = "<!-- 05 -->Reverts" },
   { message = '^(build|chore)\(deps(-dev)?\)', skip = true },
+  { message = "^deps", skip = true },
   { message = "^doc", skip = true },
   { message = "^style", skip = true },
   { message = "^build", skip = true },
@@ -80,7 +81,7 @@ commit_parsers = [
   { message = '^chore(\(release\))?:\s*(prepare|bump|align|v?\d+\.\d+)', skip = true },
   { message = '^release:\s*(bump|prepare|v?\d+\.\d+)', skip = true },
   { message = '^chore\(changelog\)', skip = true },
-  { message = ".*", group = "<!-- 99 -->Miscellaneous" },
+  { message = ".*", skip = true },
 ]
 filter_commits = false
 tag_pattern = "v[0-9]*"
