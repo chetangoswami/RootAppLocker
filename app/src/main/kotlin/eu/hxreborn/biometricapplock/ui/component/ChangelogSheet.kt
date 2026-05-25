@@ -81,11 +81,11 @@ fun ChangelogSheet(onDismiss: () -> Unit) {
     val items =
         cachedEntries?.map { entry ->
             val type = ChangeType.from(entry.type, entry.breaking)
-            val typeLabel = stringResource(changeTypeLabelRes(type))
-            val labelText = if (!entry.scope.isNullOrBlank()) "$typeLabel · ${entry.scope}" else typeLabel
             FeatureSheetItem(
                 icon = changeTypeIcon(type),
-                label = labelText,
+                label = stringResource(changeTypeLabelRes(type)),
+                scope = entry.scope?.takeIf { it.isNotBlank() },
+                changeType = type,
                 title = entry.title,
                 body = entry.description,
                 isBreaking = type == ChangeType.Breaking,

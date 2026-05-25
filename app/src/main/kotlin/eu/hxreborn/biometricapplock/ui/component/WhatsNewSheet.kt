@@ -64,12 +64,15 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import eu.hxreborn.biometricapplock.R
 import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import eu.hxreborn.biometricapplock.updates.ChangeType
 import eu.hxreborn.biometricapplock.updates.UpdateSheetState
 import kotlinx.coroutines.launch
 
 data class FeatureSheetItem(
     val icon: ImageVector,
     val label: String? = null,
+    val scope: String? = null,
+    val changeType: ChangeType? = null,
     val title: String,
     val body: String? = null,
     val isBreaking: Boolean = false,
@@ -488,6 +491,82 @@ private fun SecondaryAction(
 }
 
 @Composable
+private fun ChangeTypeChip(
+    label: String,
+    changeType: ChangeType?,
+    isBreaking: Boolean,
+) {
+    val cs = MaterialTheme.colorScheme
+    val containerColor: Color
+    val contentColor: Color
+    when {
+        isBreaking || changeType == ChangeType.Breaking -> {
+            containerColor = cs.error
+            contentColor = cs.onError
+        }
+
+        changeType == ChangeType.Feat -> {
+            containerColor = cs.tertiaryContainer
+            contentColor = cs.onTertiaryContainer
+        }
+
+        changeType == ChangeType.Fix -> {
+            containerColor = cs.errorContainer
+            contentColor = cs.onErrorContainer
+        }
+
+        changeType == ChangeType.Perf -> {
+            containerColor = cs.secondaryContainer
+            contentColor = cs.onSecondaryContainer
+        }
+
+        changeType == ChangeType.Security -> {
+            containerColor = cs.errorContainer
+            contentColor = cs.onErrorContainer
+        }
+
+        changeType == ChangeType.Refactor -> {
+            containerColor = cs.primaryContainer
+            contentColor = cs.onPrimaryContainer
+        }
+
+        else -> {
+            containerColor = cs.surfaceContainerHighest
+            contentColor = cs.onSurfaceVariant
+        }
+    }
+    Surface(shape = MaterialTheme.shapes.extraSmall, color = containerColor) {
+        Text(
+            text = label.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            color = contentColor,
+            fontWeight = FontWeight.SemiBold,
+            modifier =
+                Modifier.padding(
+                    horizontal = Tokens.ChipHorizontalPadding,
+                    vertical = Tokens.ChipVerticalPadding,
+                ),
+        )
+    }
+}
+
+@Composable
+private fun ScopeChip(label: String) {
+    Surface(shape = MaterialTheme.shapes.extraSmall, color = MaterialTheme.colorScheme.surfaceContainerHighest) {
+        Text(
+            text = label.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.outline,
+            modifier =
+                Modifier.padding(
+                    horizontal = Tokens.ChipHorizontalPadding,
+                    vertical = Tokens.ChipVerticalPadding,
+                ),
+        )
+    }
+}
+
+@Composable
 private fun FeatureSheetItemRow(
     item: FeatureSheetItem,
     index: Int,
@@ -523,18 +602,20 @@ private fun FeatureSheetItemRow(
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(Tokens.SpacingXs)) {
-                if (item.label != null) {
-                    Text(
-                        text = item.label,
-                        style = MaterialTheme.typography.labelSmall,
-                        color =
-                            if (item.isBreaking) {
-                                MaterialTheme.colorScheme.error
-                            } else {
-                                MaterialTheme.colorScheme.primary
-                            },
-                        fontWeight = FontWeight.Bold,
-                    )
+                if (item.label != null || item.scope != null) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(Tokens.SpacingXs),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        item.label?.let { typeLabel ->
+                            ChangeTypeChip(
+                                label = typeLabel,
+                                changeType = item.changeType,
+                                isBreaking = item.isBreaking,
+                            )
+                        }
+                        item.scope?.let { ScopeChip(it) }
+                    }
                 }
                 Text(
                     text = item.title,

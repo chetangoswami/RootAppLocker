@@ -69,6 +69,9 @@ object Tokens {
     val UpToDateBadgeSize: Dp = 128.dp
     val UpToDateBadgeIconSize: Dp = 56.dp
 
+    val ChipHorizontalPadding: Dp = 8.dp
+    val ChipVerticalPadding: Dp = 3.dp
+
     val ExpandedTitleLineHeight: TextUnit = 36.sp
     const val EXPANDED_TITLE_MAX_LINES = 2
 }
