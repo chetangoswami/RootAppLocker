@@ -1,54 +1,14 @@
 {
-  "version": "0.3.0-test",
+  "version": "0.4.0-test",
   "entries": [
     {
-      "type": "revert",
-      "title": "downgrade libxposed to API 101, remove hot reload",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/52cc9bede1c9fb1e0b38dbdd1cad1cd4dbd6b25a",
-      "scope": "hook",
-      "breaking": false
-    },
-    {
-      "type": "feat",
-      "title": "refresh ui and add in-app update checker",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/e7ee060927622ac8bc34f671dc6c2538c56aec5c",
-      "scope": null,
-      "breaking": false
-    },
-    {
       "type": "fix",
-      "title": "expire unlock tokens and reject non-system callers",
-      "description": null,
-      "version": "0.3.0-test",
+      "title": "load What's New entries from CHANGELOG.json",
+      "description": "Hardcoded feature items replaced with live changelog data filtered to the current version.",
+      "version": "0.4.0-test",
       "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/c62e6e064095cf164d4762de1f02ae6a90e5e1f5",
-      "scope": "hook",
-      "breaking": false
-    },
-    {
-      "type": "feat",
-      "title": "add libxposed API 102 hot reload support",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/e35b772ddb143f17c12b4390c8c2fea3447ff9c9",
-      "scope": "hook",
-      "breaking": false
-    },
-    {
-      "type": "feat",
-      "title": "live config updates via prefs listener",
-      "description": null,
-      "version": "0.3.0-test",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/9401dc157fc6ad4828e02700ad7ddcdbb352af44",
-      "scope": "hook",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/8212ea2e51f07e21b612dfe1c85126a5cf279f28",
+      "scope": "ui",
       "breaking": false
     }
   ]
