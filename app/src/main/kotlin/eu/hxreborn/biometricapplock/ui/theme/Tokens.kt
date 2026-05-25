@@ -66,6 +66,8 @@ object Tokens {
 
     val ChangelogLoadingHeight: Dp = 120.dp
     val ChangelogLoadingIndicatorSize: Dp = 48.dp
+    val UpToDateBadgeSize: Dp = 128.dp
+    val UpToDateBadgeIconSize: Dp = 56.dp
 
     val ExpandedTitleLineHeight: TextUnit = 36.sp
     const val EXPANDED_TITLE_MAX_LINES = 2

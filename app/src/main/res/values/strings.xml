@@ -166,8 +166,8 @@
     <string name="change_type_chore">Maintenance</string>
     <string name="change_type_breaking">Breaking</string>
 
-    <string name="updates_sheet_title_checking">Checking for updates</string>
-    <string name="updates_sheet_title_up_to_date">You\'re up to date</string>
+    <string name="updates_sheet_title_checking">Check for Updates</string>
+    <string name="updates_sheet_title_up_to_date">Check for Updates</string>
     <string name="updates_sheet_title_available">Update available</string>
     <string name="updates_sheet_title_failed">Update check failed</string>
     <string name="updates_sheet_title_offline">No connection</string>

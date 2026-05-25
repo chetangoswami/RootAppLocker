@@ -14,8 +14,10 @@ import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -27,6 +29,7 @@ import eu.hxreborn.biometricapplock.prefs.Prefs
 import eu.hxreborn.biometricapplock.updates.ChangeType
 import eu.hxreborn.biometricapplock.updates.UpdateSheetState
 import eu.hxreborn.biometricapplock.updates.toSheetState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,9 +39,12 @@ fun ChangelogSheet(onDismiss: () -> Unit) {
     val cachedEntries by App.updateRepository.cachedChangelog.collectAsStateWithLifecycle()
     val cachedAvailable by App.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
     val updateState by App.updateRepository.currentState.collectAsStateWithLifecycle()
+    var minDelayPassed by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         App.updateRepository.fetchChangelog()
+        delay(1000L)
+        minDelayPassed = true
     }
 
     val latestVersionForMatch =
@@ -52,11 +58,15 @@ fun ChangelogSheet(onDismiss: () -> Unit) {
             ?: false
 
     val sheetState =
-        remember(updateState, cachedAvailable, hasMatchingChangelogEntry) {
-            updateState.toSheetState(
-                cached = cachedAvailable,
-                hasMatchingChangelogEntry = hasMatchingChangelogEntry,
-            )
+        remember(updateState, cachedAvailable, hasMatchingChangelogEntry, minDelayPassed) {
+            if (!minDelayPassed) {
+                UpdateSheetState.Checking
+            } else {
+                updateState.toSheetState(
+                    cached = cachedAvailable,
+                    hasMatchingChangelogEntry = hasMatchingChangelogEntry,
+                )
+            }
         }
 
     val versionLabel =

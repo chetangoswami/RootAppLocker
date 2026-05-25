@@ -3,8 +3,14 @@
 package eu.hxreborn.biometricapplock.ui.component
 
 import android.text.format.DateUtils
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.CloudOff
+import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.HourglassEmpty
 import androidx.compose.material.icons.outlined.Info
@@ -96,7 +103,7 @@ fun WhatsNewSheet(
 
     val dismiss: () -> Unit = {
         haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-        scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
+        onDismiss()
     }
 
     ModalBottomSheet(
@@ -179,23 +186,55 @@ private fun SheetBody(
         verticalArrangement = Arrangement.spacedBy(Tokens.SheetItemSpacing),
     ) {
         when (state) {
-            UpdateSheetState.Checking -> {
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(Tokens.ChangelogLoadingHeight),
-                    contentAlignment = Alignment.Center,
+            UpdateSheetState.Checking,
+            is UpdateSheetState.UpToDate,
+            -> {
+                val resolved = state is UpdateSheetState.UpToDate
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = Tokens.EmptyStatePadding),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(Tokens.SheetSectionSpacing),
                 ) {
-                    LoadingIndicator(modifier = Modifier.size(Tokens.ChangelogLoadingIndicatorSize))
+                    AnimatedContent(
+                        targetState = resolved,
+                        transitionSpec = {
+                            (fadeIn(tween(600)) + scaleIn(tween(600), initialScale = 0.6f))
+                                .togetherWith(fadeOut(tween(400)) + scaleOut(tween(400), targetScale = 0.6f))
+                        },
+                        label = "updateBadge",
+                    ) { done ->
+                        Box(
+                            modifier = Modifier.size(Tokens.UpToDateBadgeSize),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            if (!done) {
+                                LoadingIndicator(modifier = Modifier.size(Tokens.UpToDateBadgeSize))
+                            } else {
+                                SoftBlobBadge(
+                                    size = Tokens.UpToDateBadgeSize,
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Download,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(Tokens.UpToDateBadgeIconSize),
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Text(
+                        text = stringResource(R.string.updates_sheet_up_to_date_callout),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color =
+                            if (resolved) {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            } else {
+                                Color.Transparent
+                            },
+                    )
                 }
-            }
-
-            is UpdateSheetState.UpToDate -> {
-                Callout(
-                    icon = Icons.Filled.CheckCircle,
-                    contentDescription = sheetTitle,
-                    text = stringResource(R.string.updates_sheet_up_to_date_callout),
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
             }
 
             is UpdateSheetState.Available -> {
@@ -349,7 +388,11 @@ private fun SheetActions(
 ) {
     when (state) {
         UpdateSheetState.Checking -> {
-            Unit
+            PrimaryAction(
+                label = stringResource(R.string.whats_new_got_it),
+                onClick = onDismiss,
+                enabled = false,
+            )
         }
 
         is UpdateSheetState.Available -> {
@@ -405,9 +448,11 @@ private fun SheetActions(
 private fun PrimaryAction(
     label: String,
     onClick: () -> Unit,
+    enabled: Boolean = true,
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = Modifier.fillMaxWidth().height(Tokens.PrimaryActionHeight),
         shape = CircleShape,
         colors =

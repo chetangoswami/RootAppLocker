@@ -24,7 +24,6 @@ import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -238,20 +237,14 @@ fun SettingsScreen(
                         coroutineScope.launch { App.updateRepository.checkNow() }
                     },
                     trailing = {
-                        when {
-                            updateState is UpdateState.Checking -> {
-                                LoadingIndicator(modifier = Modifier.size(Tokens.LoadingIndicatorSize))
-                            }
-
-                            showDotIndicator -> {
-                                Box(
-                                    modifier =
-                                        Modifier
-                                            .size(Tokens.SpacingSm)
-                                            .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.primary),
-                                )
-                            }
+                        if (showDotIndicator) {
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .size(Tokens.SpacingSm)
+                                        .clip(CircleShape)
+                                        .background(MaterialTheme.colorScheme.primary),
+                            )
                         }
                     },
                 )
