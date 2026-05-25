@@ -5,6 +5,7 @@ import java.lang.reflect.Executable
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
+@Volatile
 internal var reflection: SystemServerReflection? = null
 
 internal fun ClassLoader.findMethod(

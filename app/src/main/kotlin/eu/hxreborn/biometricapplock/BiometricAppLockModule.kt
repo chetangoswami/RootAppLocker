@@ -27,7 +27,8 @@ class BiometricAppLockModule : XposedModule() {
     override fun onSystemServerStarting(param: SystemServerStartingParam) {
         Logger.inSystemServer = true
         val locked = readLockedPackages()
-        Logger.log(Log.INFO, "system_server starting pid=${Process.myPid()} locked=$locked")
+        Logger.log(Log.INFO, "system_server starting pid=${Process.myPid()} locked=${locked.size}")
+        Logger.debug { "locked=$locked" }
         runCatching { registerSystemServerHooks(param.classLoader, locked) }
             .onFailure {
                 Logger.log(Log.ERROR, "registerSystemServerHooks failed: ${it.message}", it)
@@ -42,10 +43,8 @@ class BiometricAppLockModule : XposedModule() {
                 SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
                     if (key != Prefs.LOCKED_PACKAGES.key) return@OnSharedPreferenceChangeListener
                     lockedPackages = parseLockedPackages(Prefs.LOCKED_PACKAGES.read(sp))
-                    Logger.log(
-                        Log.INFO,
-                        "config updated locked=${lockedPackages.size} $lockedPackages",
-                    )
+                    Logger.log(Log.INFO, "config updated locked=${lockedPackages.size}")
+                    Logger.debug { "locked=$lockedPackages" }
                 }
             prefsListener = listener
             prefs.registerOnSharedPreferenceChangeListener(listener)

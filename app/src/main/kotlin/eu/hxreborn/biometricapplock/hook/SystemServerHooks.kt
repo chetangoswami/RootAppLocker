@@ -54,7 +54,8 @@ private fun XposedModule.hookLaunchIntercept(classLoader: ClassLoader) {
             }
             tryRedirect(chain.thisObject, packageName, activityInfo.name)
         }
-        Logger.log(Log.INFO, "hooked intercept locked=$lockedPackages")
+        Logger.log(Log.INFO, "hooked intercept locked=${lockedPackages.size}")
+        Logger.debug { "locked=$lockedPackages" }
     }.onFailure { Logger.log(Log.ERROR, "hookLaunchIntercept failed: ${it.message}", it) }
 }
 
@@ -67,11 +68,11 @@ private fun XposedModule.hookActivityLaunched(classLoader: ClassLoader) {
                 2,
             )
         hook(method).intercept { chain ->
-            val taskInfo = chain.args[0] as? TaskInfo
-            val topActivity = taskInfo?.topActivity
-            val packageName = topActivity?.packageName
-            if (packageName in lockedPackages && taskInfo != null && topActivity != null) {
-                taskCache[taskInfo.taskId] = TaskEntry(packageName!!, topActivity.className)
+            val taskInfo = chain.args[0] as? TaskInfo ?: return@intercept chain.proceed()
+            val topActivity = taskInfo.topActivity ?: return@intercept chain.proceed()
+            val packageName = topActivity.packageName
+            if (packageName in lockedPackages) {
+                taskCache[taskInfo.taskId] = TaskEntry(packageName, topActivity.className)
                 Logger.debug {
                     "launched pkg=$packageName taskId=${taskInfo.taskId} top=${topActivity.shortClassName}"
                 }
@@ -97,15 +98,14 @@ private fun XposedModule.hookRecents(classLoader: ClassLoader) {
             relockOtherPackages(entry?.packageName)
 
             if (entry != null && entry.packageName !in unlockedPackages) {
-                Logger.debug { "gating recents pkg=${entry.packageName} taskId=$taskId" }
+                Logger.debug { "recents gate pkg=${entry.packageName} taskId=$taskId" }
                 val result = chain.proceed()
-                Logger.debug { "recents proceed result=$result taskId=$taskId" }
                 runCatching { postAuthLaunch(chain.thisObject, entry) }
                     .onFailure { Logger.log(Log.ERROR, "recents auth failed: ${it.message}", it) }
                 return@intercept result
             }
             if (entry != null) {
-                Logger.debug { "recents pass-through taskId=$taskId pkg=${entry.packageName}" }
+                Logger.debug { "recents pass pkg=${entry.packageName} taskId=$taskId" }
             }
             chain.proceed()
         }
@@ -125,13 +125,13 @@ private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
             val awake = chain.args[0] as? Boolean
             if (awake == true && unlockedPackages.isNotEmpty()) {
                 unlockedPackages.clear()
-                val topPackageName =
-                    runCatching {
-                        reflection?.findTopResumedPackageName(
-                            chain.thisObject,
-                        )
-                    }.getOrNull()
-                Logger.debug { "screen on, re-locked all topPkg=$topPackageName" }
+                Logger.debug {
+                    val topPkg =
+                        runCatching {
+                            reflection?.findTopResumedPackageName(chain.thisObject)
+                        }.getOrNull()
+                    "screen on, re-locked all topPkg=$topPkg"
+                }
             }
             chain.proceed()
         }
