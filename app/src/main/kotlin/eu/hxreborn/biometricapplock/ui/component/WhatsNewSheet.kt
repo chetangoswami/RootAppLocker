@@ -196,7 +196,6 @@ private fun SheetBody(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
-                ItemList(items)
             }
 
             is UpdateSheetState.Available -> {
