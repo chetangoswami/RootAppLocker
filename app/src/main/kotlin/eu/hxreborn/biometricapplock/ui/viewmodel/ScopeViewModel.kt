@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import eu.hxreborn.biometricapplock.App
+import eu.hxreborn.biometricapplock.HotReloadTrigger
 import eu.hxreborn.biometricapplock.prefs.Prefs
 import io.github.libxposed.service.XposedService
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,8 +38,6 @@ class ScopeViewModel(
     private val _scope = MutableStateFlow<Set<String>>(emptySet())
     val scope: StateFlow<Set<String>> = _scope.asStateFlow()
 
-    // APK installed/updated after last boot means system_server is still running old hook code
-    // (or none at all). Computed once at VM construction; the values don't change without process death
     private val apkUpdatedAfterBoot: Boolean by lazy {
         runCatching {
             val bootEpoch = System.currentTimeMillis() - SystemClock.elapsedRealtime()
@@ -46,6 +45,8 @@ class ScopeViewModel(
             info.lastUpdateTime > bootEpoch
         }.getOrDefault(false)
     }
+
+    private var supportsHotReload = false
 
     val moduleStatus: StateFlow<ModuleStatus> =
         _framework
@@ -55,7 +56,7 @@ class ScopeViewModel(
     private fun deriveStatus(framework: FrameworkInfo?): ModuleStatus =
         when {
             framework == null -> ModuleStatus.NotEnabled
-            apkUpdatedAfterBoot -> ModuleStatus.RebootRequired
+            apkUpdatedAfterBoot && !supportsHotReload -> ModuleStatus.RebootRequired
             else -> ModuleStatus.Enabled
         }
 
@@ -65,6 +66,10 @@ class ScopeViewModel(
     }
 
     fun onServiceBound(service: XposedService) {
+        supportsHotReload =
+            runCatching {
+                service.frameworkProperties and XposedService.PROP_RT_HOT_RELOAD != 0L
+            }.getOrDefault(false)
         _framework.value = FrameworkInfo(service.frameworkName, "v${service.frameworkVersion}")
     }
 
@@ -101,6 +106,7 @@ class ScopeViewModel(
 
     private fun saveLockedPackages(packages: Set<String>) {
         App.prefsRepository.save(Prefs.LOCKED_PACKAGES, packages.joinToString("|"))
+        App.boundService?.let { HotReloadTrigger.tryReload(it) }
     }
 
     companion object {

@@ -54,8 +54,7 @@ private fun XposedModule.hookLaunchIntercept(classLoader: ClassLoader) {
             }
             tryRedirect(chain.thisObject, packageName, activityInfo.name)
         }
-        Logger.log(Log.INFO, "hooked intercept locked=${lockedPackages.size}")
-        Logger.debug { "locked=$lockedPackages" }
+        Logger.log(Log.INFO, "hooked intercept")
     }.onFailure { Logger.log(Log.ERROR, "hookLaunchIntercept failed: ${it.message}", it) }
 }
 
