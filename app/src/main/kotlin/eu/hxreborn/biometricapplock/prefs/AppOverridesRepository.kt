@@ -11,6 +11,12 @@ data class AppOverrides(
     val flagSecureDisabled: Boolean?,
 )
 
+private fun SharedPreferences.getIntOrNull(key: String): Int? =
+    if (contains(key)) getInt(key, 0) else null
+
+private fun SharedPreferences.getBooleanOrNull(key: String): Boolean? =
+    if (contains(key)) getBoolean(key, false) else null
+
 class AppOverridesRepository(
     private val local: SharedPreferences,
     private val remoteProvider: () -> SharedPreferences? = { null },
@@ -21,19 +27,11 @@ class AppOverridesRepository(
 
     private fun prefix(pkg: String) = "app_override:$pkg:"
 
-    private fun currentOverrides(pkg: String): AppOverrides {
-        val delay = if (local.contains(relockKey(pkg))) local.getInt(relockKey(pkg), 0) else null
-        val flagSecure =
-            if (local.contains(
-                    flagSecureKey(pkg),
-                )
-            ) {
-                local.getBoolean(flagSecureKey(pkg), false)
-            } else {
-                null
-            }
-        return AppOverrides(relockDelaySeconds = delay, flagSecureDisabled = flagSecure)
-    }
+    private fun currentOverrides(pkg: String) =
+        AppOverrides(
+            relockDelaySeconds = local.getIntOrNull(relockKey(pkg)),
+            flagSecureDisabled = local.getBooleanOrNull(flagSecureKey(pkg)),
+        )
 
     fun observe(pkg: String): Flow<AppOverrides> =
         callbackFlow {
@@ -46,21 +44,17 @@ class AppOverridesRepository(
             awaitClose { local.unregisterOnSharedPreferenceChangeListener(listener) }
         }
 
+    private fun editBoth(block: SharedPreferences.Editor.() -> Unit) {
+        local.edit(action = block)
+        remoteProvider()?.edit(commit = true, action = block)
+    }
+
     fun setRelockDelaySeconds(
         pkg: String,
         seconds: Int?,
     ) {
         val key = relockKey(pkg)
-        local.edit { if (seconds == null) remove(key) else putInt(key, seconds) }
-        remoteProvider()?.edit(commit = true) {
-            if (seconds ==
-                null
-            ) {
-                remove(key)
-            } else {
-                putInt(key, seconds)
-            }
-        }
+        editBoth { if (seconds == null) remove(key) else putInt(key, seconds) }
     }
 
     fun setFlagSecureDisabled(
@@ -68,28 +62,14 @@ class AppOverridesRepository(
         disabled: Boolean?,
     ) {
         val key = flagSecureKey(pkg)
-        local.edit { if (disabled == null) remove(key) else putBoolean(key, disabled) }
-        remoteProvider()?.edit(commit = true) {
-            if (disabled ==
-                null
-            ) {
-                remove(key)
-            } else {
-                putBoolean(key, disabled)
-            }
-        }
+        editBoth { if (disabled == null) remove(key) else putBoolean(key, disabled) }
     }
 
-    fun reset(pkg: String) {
-        local.edit {
+    fun reset(pkg: String) =
+        editBoth {
             remove(relockKey(pkg))
             remove(flagSecureKey(pkg))
         }
-        remoteProvider()?.edit(commit = true) {
-            remove(relockKey(pkg))
-            remove(flagSecureKey(pkg))
-        }
-    }
 
     fun prune(installedPackages: Set<String>) {
         val keysToRemove =
@@ -99,7 +79,6 @@ class AppOverridesRepository(
                 pkg !in installedPackages
             }
         if (keysToRemove.isEmpty()) return
-        local.edit { keysToRemove.forEach { remove(it) } }
-        remoteProvider()?.edit(commit = true) { keysToRemove.forEach { remove(it) } }
+        editBoth { keysToRemove.forEach { remove(it) } }
     }
 }
