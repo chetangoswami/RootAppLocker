@@ -42,6 +42,7 @@ object Tokens {
     val SkeletonSubtitleHeight: Dp = 12.dp
     val SmallCornerRadius: Dp = 4.dp
 
+    const val DISABLED_ALPHA: Float = 0.38f
     const val SEARCH_DEBOUNCE_MS: Long = 300
     const val SHIMMER_PLACEHOLDER_COUNT: Int = 6
     val EmptyStatePadding: Dp = 48.dp

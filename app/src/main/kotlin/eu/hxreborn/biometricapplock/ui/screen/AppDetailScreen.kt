@@ -65,8 +65,6 @@ import eu.hxreborn.biometricapplock.ui.util.openAppInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-private const val DISABLED_ALPHA = 0.38f
-
 @Composable
 fun AppDetailScreen(
     packageName: String,
@@ -198,7 +196,7 @@ fun AppDetailScreen(
                     title = stringResource(R.string.app_detail_relock_delay_title),
                     summary = relockDelaySummary(overrides.relockDelaySeconds ?: 0),
                     onClick = if (hasOverrides) ({ showRelockDialog = true }) else null,
-                    modifier = Modifier.alpha(if (hasOverrides) 1f else DISABLED_ALPHA),
+                    modifier = Modifier.alpha(if (hasOverrides) 1f else Tokens.DISABLED_ALPHA),
                 )
             }
 
@@ -226,7 +224,7 @@ fun AppDetailScreen(
                             enabled = hasOverrides,
                         )
                     },
-                    modifier = Modifier.alpha(if (hasOverrides) 1f else DISABLED_ALPHA),
+                    modifier = Modifier.alpha(if (hasOverrides) 1f else Tokens.DISABLED_ALPHA),
                 )
             }
 

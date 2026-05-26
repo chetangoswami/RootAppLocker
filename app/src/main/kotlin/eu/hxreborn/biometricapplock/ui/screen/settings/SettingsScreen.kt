@@ -35,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -168,12 +169,11 @@ fun SettingsScreen(
                     title = stringResource(R.string.settings_disable_flag_secure_title),
                     summary = stringResource(R.string.settings_disable_flag_secure_summary),
                     position = SectionPosition.Middle,
-                    onClick = {
-                        App.prefsRepository.save(Prefs.DISABLE_FLAG_SECURE, !prefs.disableFlagSecure)
-                    },
+                    onClick = null,
                     trailing = {
-                        LockSwitch(checked = prefs.disableFlagSecure, onCheckedChange = null)
+                        LockSwitch(checked = false, onCheckedChange = null, enabled = false)
                     },
+                    modifier = Modifier.alpha(Tokens.DISABLED_ALPHA),
                 )
             }
             item {
