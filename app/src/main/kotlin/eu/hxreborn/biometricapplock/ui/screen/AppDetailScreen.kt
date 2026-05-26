@@ -202,8 +202,6 @@ fun AppDetailScreen(
                 )
             }
 
-            item { SettingsSectionHeader(title = stringResource(R.string.app_detail_section_secure_display)) }
-
             item {
                 PreferenceRow(
                     icon = Icons.Outlined.Screenshot,
