@@ -137,8 +137,8 @@ private object StretchingPillOverride : NavigationBarOverride {
 fun ClassicBottomNav(
     backStack: NavBackStack<NavKey>,
     currentKey: NavKey?,
-    showUpdateBadge: Boolean = false,
     modifier: Modifier = Modifier,
+    showUpdateBadge: Boolean = false,
 ) {
     val haptics = LocalHapticFeedback.current
     val selectedIndex = bottomNavItems.indexOfFirst { it.key == currentKey }.coerceAtLeast(0)

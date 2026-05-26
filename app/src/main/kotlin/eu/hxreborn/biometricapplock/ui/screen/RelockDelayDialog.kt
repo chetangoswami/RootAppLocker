@@ -19,6 +19,18 @@ import eu.hxreborn.biometricapplock.R
 import eu.hxreborn.biometricapplock.ui.theme.Tokens
 
 @Composable
+fun relockDelaySummary(seconds: Int): String =
+    when (seconds) {
+        -1 -> stringResource(R.string.app_detail_relock_delay_never)
+        0 -> stringResource(R.string.app_detail_relock_delay_immediate)
+        30 -> stringResource(R.string.app_detail_relock_delay_30s)
+        60 -> stringResource(R.string.app_detail_relock_delay_1m)
+        300 -> stringResource(R.string.app_detail_relock_delay_5m)
+        1800 -> stringResource(R.string.app_detail_relock_delay_30m)
+        else -> "$seconds s"
+    }
+
+@Composable
 fun RelockDelayDialog(
     currentSeconds: Int,
     onSelect: (Int) -> Unit,

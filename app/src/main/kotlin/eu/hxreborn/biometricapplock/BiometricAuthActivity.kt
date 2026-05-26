@@ -91,10 +91,11 @@ class BiometricAuthActivity : Activity() {
     private fun launchTarget() {
         val pkg = targetPkg ?: return
         val nonce = authToken ?: return
+        val cls = targetCls
 
         val target =
-            if (targetCls != null) {
-                Intent().apply { component = ComponentName(pkg, targetCls!!) }
+            if (cls != null) {
+                Intent().apply { component = ComponentName(pkg, cls) }
             } else {
                 packageManager.getLaunchIntentForPackage(pkg)
             }

@@ -40,7 +40,6 @@ fun SectionCard(
             Card(
                 modifier =
                     cardModifier.combinedClickable(
-                        enabled = onClick != null || onLongClick != null,
                         onClick = { onClick?.invoke() },
                         onLongClick = onLongClick,
                     ),

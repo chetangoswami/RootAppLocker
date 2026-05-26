@@ -237,8 +237,8 @@ fun MainNavDisplay(
 fun BottomNav(
     backStack: NavBackStack<NavKey>,
     currentKey: NavKey?,
-    showUpdateBadge: Boolean = false,
     modifier: Modifier = Modifier,
+    showUpdateBadge: Boolean = false,
 ) {
     val haptics = LocalHapticFeedback.current
     val buttonBounds = remember { mutableStateMapOf<Int, Rect>() }

@@ -1,3 +1,4 @@
+@file:Suppress("AssignedValueIsNeverRead")
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 
 package eu.hxreborn.biometricapplock.ui.screen
@@ -18,8 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.Screenshot
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Tune
@@ -104,6 +105,7 @@ fun AppDetailScreen(
         .collectAsStateWithLifecycle(initialValue = AppOverrides(null, null))
 
     val hasOverrides = overrides.relockDelaySeconds != null || overrides.flagSecureDisabled != null
+    val disabledModifier = if (hasOverrides) Modifier else Modifier.alpha(Tokens.DISABLED_ALPHA)
 
     var showRelockDialog by remember { mutableStateOf(false) }
 
@@ -196,7 +198,7 @@ fun AppDetailScreen(
                     title = stringResource(R.string.app_detail_relock_delay_title),
                     summary = relockDelaySummary(overrides.relockDelaySeconds ?: 0),
                     onClick = if (hasOverrides) ({ showRelockDialog = true }) else null,
-                    modifier = Modifier.alpha(if (hasOverrides) 1f else Tokens.DISABLED_ALPHA),
+                    modifier = disabledModifier,
                 )
             }
 
@@ -208,10 +210,9 @@ fun AppDetailScreen(
                     onClick =
                         if (hasOverrides) {
                             {
-                                val current = overrides.flagSecureDisabled
                                 App.appOverridesRepository.setFlagSecureDisabled(
                                     packageName,
-                                    if (current == true) false else true,
+                                    overrides.flagSecureDisabled != true,
                                 )
                             }
                         } else {
@@ -224,7 +225,7 @@ fun AppDetailScreen(
                             enabled = hasOverrides,
                         )
                     },
-                    modifier = Modifier.alpha(if (hasOverrides) 1f else Tokens.DISABLED_ALPHA),
+                    modifier = disabledModifier,
                 )
             }
 
@@ -232,7 +233,7 @@ fun AppDetailScreen(
 
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.OpenInNew,
+                    icon = Icons.AutoMirrored.Outlined.OpenInNew,
                     title = stringResource(R.string.app_detail_open_app_info_title),
                     summary = stringResource(R.string.app_detail_open_app_info_summary),
                     onClick = { openAppInfo(context, packageName) },
@@ -266,7 +267,8 @@ private fun AppHeaderCard(
             Text(appName, style = MaterialTheme.typography.titleMedium)
             Text(
                 text = packageName,
-                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             if (versionName != null) {
@@ -279,18 +281,6 @@ private fun AppHeaderCard(
         }
     }
 }
-
-@Composable
-private fun relockDelaySummary(seconds: Int): String =
-    when (seconds) {
-        -1 -> stringResource(R.string.app_detail_relock_delay_never)
-        0 -> stringResource(R.string.app_detail_relock_delay_immediate)
-        30 -> stringResource(R.string.app_detail_relock_delay_30s)
-        60 -> stringResource(R.string.app_detail_relock_delay_1m)
-        300 -> stringResource(R.string.app_detail_relock_delay_5m)
-        1800 -> stringResource(R.string.app_detail_relock_delay_30m)
-        else -> "$seconds s"
-    }
 
 @Composable
 private fun DetailAppIcon(

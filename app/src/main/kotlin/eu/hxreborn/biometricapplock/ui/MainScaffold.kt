@@ -1,3 +1,5 @@
+@file:Suppress("AssignedValueIsNeverRead")
+
 package eu.hxreborn.biometricapplock.ui
 
 import androidx.compose.animation.AnimatedVisibility
@@ -39,8 +41,7 @@ fun MainScaffold(viewModel: ScopeViewModel) {
     var shownForVersion by remember { mutableStateOf<String?>(null) }
 
     val hasUnseenUpdate =
-        cachedAvailable != null &&
-            cachedAvailable!!.latestVersion != prefs.lastDismissedAvailableVersion
+        cachedAvailable?.latestVersion?.let { it != prefs.lastDismissedAvailableVersion } == true
 
     LaunchedEffect(updateState) {
         val state = updateState

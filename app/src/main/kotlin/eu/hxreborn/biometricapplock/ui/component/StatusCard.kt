@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -72,15 +71,13 @@ fun StatusCard(
     val loadLine: String? =
         if (status == ModuleStatus.Enabled && serviceLoadEvent != null) {
             val relative =
-                remember(serviceLoadEvent.epochMs) {
-                    DateUtils
-                        .getRelativeTimeSpanString(
-                            serviceLoadEvent.epochMs,
-                            System.currentTimeMillis(),
-                            DateUtils.SECOND_IN_MILLIS,
-                            DateUtils.FORMAT_ABBREV_RELATIVE,
-                        ).toString()
-                }
+                DateUtils
+                    .getRelativeTimeSpanString(
+                        serviceLoadEvent.epochMs,
+                        System.currentTimeMillis(),
+                        DateUtils.SECOND_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_RELATIVE,
+                    ).toString()
             stringResource(R.string.status_loaded_at_boot, relative)
         } else {
             null

@@ -16,7 +16,6 @@ internal lateinit var module: BiometricAppLockModule
     private set
 
 class BiometricAppLockModule : XposedModule() {
-    @Suppress("unused")
     private var prefsListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
 
     override fun onModuleLoaded(param: ModuleLoadedParam) {

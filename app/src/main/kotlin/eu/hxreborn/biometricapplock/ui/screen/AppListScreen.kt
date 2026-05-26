@@ -429,8 +429,8 @@ private fun ShimmerListItem(modifier: Modifier = Modifier) {
 fun AppListScreen(
     viewModel: ScopeViewModel,
     contentPadding: PaddingValues,
-    onNavigateToAppDetail: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    onNavigateToAppDetail: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
     val pm = context.packageManager
@@ -538,13 +538,12 @@ fun AppListScreen(
                             val previous = selectableScope
                             viewModel.clearScope(selectableScope)
                             coroutineScope.launch {
-                                val result =
-                                    snackbarHostState.showSnackbar(
+                                if (snackbarHostState.showSnackbar(
                                         message = clearedMessage,
                                         actionLabel = undoLabel,
                                         duration = SnackbarDuration.Short,
-                                    )
-                                if (result == SnackbarResult.ActionPerformed) {
+                                    ) == SnackbarResult.ActionPerformed
+                                ) {
                                     viewModel.restoreScope(previous)
                                 }
                             }
@@ -635,10 +634,9 @@ fun AppListScreen(
                         isInitialLoading -> {
                             items(Tokens.SHIMMER_PLACEHOLDER_COUNT) { index ->
                                 val position =
-                                    when {
-                                        Tokens.SHIMMER_PLACEHOLDER_COUNT == 1 -> SectionPosition.Single
-                                        index == 0 -> SectionPosition.Top
-                                        index == Tokens.SHIMMER_PLACEHOLDER_COUNT - 1 -> SectionPosition.Bottom
+                                    when (index) {
+                                        0 -> SectionPosition.Top
+                                        Tokens.SHIMMER_PLACEHOLDER_COUNT - 1 -> SectionPosition.Bottom
                                         else -> SectionPosition.Middle
                                     }
                                 SectionCard(position = position) {

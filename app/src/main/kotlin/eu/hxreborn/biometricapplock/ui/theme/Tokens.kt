@@ -29,8 +29,6 @@ object Tokens {
     val SettingsIconSize: Dp = 24.dp
     val SmallIconSize: Dp = 20.dp
 
-    val CardVerticalSpacing: Dp = 4.dp
-
     val AppIconSize: Dp = 48.dp
     val AppIconCornerRadius: Dp = 12.dp
     val LoadingIndicatorSize: Dp = 24.dp
@@ -62,22 +60,14 @@ object Tokens {
     val SheetSectionSpacing: Dp = 20.dp
     val SheetItemSpacing: Dp = 12.dp
     val PrimaryActionHeight: Dp = 56.dp
-    val FeatureBadgeSize: Dp = 52.dp
-    val FeatureBadgeIconSize: Dp = 26.dp
-
     val DetailHeaderIconSize: Dp = 48.dp
     val DetailHeaderCardPadding: Dp = 16.dp
     val DetailHeaderIconTextSpacing: Dp = 16.dp
 
     val StatusIconSize: Dp = 36.dp
 
-    val ChangelogLoadingHeight: Dp = 120.dp
-    val ChangelogLoadingIndicatorSize: Dp = 48.dp
     val UpToDateBadgeSize: Dp = 128.dp
     val UpToDateBadgeIconSize: Dp = 56.dp
-
-    val ChipHorizontalPadding: Dp = 8.dp
-    val ChipVerticalPadding: Dp = 3.dp
 
     val ExpandedTitleLineHeight: TextUnit = 36.sp
     const val EXPANDED_TITLE_MAX_LINES = 2

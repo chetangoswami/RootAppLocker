@@ -40,10 +40,11 @@ internal fun isValidAuthToken(
     packageName: String?,
 ): Boolean {
     val token = intent?.getStringExtra(BiometricAuthActivity.EXTRA_AUTH_TOKEN) ?: return false
-    if (packageName !in lockedPackages || !consumeToken(token)) return false
+    val pkg = packageName ?: return false
+    if (pkg !in lockedPackages || !consumeToken(token)) return false
     intent.removeExtra(BiometricAuthActivity.EXTRA_AUTH_TOKEN)
-    addUnlocked(packageName!!)
-    Logger.log(Log.INFO, "unlocked pkg=$packageName")
+    addUnlocked(pkg)
+    Logger.log(Log.INFO, "unlocked pkg=$pkg")
     return true
 }
 

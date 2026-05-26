@@ -31,7 +31,6 @@ fun SoftBlobBadge(
         color = containerColor,
     ) {
         Box(
-            modifier = Modifier.size(size),
             contentAlignment = Alignment.Center,
             content = content,
         )

@@ -1,3 +1,4 @@
+@file:Suppress("AssignedValueIsNeverRead")
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 
 package eu.hxreborn.biometricapplock.ui.screen.settings
@@ -57,6 +58,7 @@ import eu.hxreborn.biometricapplock.ui.component.SectionPosition
 import eu.hxreborn.biometricapplock.ui.component.WhatsNewSheet
 import eu.hxreborn.biometricapplock.ui.component.changeTypeLabelRes
 import eu.hxreborn.biometricapplock.ui.screen.RelockDelayDialog
+import eu.hxreborn.biometricapplock.ui.screen.relockDelaySummary
 import eu.hxreborn.biometricapplock.ui.theme.Tokens
 import eu.hxreborn.biometricapplock.ui.util.LauncherIconHelper
 import eu.hxreborn.biometricapplock.updates.ChangeType
@@ -72,7 +74,6 @@ fun SettingsScreen(
     val coroutineScope = rememberCoroutineScope()
     val prefs by App.prefsRepository.state.collectAsStateWithLifecycle(initialValue = AppPrefs.Defaults)
     val cachedAvailable by App.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
-    val updateState by App.updateRepository.currentState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var showThemeDialog by remember { mutableStateOf(false) }
     var showRelockDialog by remember { mutableStateOf(false) }
@@ -131,8 +132,7 @@ fun SettingsScreen(
     }
 
     val showDotIndicator =
-        cachedAvailable != null &&
-            cachedAvailable!!.latestVersion != prefs.lastDismissedAvailableVersion
+        cachedAvailable?.latestVersion?.let { it != prefs.lastDismissedAvailableVersion } == true
 
     Scaffold(
         modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -303,18 +303,6 @@ private fun ValueText(value: String) {
         color = MaterialTheme.colorScheme.primary,
     )
 }
-
-@Composable
-private fun relockDelaySummary(seconds: Int): String =
-    when (seconds) {
-        -1 -> stringResource(R.string.app_detail_relock_delay_never)
-        0 -> stringResource(R.string.app_detail_relock_delay_immediate)
-        30 -> stringResource(R.string.app_detail_relock_delay_30s)
-        60 -> stringResource(R.string.app_detail_relock_delay_1m)
-        300 -> stringResource(R.string.app_detail_relock_delay_5m)
-        1800 -> stringResource(R.string.app_detail_relock_delay_30m)
-        else -> "$seconds s"
-    }
 
 @Composable
 private fun themeModeLabel(mode: ThemeMode): String =

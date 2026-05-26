@@ -64,7 +64,7 @@ private val BiometricStateUnknown =
 fun BiometricHardwareSection(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val state by produceState(initialValue = BiometricStateUnknown, key1 = Unit) {
-        value = withContext(Dispatchers.Default) { readBiometricState(context) }
+        value = withContext(Dispatchers.IO) { readBiometricState(context) }
     }
 
     SettingsSectionHeader(

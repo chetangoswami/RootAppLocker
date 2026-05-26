@@ -53,8 +53,7 @@ class UpdateRepository(
     private val _cachedChangelog = MutableStateFlow<List<ChangelogEntry>?>(null)
     val cachedChangelog: StateFlow<List<ChangelogEntry>?> = _cachedChangelog.asStateFlow()
 
-    private val _lastCheckedEpochMs = MutableStateFlow(Prefs.LAST_UPDATE_CHECK_MS.read(prefs))
-    val lastCheckedEpochMs: StateFlow<Long> = _lastCheckedEpochMs.asStateFlow()
+    private val lastCheckedEpochMs = MutableStateFlow(Prefs.LAST_UPDATE_CHECK_MS.read(prefs))
 
     private val _currentState = MutableStateFlow<UpdateState>(UpdateState.Idle)
     val currentState: StateFlow<UpdateState> = _currentState.asStateFlow()
@@ -96,7 +95,7 @@ class UpdateRepository(
                             if (it is UpdateState.UpToDate || it is UpdateState.Available) {
                                 val now = System.currentTimeMillis()
                                 prefs.edit { Prefs.LAST_UPDATE_CHECK_MS.write(this, now) }
-                                _lastCheckedEpochMs.value = now
+                                lastCheckedEpochMs.value = now
                             }
                         }
                     }

@@ -1,6 +1,5 @@
 package eu.hxreborn.biometricapplock.prefs
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
@@ -110,7 +109,7 @@ class PrefsRepository(
                         // remote-prefs cannot deserialize EmptySet from emptySet<String>()
                         else -> {
                             Log.w(
-                                "BiometricAppLock",
+                                TAG,
                                 "syncToRemote skipping $key type=${value?.javaClass?.simpleName}",
                             )
                         }
@@ -119,16 +118,5 @@ class PrefsRepository(
                 Prefs.LAST_REMOTE_WRITE.write(this, System.currentTimeMillis())
             }
         }
-    }
-
-    companion object {
-        fun create(
-            context: Context,
-            remoteProvider: () -> SharedPreferences? = { null },
-        ): PrefsRepository =
-            PrefsRepository(
-                context.getSharedPreferences(Prefs.GROUP, Context.MODE_PRIVATE),
-                remoteProvider,
-            )
     }
 }
