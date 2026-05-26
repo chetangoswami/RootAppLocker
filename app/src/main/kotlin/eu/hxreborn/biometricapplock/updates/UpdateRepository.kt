@@ -33,6 +33,20 @@ class UpdateRepository(
     private val prefs = app.getSharedPreferences(Prefs.GROUP, Context.MODE_PRIVATE)
     private val json = Json { ignoreUnknownKeys = true }
 
+    val bundledChangelog: List<ChangelogEntry> by lazy {
+        runCatching {
+            val raw =
+                app.assets
+                    .open("changelog.json")
+                    .bufferedReader()
+                    .use { it.readText() }
+            json.decodeFromString<ChangelogManifest>(raw).entries
+        }.getOrElse {
+            Log.w(TAG, "bundled changelog unavailable: ${it.message}")
+            emptyList()
+        }
+    }
+
     private val _cachedAvailable = MutableStateFlow<UpdateState.Available?>(null)
     val cachedAvailable: StateFlow<UpdateState.Available?> = _cachedAvailable.asStateFlow()
 
@@ -105,11 +119,29 @@ class UpdateRepository(
             val fallback = _cachedChangelog.value
             if (!isOnline()) return@withContext fallback
             runCatching {
-                val raw = httpGet(CHANGELOG_URL) ?: return@withContext fallback
-                val entries = json.decodeFromString<ChangelogManifest>(raw).entries
-                _cachedChangelog.value = entries
-                prefs.edit { Prefs.LAST_CHANGELOG_JSON.write(this, raw) }
-                entries
+                val etag = Prefs.CHANGELOG_ETAG.read(prefs)
+                val conn = openConnection(CHANGELOG_URL, etag)
+                when (conn.responseCode) {
+                    304 -> {
+                        fallback
+                    }
+
+                    200 -> {
+                        val raw = conn.inputStream.bufferedReader().use { it.readText() }
+                        val newEtag = conn.getHeaderField("ETag")
+                        val entries = json.decodeFromString<ChangelogManifest>(raw).entries
+                        _cachedChangelog.value = entries
+                        prefs.edit {
+                            Prefs.LAST_CHANGELOG_JSON.write(this, raw)
+                            if (newEtag != null) Prefs.CHANGELOG_ETAG.write(this, newEtag)
+                        }
+                        entries
+                    }
+
+                    else -> {
+                        fallback
+                    }
+                }
             }.getOrElse {
                 Log.w(TAG, "changelog fetch failed: ${it.message}")
                 fallback
@@ -118,12 +150,17 @@ class UpdateRepository(
 
     private fun fetchRelease(): UpdateState =
         try {
-            val conn = openConnection(RELEASE_URL)
+            val etag = Prefs.RELEASE_ETAG.read(prefs)
+            val conn = openConnection(RELEASE_URL, etag)
             val code = conn.responseCode
             val isPrimaryRateLimit =
                 code == 403 && conn.getHeaderField("X-RateLimit-Remaining") == "0"
             val isSecondaryRateLimit = code == 429
             when {
+                code == 304 -> {
+                    cachedReleaseState() ?: UpdateState.UpToDate(BuildConfig.VERSION_NAME)
+                }
+
                 isPrimaryRateLimit -> {
                     val resetMs =
                         conn
@@ -151,7 +188,8 @@ class UpdateRepository(
                 }
 
                 else -> {
-                    parseReleaseBody(conn.inputStream.bufferedReader().use { it.readText() })
+                    val body = conn.inputStream.bufferedReader().use { it.readText() }
+                    parseReleaseBody(body, conn.getHeaderField("ETag"))
                 }
             }
         } catch (e: Exception) {
@@ -159,13 +197,36 @@ class UpdateRepository(
             UpdateState.Failed(FailureCause.Network)
         }
 
-    private fun parseReleaseBody(body: String): UpdateState =
+    private fun cachedReleaseState(): UpdateState? {
+        val body = Prefs.LAST_RELEASE_JSON.read(prefs)
+        if (body.isEmpty()) return null
+        return runCatching {
+            val obj = JSONObject(body)
+            val tag = obj.getString("tag_name").trimStart('v', 'V')
+            val url = obj.getString("html_url")
+            val current = BuildConfig.VERSION_NAME
+            if (isNewer(tag, current)) {
+                UpdateState.Available(current, tag, url).also { _cachedAvailable.value = it }
+            } else {
+                _cachedAvailable.value = null
+                UpdateState.UpToDate(current)
+            }
+        }.getOrNull()
+    }
+
+    private fun parseReleaseBody(
+        body: String,
+        newEtag: String? = null,
+    ): UpdateState =
         try {
             val obj = JSONObject(body)
             val tag = obj.getString("tag_name").trimStart('v', 'V')
             val releaseUrl = obj.getString("html_url")
             val current = BuildConfig.VERSION_NAME
-            prefs.edit { Prefs.LAST_RELEASE_JSON.write(this, body) }
+            prefs.edit {
+                Prefs.LAST_RELEASE_JSON.write(this, body)
+                if (newEtag != null) Prefs.RELEASE_ETAG.write(this, newEtag)
+            }
             if (isNewer(tag, current)) {
                 UpdateState.Available(current, tag, releaseUrl).also { _cachedAvailable.value = it }
             } else {
@@ -177,23 +238,17 @@ class UpdateRepository(
             UpdateState.Failed(FailureCause.Parse)
         }
 
-    private fun httpGet(urlString: String): String? =
-        runCatching {
-            val conn = openConnection(urlString)
-            if (conn.responseCode != 200) {
-                null
-            } else {
-                conn.inputStream.bufferedReader().use { it.readText() }
-            }
-        }.getOrNull()
-
-    private fun openConnection(urlString: String): HttpURLConnection =
+    private fun openConnection(
+        urlString: String,
+        etag: String = "",
+    ): HttpURLConnection =
         (URL(urlString).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
             connectTimeout = CONNECT_TIMEOUT_MS
             readTimeout = READ_TIMEOUT_MS
             setRequestProperty("User-Agent", "biometric-app-lock/${BuildConfig.VERSION_NAME}")
             setRequestProperty("Accept", "application/vnd.github+json")
+            if (etag.isNotEmpty()) setRequestProperty("If-None-Match", etag)
         }
 
     private fun isOnline(): Boolean {

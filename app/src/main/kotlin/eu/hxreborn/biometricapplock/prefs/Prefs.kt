@@ -20,4 +20,6 @@ object Prefs {
     val LAST_RELEASE_JSON = StringPref("last_release_json", "")
     val LAST_CHANGELOG_JSON = StringPref("last_changelog_json", "")
     val LAST_DISMISSED_AVAILABLE_VERSION = StringPref("last_dismissed_available_version", "")
+    val RELEASE_ETAG = StringPref("release_etag", "")
+    val CHANGELOG_ETAG = StringPref("changelog_etag", "")
 }
