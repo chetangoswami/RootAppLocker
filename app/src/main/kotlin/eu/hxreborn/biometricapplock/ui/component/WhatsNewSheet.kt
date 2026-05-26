@@ -8,21 +8,17 @@ package eu.hxreborn.biometricapplock.ui.component
 
 import android.text.format.DateUtils
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -62,9 +58,7 @@ import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -138,14 +132,11 @@ fun WhatsNewSheet(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
                     .padding(horizontal = Tokens.SheetContentPadding)
-                    .padding(bottom = Tokens.SheetContentPadding)
                     .graphicsLayer {
                         alpha = contentAlpha.value
                         translationY = contentOffsetY.value
                     },
-            verticalArrangement = Arrangement.spacedBy(Tokens.SheetSectionSpacing),
         ) {
             val itemCount =
                 when (state) {
@@ -160,19 +151,31 @@ fun WhatsNewSheet(
 
                     UpdateSheetState.WhatsNew -> items.size.takeIf { it > 0 }
                 }
-            SheetHeader(versionLabel = versionLabel, title = title, itemCount = itemCount)
 
-            SheetBody(state = state, items = items, sheetTitle = title)
+            Column(
+                modifier =
+                    Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(Tokens.SheetSectionSpacing),
+            ) {
+                SheetHeader(versionLabel = versionLabel, title = title, itemCount = itemCount)
+                SheetBody(state = state, items = items, sheetTitle = title)
+                Spacer(Modifier.height(Tokens.SheetSectionSpacing))
+            }
 
-            SheetActions(
-                state = state,
-                onDismiss = dismiss,
-                onDownload = onDownload,
-                onLater = onLater,
-                onRetry = onRetry,
-            )
-
-            Spacer(Modifier.height(Tokens.SpacingSm))
+            Column(
+                modifier = Modifier.padding(bottom = Tokens.SheetContentPadding),
+                verticalArrangement = Arrangement.spacedBy(Tokens.SheetSectionSpacing),
+            ) {
+                SheetActions(
+                    state = state,
+                    onDismiss = dismiss,
+                    onDownload = onDownload,
+                    onLater = onLater,
+                    onRetry = onRetry,
+                )
+            }
         }
     }
 }
@@ -589,8 +592,6 @@ private fun TypeSection(
 @Composable
 private fun ChangelogEntryRow(item: FeatureSheetItem) {
     val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
-    val hasBody = !item.body.isNullOrBlank()
-    var expanded by remember { mutableStateOf(true) }
     val titleText =
         buildAnnotatedString {
             append(item.title)
@@ -602,12 +603,7 @@ private fun ChangelogEntryRow(item: FeatureSheetItem) {
         }
     val haptics = LocalHapticFeedback.current
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .then(
-                    if (hasBody) Modifier.clickable { expanded = !expanded } else Modifier,
-                ).padding(vertical = Tokens.SpacingXs),
+        modifier = Modifier.fillMaxWidth().padding(vertical = Tokens.SpacingXs),
         verticalArrangement = Arrangement.spacedBy(Tokens.SpacingXs),
     ) {
         Text(
@@ -627,13 +623,9 @@ private fun ChangelogEntryRow(item: FeatureSheetItem) {
                     Modifier
                 },
         )
-        AnimatedVisibility(
-            visible = expanded && hasBody,
-            enter = expandVertically(spring(stiffness = Spring.StiffnessMediumLow)),
-            exit = shrinkVertically(spring(stiffness = Spring.StiffnessMediumLow)),
-        ) {
+        if (!item.body.isNullOrBlank()) {
             Text(
-                text = item.body ?: "",
+                text = item.body,
                 style = MaterialTheme.typography.bodySmall,
                 color = onSurfaceVariant,
             )

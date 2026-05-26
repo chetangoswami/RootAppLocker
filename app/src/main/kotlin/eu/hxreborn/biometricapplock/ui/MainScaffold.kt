@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.rememberNavBackStack
 import eu.hxreborn.biometricapplock.App
 import eu.hxreborn.biometricapplock.prefs.AppPrefs
+import eu.hxreborn.biometricapplock.prefs.Prefs
 import eu.hxreborn.biometricapplock.ui.component.ChangelogSheet
 import eu.hxreborn.biometricapplock.ui.navigation.BottomNav
 import eu.hxreborn.biometricapplock.ui.navigation.MainNavDisplay
@@ -41,8 +42,9 @@ fun MainScaffold(viewModel: ScopeViewModel) {
 
     LaunchedEffect(updateState) {
         val state = updateState
+        val dismissed = App.prefsRepository.read(Prefs.LAST_DISMISSED_AVAILABLE_VERSION)
         if (state is UpdateState.Available &&
-            state.latestVersion != prefs.lastDismissedAvailableVersion &&
+            state.latestVersion != dismissed &&
             shownForVersion != state.latestVersion
         ) {
             shownForVersion = state.latestVersion

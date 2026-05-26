@@ -66,6 +66,8 @@ class PrefsRepository(
             awaitClose { local.unregisterOnSharedPreferenceChangeListener(listener) }
         }
 
+    fun <T : Any> read(spec: PrefSpec<T>): T = spec.read(local)
+
     fun <T : Any> save(
         spec: PrefSpec<T>,
         value: T,

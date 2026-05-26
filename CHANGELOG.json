@@ -1,11 +1,21 @@
 {
-  "version": "0.8.0",
+  "version": "0.8.1",
   "entries": [
+    {
+      "type": "refactor",
+      "title": "polish update sheet transitions and interactions",
+      "description": "Status states morph from the loading indicator instead of snapping in, auto-popup skips the artificial delay, entries start expanded, commit links move to long-press, and Later becomes Skip this version.",
+      "version": "0.8.1",
+      "date": "2026-05-26",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/1f26ecfae41da2d052b53c5c390149f00363d523",
+      "scope": "ui",
+      "breaking": false
+    },
     {
       "type": "perf",
       "title": "use ETag conditional requests for GitHub API calls",
       "description": "304 Not Modified responses don't count against the rate limit, so repeated update checks are essentially free.",
-      "version": "0.8.0",
+      "version": "0.8.1",
       "date": "2026-05-26",
       "url": "https://github.com/hxreborn/biometric-app-lock/commit/01700afe9184c4ff6690f95248a3f1251dee154c",
       "scope": null,
@@ -15,7 +25,7 @@
       "type": "feat",
       "title": "bundle changelog as APK asset for WhatsNew",
       "description": "WhatsNew reads from a build-time bundled asset instead of fetching remotely, so it always has entries for the installed version. The remote CHANGELOG.json now keeps the last 5 releases and ChangelogSheet filters by the target version.",
-      "version": "0.8.0",
+      "version": "0.8.1",
       "date": "2026-05-26",
       "url": "https://github.com/hxreborn/biometric-app-lock/commit/ffece69292316c3bd461c9ef6a64ebfcdbf119e8",
       "scope": "ui",
