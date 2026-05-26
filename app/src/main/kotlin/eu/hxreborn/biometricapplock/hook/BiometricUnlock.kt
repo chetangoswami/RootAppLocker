@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.SystemClock
-import android.util.Log
 import eu.hxreborn.biometricapplock.BiometricAuthActivity
 import eu.hxreborn.biometricapplock.util.Logger
 import java.util.UUID
@@ -44,7 +43,7 @@ internal fun isValidAuthToken(
     if (pkg !in lockedPackages || !consumeToken(token)) return false
     intent.removeExtra(BiometricAuthActivity.EXTRA_AUTH_TOKEN)
     addUnlocked(pkg)
-    Logger.log(Log.INFO, "unlocked pkg=$pkg")
+    Logger.info("unlocked pkg=$pkg")
     return true
 }
 
@@ -59,11 +58,11 @@ internal fun tryRedirect(
     runCatching { applyRedirect(reflection, interceptor, packageName, className, token) }
         .onFailure {
             pendingTokens.remove(token)
-            Logger.log(Log.ERROR, "redirect failed: ${it.message}", it)
+            Logger.error("redirect failed: ${it.message}", it)
             return false
         }
 
-    Logger.log(Log.INFO, "redirected pkg=$packageName comp=$className")
+    Logger.info("redirected pkg=$packageName comp=$className")
     return true
 }
 
@@ -125,7 +124,7 @@ internal fun postAuthLaunch(
         runCatching { context.startActivity(intent) }
             .onFailure {
                 pendingTokens.remove(token)
-                Logger.log(Log.ERROR, "posted auth launch failed: ${it.message}", it)
+                Logger.error("posted auth launch failed: ${it.message}", it)
             }
     }
 }

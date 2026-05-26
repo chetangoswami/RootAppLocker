@@ -3,7 +3,6 @@ package eu.hxreborn.biometricapplock.hook
 import android.app.TaskInfo
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.util.Log
 import eu.hxreborn.biometricapplock.util.Logger
 import io.github.libxposed.api.XposedModule
 
@@ -14,7 +13,7 @@ internal fun XposedModule.registerSystemServerHooks(
     lockedPackages = locked
     reflection =
         runCatching { SystemServerReflection(classLoader) }
-            .onFailure { Logger.log(Log.ERROR, "reflection init failed: ${it.message}", it) }
+            .onFailure { Logger.error("reflection init failed: ${it.message}", it) }
             .getOrNull()
 
     hookLaunchIntercept(classLoader)
@@ -54,8 +53,8 @@ private fun XposedModule.hookLaunchIntercept(classLoader: ClassLoader) {
             }
             tryRedirect(chain.thisObject, packageName, activityInfo.name)
         }
-        Logger.log(Log.INFO, "hooked intercept")
-    }.onFailure { Logger.log(Log.ERROR, "hookLaunchIntercept failed: ${it.message}", it) }
+        Logger.info("hooked intercept")
+    }.onFailure { Logger.error("hookLaunchIntercept failed: ${it.message}", it) }
 }
 
 private fun XposedModule.hookActivityLaunched(classLoader: ClassLoader) {
@@ -78,8 +77,8 @@ private fun XposedModule.hookActivityLaunched(classLoader: ClassLoader) {
             }
             chain.proceed()
         }
-        Logger.log(Log.INFO, "hooked onActivityLaunched")
-    }.onFailure { Logger.log(Log.ERROR, "hookActivityLaunched failed: ${it.message}", it) }
+        Logger.info("hooked onActivityLaunched")
+    }.onFailure { Logger.error("hookActivityLaunched failed: ${it.message}", it) }
 }
 
 private fun XposedModule.hookRecents(classLoader: ClassLoader) {
@@ -100,7 +99,7 @@ private fun XposedModule.hookRecents(classLoader: ClassLoader) {
                 Logger.debug { "recents gate pkg=${entry.packageName} taskId=$taskId" }
                 val result = chain.proceed()
                 runCatching { postAuthLaunch(chain.thisObject, entry) }
-                    .onFailure { Logger.log(Log.ERROR, "recents auth failed: ${it.message}", it) }
+                    .onFailure { Logger.error("recents auth failed: ${it.message}", it) }
                 return@intercept result
             }
             if (entry != null) {
@@ -108,8 +107,8 @@ private fun XposedModule.hookRecents(classLoader: ClassLoader) {
             }
             chain.proceed()
         }
-        Logger.log(Log.INFO, "hooked startActivityFromRecents")
-    }.onFailure { Logger.log(Log.ERROR, "hookRecents failed: ${it.message}", it) }
+        Logger.info("hooked startActivityFromRecents")
+    }.onFailure { Logger.error("hookRecents failed: ${it.message}", it) }
 }
 
 private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
@@ -134,8 +133,8 @@ private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
             }
             chain.proceed()
         }
-        Logger.log(Log.INFO, "hooked onScreenAwakeChanged")
-    }.onFailure { Logger.log(Log.ERROR, "hookScreenAwake failed: ${it.message}", it) }
+        Logger.info("hooked onScreenAwakeChanged")
+    }.onFailure { Logger.error("hookScreenAwake failed: ${it.message}", it) }
 }
 
 private fun XposedModule.hookSnapshotProtection(classLoader: ClassLoader) {
@@ -156,8 +155,8 @@ private fun XposedModule.hookSnapshotProtection(classLoader: ClassLoader) {
             }
             chain.proceed()
         }
-        Logger.log(Log.INFO, "hooked shouldUseAppThemeSnapshot")
+        Logger.info("hooked shouldUseAppThemeSnapshot")
     }.onFailure {
-        Logger.log(Log.ERROR, "hookSnapshotProtection failed: ${it.message}", it)
+        Logger.error("hookSnapshotProtection failed: ${it.message}", it)
     }
 }

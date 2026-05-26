@@ -2,7 +2,6 @@ package eu.hxreborn.biometricapplock
 
 import android.content.SharedPreferences
 import android.os.Process
-import android.util.Log
 import eu.hxreborn.biometricapplock.hook.lockedPackages
 import eu.hxreborn.biometricapplock.hook.registerSystemServerHooks
 import eu.hxreborn.biometricapplock.prefs.Prefs
@@ -20,16 +19,16 @@ class BiometricAppLockModule : XposedModule() {
 
     override fun onModuleLoaded(param: ModuleLoadedParam) {
         module = this
-        Logger.log(Log.INFO, "loaded in ${param.processName}")
+        Logger.info("loaded in ${param.processName}")
     }
 
     override fun onSystemServerStarting(param: SystemServerStartingParam) {
         val locked = readLockedPackages()
-        Logger.log(Log.INFO, "system_server starting pid=${Process.myPid()} locked=${locked.size}")
+        Logger.info("system_server starting pid=${Process.myPid()} locked=${locked.size}")
         Logger.debug { "locked=$locked" }
         runCatching { registerSystemServerHooks(param.classLoader, locked) }
             .onFailure {
-                Logger.log(Log.ERROR, "registerSystemServerHooks failed: ${it.message}", it)
+                Logger.error("registerSystemServerHooks failed: ${it.message}", it)
             }
         registerPrefsListener()
     }
@@ -41,19 +40,19 @@ class BiometricAppLockModule : XposedModule() {
                 SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
                     if (key != Prefs.LOCKED_PACKAGES.key) return@OnSharedPreferenceChangeListener
                     lockedPackages = parseLockedPackages(Prefs.LOCKED_PACKAGES.read(sp))
-                    Logger.log(Log.INFO, "config updated locked=${lockedPackages.size}")
+                    Logger.info("config updated locked=${lockedPackages.size}")
                     Logger.debug { "locked=$lockedPackages" }
                 }
             prefsListener = listener
             prefs.registerOnSharedPreferenceChangeListener(listener)
-        }.onFailure { Logger.log(Log.WARN, "prefs listener failed: ${it.message}", it) }
+        }.onFailure { Logger.warn("prefs listener failed: ${it.message}", it) }
     }
 
     private fun readLockedPackages(): Set<String> =
         runCatching {
             parseLockedPackages(Prefs.LOCKED_PACKAGES.read(getRemotePreferences(Prefs.GROUP)))
         }.getOrElse {
-            Logger.log(Log.ERROR, "failed to read locked packages: ${it.message}", it)
+            Logger.error("failed to read locked packages: ${it.message}", it)
             emptySet()
         }
 
