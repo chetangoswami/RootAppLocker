@@ -84,6 +84,7 @@ import eu.hxreborn.biometricapplock.ui.theme.Tokens
 import eu.hxreborn.biometricapplock.updates.ChangeType
 import eu.hxreborn.biometricapplock.updates.FailureCause
 import eu.hxreborn.biometricapplock.updates.UpdateSheetState
+import eu.hxreborn.biometricapplock.updates.titleRes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

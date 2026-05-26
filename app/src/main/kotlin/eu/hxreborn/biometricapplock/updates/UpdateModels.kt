@@ -31,50 +31,70 @@ sealed interface UpdateState {
 enum class FailureCause { Offline, Network, Parse, ServiceUnavailable }
 
 sealed interface UpdateSheetState {
-    @get:StringRes
-    val titleRes: Int
-
-    data object Checking : UpdateSheetState {
-        override val titleRes: Int = R.string.updates_sheet_title_checking
-    }
+    data object Checking : UpdateSheetState
 
     data class UpToDate(
         val currentVersion: String,
-    ) : UpdateSheetState {
-        override val titleRes: Int = R.string.updates_sheet_title_up_to_date
-    }
+    ) : UpdateSheetState
 
     data class Available(
         val currentVersion: String,
         val latestVersion: String,
         val releaseUrl: String,
         val notesAvailable: Boolean,
-    ) : UpdateSheetState {
-        override val titleRes: Int = R.string.updates_sheet_title_available
-    }
+    ) : UpdateSheetState
 
     data class Failed(
         val cause: FailureCause,
         val cachedFallback: UpdateState.Available?,
-    ) : UpdateSheetState {
-        override val titleRes: Int =
-            when (cause) {
-                FailureCause.Offline -> R.string.updates_sheet_title_offline
-                FailureCause.ServiceUnavailable -> R.string.updates_sheet_title_service_unavailable
-                FailureCause.Network, FailureCause.Parse -> R.string.updates_sheet_title_failed
-            }
-    }
+    ) : UpdateSheetState
 
     data class RateLimited(
         val resetAtEpochMs: Long?,
-    ) : UpdateSheetState {
-        override val titleRes: Int = R.string.updates_sheet_title_rate_limited
-    }
+    ) : UpdateSheetState
 
-    data object WhatsNew : UpdateSheetState {
-        override val titleRes: Int = R.string.whats_new_title
-    }
+    data object WhatsNew : UpdateSheetState
 }
+
+val UpdateSheetState.titleRes: Int
+    @StringRes get() =
+        when (this) {
+            UpdateSheetState.Checking -> {
+                R.string.updates_sheet_title_checking
+            }
+
+            is UpdateSheetState.UpToDate -> {
+                R.string.updates_sheet_title_up_to_date
+            }
+
+            is UpdateSheetState.Available -> {
+                R.string.updates_sheet_title_available
+            }
+
+            is UpdateSheetState.Failed -> {
+                when (cause) {
+                    FailureCause.Offline -> {
+                        R.string.updates_sheet_title_offline
+                    }
+
+                    FailureCause.ServiceUnavailable -> {
+                        R.string.updates_sheet_title_service_unavailable
+                    }
+
+                    FailureCause.Network, FailureCause.Parse -> {
+                        R.string.updates_sheet_title_failed
+                    }
+                }
+            }
+
+            is UpdateSheetState.RateLimited -> {
+                R.string.updates_sheet_title_rate_limited
+            }
+
+            UpdateSheetState.WhatsNew -> {
+                R.string.whats_new_title
+            }
+        }
 
 fun UpdateState.toSheetState(
     cached: UpdateState.Available?,
