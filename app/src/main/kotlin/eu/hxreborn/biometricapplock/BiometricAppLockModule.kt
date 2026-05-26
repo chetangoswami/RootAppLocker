@@ -25,7 +25,6 @@ class BiometricAppLockModule : XposedModule() {
     }
 
     override fun onSystemServerStarting(param: SystemServerStartingParam) {
-        Logger.inSystemServer = true
         val locked = readLockedPackages()
         Logger.log(Log.INFO, "system_server starting pid=${Process.myPid()} locked=${locked.size}")
         Logger.debug { "locked=$locked" }

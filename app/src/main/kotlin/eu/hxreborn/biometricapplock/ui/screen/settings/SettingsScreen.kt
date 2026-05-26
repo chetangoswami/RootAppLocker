@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.material.icons.outlined.Info
@@ -263,20 +262,6 @@ fun SettingsScreen(
                     summary = stringResource(R.string.about_whats_new_summary, BuildConfig.VERSION_NAME),
                     position = SectionPosition.Top,
                     onClick = { showWhatsNew = true },
-                )
-            }
-            item {
-                PreferenceRow(
-                    icon = Icons.Outlined.BugReport,
-                    title = stringResource(R.string.settings_verbose_logging),
-                    summary = stringResource(R.string.settings_verbose_logging_summary),
-                    position = SectionPosition.Middle,
-                    onClick = {
-                        App.prefsRepository.save(Prefs.VERBOSE, !prefs.verbose)
-                    },
-                    trailing = {
-                        LockSwitch(checked = prefs.verbose, onCheckedChange = null)
-                    },
                 )
             }
             item {
