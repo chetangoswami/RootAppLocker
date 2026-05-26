@@ -2,7 +2,7 @@
 
 An Xposed module to lock apps behind biometric authentication
 
-![Android 11+](https://img.shields.io/badge/Android-11%2B-1B5E20?style=for-the-badge&logo=android&logoColor=white)
+![Android 11+](https://img.shields.io/badge/Android-11%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![libxposed API 101](https://img.shields.io/badge/libxposed-API_101-ff69b4?style=for-the-badge)
 
 > [!WARNING]
