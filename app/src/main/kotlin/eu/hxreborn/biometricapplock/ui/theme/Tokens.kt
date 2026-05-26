@@ -49,6 +49,12 @@ object Tokens {
     val FloatingBarItemHeight: Dp = 56.dp
     val FloatingBarBottomPadding: Dp = 24.dp
 
+    val ClassicNavBarHeight: Dp = 80.dp
+    val ClassicNavBarItemSpacing: Dp = 8.dp
+    val ClassicNavBarPillWidth: Dp = 56.dp
+    val ClassicNavBarPillHeight: Dp = 32.dp
+    val ClassicNavBarPillTopOffset: Dp = 14.dp
+
     val NavSlideDistance: Dp = 96.dp
 
     val SheetContentPadding: Dp = 24.dp

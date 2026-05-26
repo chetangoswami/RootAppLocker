@@ -13,6 +13,8 @@ object Prefs {
     // hook reads this to gauge cache staleness
     val LAST_REMOTE_WRITE = LongPref("_last_remote_write", 0L)
 
+    val FLOATING_NAV_BAR = BoolPref("floating_nav_bar", true)
+
     val AUTO_CHECK_UPDATE = BoolPref("auto_check_update", true)
     val LAST_UPDATE_CHECK_MS = LongPref("last_update_check_ms", 0L)
     val LAST_RELEASE_JSON = StringPref("last_release_json", "")

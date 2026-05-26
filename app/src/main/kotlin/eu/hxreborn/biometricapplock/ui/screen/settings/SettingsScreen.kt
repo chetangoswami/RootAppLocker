@@ -16,6 +16,7 @@ import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.RoundedCorner
 import androidx.compose.material.icons.outlined.Screenshot
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Update
@@ -208,12 +209,26 @@ fun SettingsScreen(
                     icon = Icons.Outlined.FormatPaint,
                     title = stringResource(R.string.settings_dynamic_color),
                     summary = stringResource(R.string.settings_dynamic_color_summary),
-                    position = SectionPosition.Bottom,
+                    position = SectionPosition.Middle,
                     onClick = {
                         App.prefsRepository.save(Prefs.USE_DYNAMIC_COLOR, !prefs.useDynamicColor)
                     },
                     trailing = {
                         LockSwitch(checked = prefs.useDynamicColor, onCheckedChange = null)
+                    },
+                )
+            }
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.RoundedCorner,
+                    title = stringResource(R.string.settings_floating_nav_bar),
+                    summary = stringResource(R.string.settings_floating_nav_bar_summary),
+                    position = SectionPosition.Bottom,
+                    onClick = {
+                        App.prefsRepository.save(Prefs.FLOATING_NAV_BAR, !prefs.floatingNavBar)
+                    },
+                    trailing = {
+                        LockSwitch(checked = prefs.floatingNavBar, onCheckedChange = null)
                     },
                 )
             }

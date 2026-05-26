@@ -17,6 +17,7 @@ import eu.hxreborn.biometricapplock.prefs.AppPrefs
 import eu.hxreborn.biometricapplock.prefs.Prefs
 import eu.hxreborn.biometricapplock.ui.component.ChangelogSheet
 import eu.hxreborn.biometricapplock.ui.navigation.BottomNav
+import eu.hxreborn.biometricapplock.ui.navigation.ClassicBottomNav
 import eu.hxreborn.biometricapplock.ui.navigation.MainNavDisplay
 import eu.hxreborn.biometricapplock.ui.navigation.Screen
 import eu.hxreborn.biometricapplock.ui.navigation.bottomNavItems
@@ -66,11 +67,19 @@ fun MainScaffold(viewModel: ScopeViewModel) {
                 enter = slideInVertically { it },
                 exit = slideOutVertically { it },
             ) {
-                BottomNav(
-                    backStack = backStack,
-                    currentKey = currentKey,
-                    showUpdateBadge = hasUnseenUpdate,
-                )
+                if (prefs.floatingNavBar) {
+                    BottomNav(
+                        backStack = backStack,
+                        currentKey = currentKey,
+                        showUpdateBadge = hasUnseenUpdate,
+                    )
+                } else {
+                    ClassicBottomNav(
+                        backStack = backStack,
+                        currentKey = currentKey,
+                        showUpdateBadge = hasUnseenUpdate,
+                    )
+                }
             }
         },
     ) { contentPadding ->

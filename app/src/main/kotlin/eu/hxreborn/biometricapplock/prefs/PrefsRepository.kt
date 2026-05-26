@@ -13,6 +13,7 @@ private const val TAG = "BiometricAppLock"
 data class AppPrefs(
     val themeMode: ThemeMode,
     val useDynamicColor: Boolean,
+    val floatingNavBar: Boolean,
     val launcherHidden: Boolean,
     val relockDelaySeconds: Int,
     val disableFlagSecure: Boolean,
@@ -24,6 +25,7 @@ data class AppPrefs(
             AppPrefs(
                 themeMode = ThemeMode.FOLLOW_SYSTEM,
                 useDynamicColor = true,
+                floatingNavBar = true,
                 launcherHidden = false,
                 relockDelaySeconds = 0,
                 disableFlagSecure = false,
@@ -44,6 +46,7 @@ class PrefsRepository(
                     AppPrefs(
                         themeMode = ThemeMode.fromPrefValue(Prefs.DARK_THEME_CONFIG.read(local)),
                         useDynamicColor = Prefs.USE_DYNAMIC_COLOR.read(local),
+                        floatingNavBar = Prefs.FLOATING_NAV_BAR.read(local),
                         launcherHidden = Prefs.LAUNCHER_HIDDEN.read(local),
                         relockDelaySeconds = Prefs.RELOCK_DELAY_SECONDS.read(local),
                         disableFlagSecure = Prefs.DISABLE_FLAG_SECURE.read(local),
