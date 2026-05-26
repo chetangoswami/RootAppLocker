@@ -1,6 +1,46 @@
 {
-  "version": "1.0.0-rc1",
+  "version": "1.0.0-rc2",
   "entries": [
+    {
+      "type": "refactor",
+      "title": "add Logger.info/warn/error overloads and migrate all call sites",
+      "description": null,
+      "version": "1.0.0-rc2",
+      "date": "2026-05-26",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/69271190b916f23967d1bb1c3e1a200a7b4f67e3",
+      "scope": null,
+      "breaking": false
+    },
+    {
+      "type": "refactor",
+      "title": "deduplicate release parsing in UpdateRepository",
+      "description": null,
+      "version": "1.0.0-rc2",
+      "date": "2026-05-26",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/661f525fb69731fc242640a48506af544092c735",
+      "scope": null,
+      "breaking": false
+    },
+    {
+      "type": "refactor",
+      "title": "replace UpdateSheetState abstract titleRes with extension property",
+      "description": null,
+      "version": "1.0.0-rc2",
+      "date": "2026-05-26",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/715d11d426e905cd34f97e5c0e8cf7826130fa40",
+      "scope": null,
+      "breaking": false
+    },
+    {
+      "type": "refactor",
+      "title": "extract editBoth helper and nullable getters in AppOverridesRepository",
+      "description": null,
+      "version": "1.0.0-rc2",
+      "date": "2026-05-26",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/bc6803a85b7db67904d4b32217ef426b6601897d",
+      "scope": "prefs",
+      "breaking": false
+    },
     {
       "type": "refactor",
       "title": "remove dead code, fix warnings, and tighten Compose conventions",
@@ -198,26 +238,6 @@
       "version": "0.7.0",
       "date": "2026-05-26",
       "url": "https://github.com/hxreborn/biometric-app-lock/commit/6ec91fbfd61486743a467e2e442bb207d6a0871d",
-      "scope": "ui",
-      "breaking": false
-    },
-    {
-      "type": "feat",
-      "title": "auto-show update sheet when a new version is found",
-      "description": "Auto-check now fires on every app foreground via repeatOnLifecycle. When it finds a newer version, the update sheet opens automatically and the Settings tab shows a badge.",
-      "version": "0.6.0",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/fdfe125ff1bcd11c5443ff35278b16139d41d046",
-      "scope": "ui",
-      "breaking": false
-    },
-    {
-      "type": "refactor",
-      "title": "overhaul changelog/update sheet and state model",
-      "description": "Error and rate-limit states render a centered cookie badge instead of a flat card.",
-      "version": "0.6.0",
-      "date": "2026-05-25",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/6d2eaca1d78b8f7103d608864fc3425953e1b48a",
       "scope": "ui",
       "breaking": false
     }
