@@ -19,7 +19,6 @@ private fun SharedPreferences.getBooleanOrNull(key: String): Boolean? =
 
 class AppOverridesRepository(
     private val local: SharedPreferences,
-    private val remoteProvider: () -> SharedPreferences? = { null },
 ) {
     private fun relockKey(pkg: String) = "app_override:$pkg:relock_delay_seconds"
 
@@ -44,17 +43,12 @@ class AppOverridesRepository(
             awaitClose { local.unregisterOnSharedPreferenceChangeListener(listener) }
         }
 
-    private fun editBoth(block: SharedPreferences.Editor.() -> Unit) {
-        local.edit(action = block)
-        remoteProvider()?.edit(commit = true, action = block)
-    }
-
     fun setRelockDelaySeconds(
         pkg: String,
         seconds: Int?,
     ) {
         val key = relockKey(pkg)
-        editBoth { if (seconds == null) remove(key) else putInt(key, seconds) }
+        local.edit { if (seconds == null) remove(key) else putInt(key, seconds) }
     }
 
     fun setFlagSecureDisabled(
@@ -62,11 +56,11 @@ class AppOverridesRepository(
         disabled: Boolean?,
     ) {
         val key = flagSecureKey(pkg)
-        editBoth { if (disabled == null) remove(key) else putBoolean(key, disabled) }
+        local.edit { if (disabled == null) remove(key) else putBoolean(key, disabled) }
     }
 
     fun reset(pkg: String) =
-        editBoth {
+        local.edit {
             remove(relockKey(pkg))
             remove(flagSecureKey(pkg))
         }
@@ -79,6 +73,6 @@ class AppOverridesRepository(
                 pkg !in installedPackages
             }
         if (keysToRemove.isEmpty()) return
-        editBoth { keysToRemove.forEach { remove(it) } }
+        local.edit { keysToRemove.forEach { remove(it) } }
     }
 }

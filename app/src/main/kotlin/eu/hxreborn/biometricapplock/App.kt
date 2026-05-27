@@ -23,10 +23,7 @@ class App : Application() {
                 runCatching { boundService?.getRemotePreferences(Prefs.GROUP) }.getOrNull()
             }
         updateRepository = UpdateRepository(this)
-        appOverridesRepository =
-            AppOverridesRepository(localPrefs) {
-                runCatching { boundService?.getRemotePreferences(Prefs.GROUP) }.getOrNull()
-            }
+        appOverridesRepository = AppOverridesRepository(localPrefs)
         val listener =
             object : XposedServiceHelper.OnServiceListener {
                 override fun onServiceBind(service: XposedService) {
