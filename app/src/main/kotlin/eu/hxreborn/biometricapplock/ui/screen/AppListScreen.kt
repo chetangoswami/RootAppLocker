@@ -36,6 +36,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -61,6 +62,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -328,7 +330,23 @@ private fun AppRow(
                 AppLabel(app.label)
                 AppPackage(app.packageName)
             }
-            Spacer(modifier = Modifier.width(Tokens.SpacingSm))
+            if (canToggle && onNavigateToDetail != null) {
+                Spacer(modifier = Modifier.width(Tokens.PreferenceRowTrailingSpacing))
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Tokens.CHEVRON_ALPHA),
+                    modifier = Modifier.size(Tokens.ChevronIconSize),
+                )
+                Spacer(modifier = Modifier.width(Tokens.PreferenceRowTrailingSpacing))
+                VerticalDivider(
+                    modifier = Modifier.height(Tokens.RowDividerHeight),
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                )
+                Spacer(modifier = Modifier.width(Tokens.RowDividerSwitchSpacing))
+            } else {
+                Spacer(modifier = Modifier.width(Tokens.PreferenceRowTrailingSpacing))
+            }
             LockSwitch(
                 checked = isChecked,
                 onCheckedChange = { if (canToggle) onCheckedChange(it) },
