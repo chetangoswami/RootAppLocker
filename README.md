@@ -16,7 +16,7 @@
 </p>
 
 > [!NOTE]
-> For stock AOSP and Pixel ROMs. Other ROMs may work but are untested, use at your own risk. If you're on HyperOS, OxygenOS or ColorOS, your ROM already ships a native app lock and you probably don't need this.
+> Built for AOSP and Pixel. Other Android flavors may work if not heavily modified, such as One UI 8+, but others are untested. If you're on HyperOS, OxygenOS, ColorOS, etc. your device already includes a built-in app lock and you probably don't need this.
 
 ## About this module
 
