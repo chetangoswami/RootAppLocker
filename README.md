@@ -1,11 +1,9 @@
-<p align="center">
+<h1 align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/banner_dark.png">
-    <img src="assets/banner_light.png" alt="Biometric App Lock">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/banner_dark_medium_trimmed.png">
+    <img src="assets/banner_light_medium_trimmed.png" alt="Biometric App Lock">
   </picture>
-</p>
-
----
+</h1>
 
 <p align="center">
   Xposed module that intercepts the launches of a user-defined list of apps at the System Framework level. Those activities are never created until you authenticate via fingerprint or face unlock.
