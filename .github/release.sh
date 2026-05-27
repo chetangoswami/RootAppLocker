@@ -69,10 +69,10 @@ if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
 	exit 1
 fi
 
-# Bump version.name + version.code in gradle.properties
-# Scheme: MAJOR * 10000 + MINOR * 100 + PATCH (matches existing 0.1.0=100, 0.2.0=200)
-IFS='.' read -r MAJOR MINOR PATCH _ <<<"$VERSION"
-VERSION_CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+# Bump version.name and increment version.code monotonically.
+# Each release adds 1 to the previous version.code so stable and pre-release tags never collide.
+PREV_CODE=$(grep "^version\.code=" gradle.properties | cut -d= -f2)
+VERSION_CODE=$((PREV_CODE + 1))
 
 sed -i "s/^version\.name=.*/version.name=${VERSION}/" gradle.properties
 sed -i "s/^version\.code=.*/version.code=${VERSION_CODE}/" gradle.properties
