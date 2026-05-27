@@ -1,6 +1,16 @@
 {
-  "version": "1.0.0-rc6",
+  "version": "1.0.0",
   "entries": [
+    {
+      "type": "feat",
+      "title": "initial stable release",
+      "description": null,
+      "version": "1.0.0",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/3c04af101041f0188045cac59409972d1fd0172d",
+      "scope": null,
+      "breaking": false
+    },
     {
       "type": "feat",
       "title": "per-app relock delay and live prefs effect",
