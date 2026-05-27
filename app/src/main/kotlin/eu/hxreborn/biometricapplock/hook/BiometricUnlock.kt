@@ -99,7 +99,7 @@ private fun applyRedirect(
             startFlags,
             null,
         ) as? ActivityInfo
-            ?: error("BiometricAuthActivity not resolvable — PackageManager not ready")
+            ?: error("BiometricAuthActivity not resolvable: PackageManager not ready")
 
     reflection.intentField.set(interceptor, authIntent)
     reflection.resolvedInfoField.set(interceptor, resolvedInfo)
