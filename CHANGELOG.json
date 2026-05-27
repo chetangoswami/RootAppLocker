@@ -1,13 +1,73 @@
 {
-  "version": "1.0.0-rc2",
+  "version": "1.0.0-rc3",
   "entries": [
+    {
+      "type": "feat",
+      "title": "split flag secure and recents preview toggles",
+      "description": "Recents preview and screenshots can now be enabled separately per app and globally.",
+      "version": "1.0.0-rc3",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/3d646a4c1381cde80e79eecfc0964785312184fc",
+      "scope": "prefs",
+      "breaking": false
+    },
+    {
+      "type": "fix",
+      "title": "keep recents thumbnail protected after unlock",
+      "description": "Recents now stays blurred for all locked apps unless FLAG_SECURE is disabled and the app has been authenticated.",
+      "version": "1.0.0-rc3",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/18c44bddc5caf9df6220cd23340605c890c37212",
+      "scope": "hook",
+      "breaking": false
+    },
+    {
+      "type": "feat",
+      "title": "wire app overrides and relock delay into system_server",
+      "description": "App-level relock delay and FLAG_SECURE disable are now active after authentication.",
+      "version": "1.0.0-rc3",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/1b64dc61d58f7707a0587f07f94ad7ca07f98308",
+      "scope": "hook",
+      "breaking": false
+    },
+    {
+      "type": "refactor",
+      "title": "derive launcher icon visibility from component state",
+      "description": "Launcher icon visibility now derives from actual component enabled state, with the summary label updated to \"Xposed manager\".",
+      "version": "1.0.0-rc3",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/8eac4069f1a248bab410be84fa9999ed79dfe743",
+      "scope": "prefs",
+      "breaking": false
+    },
+    {
+      "type": "refactor",
+      "title": "drop remoteProvider from AppOverridesRepository",
+      "description": "The hook doesn't yet read app override keys, so the remote provider is not needed.",
+      "version": "1.0.0-rc3",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/1c80c99f83b89b19787984764e9780bd118d403a",
+      "scope": "prefs",
+      "breaking": false
+    },
+    {
+      "type": "fix",
+      "title": "prevent duplicate update sheet when manual check races with auto-popup",
+      "description": null,
+      "version": "1.0.0-rc3",
+      "date": "2026-05-26",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/e4fe5837bb75f7c1b377d97bf72b13b75feb6d23",
+      "scope": "ui",
+      "breaking": false
+    },
     {
       "type": "refactor",
       "title": "add Logger.info/warn/error overloads and migrate all call sites",
       "description": null,
       "version": "1.0.0-rc2",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/69271190b916f23967d1bb1c3e1a200a7b4f67e3",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/581ee16baa6cb31974177aaf8bce6d13a677ceef",
       "scope": null,
       "breaking": false
     },
@@ -17,7 +77,7 @@
       "description": null,
       "version": "1.0.0-rc2",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/661f525fb69731fc242640a48506af544092c735",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/b16f6deb0b71c9e76edecfd4f93d23e8cd16d294",
       "scope": null,
       "breaking": false
     },
@@ -27,7 +87,7 @@
       "description": null,
       "version": "1.0.0-rc2",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/715d11d426e905cd34f97e5c0e8cf7826130fa40",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/defec8c82ad020470f90b4cca6e7c16683c9b0ba",
       "scope": null,
       "breaking": false
     },
@@ -37,7 +97,7 @@
       "description": null,
       "version": "1.0.0-rc2",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/bc6803a85b7db67904d4b32217ef426b6601897d",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/7ca8ab29a8d6e34f0b8be42fd221da193132be99",
       "scope": "prefs",
       "breaking": false
     },
@@ -47,7 +107,7 @@
       "description": null,
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/60d1a519939fe6d3d24567f428e7b4d1e4ee4c11",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/d4adc34c411635b5fa4df0d78ef20e3c021748a1",
       "scope": null,
       "breaking": false
     },
@@ -57,7 +117,7 @@
       "description": null,
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/eb3766258dc7115cd16c936164549b9e7463f731",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/86333a1ecb8a11dc21a1a89e1bbfb00189214416",
       "scope": null,
       "breaking": false
     },
@@ -67,7 +127,7 @@
       "description": null,
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/237608baa2f349522550aa56ffa5187a8888c434",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/7045d37521908ff448ab49976bb25402a907b99c",
       "scope": null,
       "breaking": false
     },
@@ -77,7 +137,7 @@
       "description": null,
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/c73235ec232fad71db299d3124037912d7077645",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/486e4b0d984a2841800b83f946a0e38ed22329b1",
       "scope": "ui",
       "breaking": false
     },
@@ -87,7 +147,7 @@
       "description": "Replace Icons.Outlined.Code with the ic_github_24 vector drawable.\nAdd a Painter overload to PreferenceRow so the ImageVector overload delegates through rememberVectorPainter.",
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/351f497979982c1ba9178b7522f087b97b9627db",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/87e6498f42e856a8419b3169f8ec631eb02c43bc",
       "scope": "ui",
       "breaking": false
     },
@@ -97,7 +157,7 @@
       "description": "Grey out the setting with DISABLED_ALPHA and drop onClick so it can't be toggled. Move the shared 0.38f constant into Tokens.DISABLED_ALPHA.",
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/971f79b778a48c8695c076ce2caec58b24d1a893",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/730557ee1b8bb4f04a8fa2535e0886c62db710b3",
       "scope": "ui",
       "breaking": false
     },
@@ -107,7 +167,7 @@
       "description": null,
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/bc97238da1c4e0f2e3a78b075a96e6b7a351505d",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/f12b18a1df028b044f2e1db6e50125ce3ce88842",
       "scope": "ui",
       "breaking": false
     },
@@ -117,7 +177,7 @@
       "description": null,
       "version": "1.0.0-rc1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/0dd2981fcf2de09d6340a859632b6d4d59b8e6b3",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/96412454cc374f7783784d583d1d5354875a972d",
       "scope": "ui",
       "breaking": false
     },
@@ -127,7 +187,7 @@
       "description": null,
       "version": "0.9.0",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/d583f5e03f3b635b9238b0afc0731e99659180d5",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/823c40bb763f268cc5305316cf99183d753b55ea",
       "scope": "ui",
       "breaking": false
     },
@@ -137,7 +197,7 @@
       "description": null,
       "version": "0.9.0",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/3dfd1c242d85dac4fe16ab57da3e6c584fea9ce2",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/c8c01a5ef918449a8de1bb3b9e559bdf23f04c44",
       "scope": "ui",
       "breaking": false
     },
@@ -147,7 +207,7 @@
       "description": null,
       "version": "0.9.0",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/bfcdcdba05066ebdbcd7457cf8e152888e970d6b",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/c0cb8aee890f3bf2dc9f09d594f6ef73309dbe92",
       "scope": "ui",
       "breaking": false
     },
@@ -157,7 +217,7 @@
       "description": "Debug log calls happen inside hook callbacks that fire under mGlobalLock, where reading prefs would deadlock.",
       "version": "0.9.0",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/ef0b6e8e3ab5a788b4a812cd1b3b6345f55428e7",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/abf94aa498202953ec43460f2c09b5fc24f04c8b",
       "scope": null,
       "breaking": false
     },
@@ -167,7 +227,7 @@
       "description": null,
       "version": "0.9.0",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/d8ecf03c6f3bd69f94db3ef51ea9618036de35f1",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/d8fb8727fc3a55a3ea269e9bc8f674294652f500",
       "scope": "ui",
       "breaking": false
     },
@@ -177,7 +237,7 @@
       "description": "Read dismissed version synchronously from SharedPreferences instead of the reactive Flow to prevent the auto-popup from ignoring a skipped version on cold start. Also pins action buttons outside the scroll area, removes tap-to-collapse on descriptions, and moves commit links to long-press.",
       "version": "0.8.1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/ae36e8d45a22358782bd2ba6eedbce63c07bbc6e",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/da7c41587902958ca2050b52c4432e6901bf4c20",
       "scope": "ui",
       "breaking": false
     },
@@ -187,7 +247,7 @@
       "description": "Status states morph from the loading indicator instead of snapping in, auto-popup skips the artificial delay, entries start expanded, commit links move to long-press, and Later becomes Skip this version.",
       "version": "0.8.1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/1f26ecfae41da2d052b53c5c390149f00363d523",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/fb956df169618136f9452b677929210759724864",
       "scope": "ui",
       "breaking": false
     },
@@ -197,7 +257,7 @@
       "description": "304 Not Modified responses don't count against the rate limit, so repeated update checks are essentially free.",
       "version": "0.8.1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/01700afe9184c4ff6690f95248a3f1251dee154c",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/26dc3a632999bcc0138b64ca240c218936b2ec9a",
       "scope": null,
       "breaking": false
     },
@@ -207,37 +267,7 @@
       "description": "WhatsNew reads from a build-time bundled asset instead of fetching remotely, so it always has entries for the installed version. The remote CHANGELOG.json now keeps the last 5 releases and ChangelogSheet filters by the target version.",
       "version": "0.8.1",
       "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/ffece69292316c3bd461c9ef6a64ebfcdbf119e8",
-      "scope": "ui",
-      "breaking": false
-    },
-    {
-      "type": "feat",
-      "title": "enable auto-check updates by default",
-      "description": null,
-      "version": "0.7.0",
-      "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/d9c633223f51335e873ba8e18f73b7bc1667f6ed",
-      "scope": "prefs",
-      "breaking": false
-    },
-    {
-      "type": "refactor",
-      "title": "rename Lock section to Lock & privacy on app detail screen",
-      "description": null,
-      "version": "0.7.0",
-      "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/8b583f514e94f104609e5aceacf7edba08dc6dfc",
-      "scope": "ui",
-      "breaking": false
-    },
-    {
-      "type": "refactor",
-      "title": "move secure display into lock group on app detail screen",
-      "description": null,
-      "version": "0.7.0",
-      "date": "2026-05-26",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/6ec91fbfd61486743a467e2e442bb207d6a0871d",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/b30fed2fe2f779631384adccfd2aa133cff3ca02",
       "scope": "ui",
       "breaking": false
     }
