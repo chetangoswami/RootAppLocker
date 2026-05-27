@@ -501,14 +501,14 @@ private val sectionBadgeShapes =
     listOf(
         MaterialShapes.Cookie4Sided,
         MaterialShapes.Clover4Leaf,
-        MaterialShapes.Sunny,
-        MaterialShapes.SoftBurst,
         MaterialShapes.PuffyDiamond,
         MaterialShapes.Flower,
         MaterialShapes.Ghostish,
         MaterialShapes.Cookie9Sided,
-        MaterialShapes.Clover8Leaf,
-        MaterialShapes.SoftBoom,
+        MaterialShapes.Gem,
+        MaterialShapes.Pill,
+        MaterialShapes.Puffy,
+        MaterialShapes.ClamShell,
     )
 
 @Composable
