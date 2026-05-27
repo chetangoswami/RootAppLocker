@@ -3,6 +3,7 @@ package eu.hxreborn.biometricapplock.hook
 import android.app.TaskInfo
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.os.SystemClock
 import eu.hxreborn.biometricapplock.util.Logger
 import io.github.libxposed.api.XposedModule
 
@@ -21,6 +22,7 @@ internal fun XposedModule.registerSystemServerHooks(
     hookRecents(classLoader)
     hookScreenAwake(classLoader)
     hookSnapshotProtection(classLoader)
+    hookFlagSecure(classLoader)
 }
 
 private fun XposedModule.hookLaunchIntercept(classLoader: ClassLoader) {
@@ -121,14 +123,30 @@ private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
             )
         hook(method).intercept { chain ->
             val awake = chain.args[0] as? Boolean
+            if (awake == false) {
+                screenOffElapsed = SystemClock.elapsedRealtime()
+                return@intercept chain.proceed()
+            }
             if (awake == true && unlockedPackages.isNotEmpty()) {
-                clearUnlocked()
+                val offMs =
+                    if (screenOffElapsed == Long.MIN_VALUE) {
+                        Long.MAX_VALUE
+                    } else {
+                        SystemClock.elapsedRealtime() - screenOffElapsed
+                    }
+                val toRelock =
+                    unlockedPackages
+                        .filter { pkg ->
+                            val delay = getEffectiveRelockDelay(pkg)
+                            delay != RELOCK_DELAY_NEVER && offMs >= delay * 1000L
+                        }.toSet()
+                if (toRelock.isNotEmpty()) removeFromUnlocked(toRelock)
                 Logger.debug {
                     val topPkg =
                         runCatching {
                             reflection?.findTopResumedPackageName(chain.thisObject)
                         }.getOrNull()
-                    "screen on, re-locked all topPkg=$topPkg"
+                    "screen on offMs=$offMs relocked=${toRelock.size} topPkg=$topPkg"
                 }
             }
             chain.proceed()
@@ -159,4 +177,27 @@ private fun XposedModule.hookSnapshotProtection(classLoader: ClassLoader) {
     }.onFailure {
         Logger.error("hookSnapshotProtection failed: ${it.message}", it)
     }
+}
+
+private fun XposedModule.hookFlagSecure(classLoader: ClassLoader) {
+    runCatching {
+        val method =
+            classLoader.findMethod(
+                "com.android.server.wm.WindowState",
+                "isSecureLocked",
+                0,
+            )
+        val windowStateClass = classLoader.loadClass("com.android.server.wm.WindowState")
+        val activityRecordField =
+            windowStateClass.getDeclaredField("mActivityRecord").apply { isAccessible = true }
+        val packageNameField =
+            reflection?.activityRecordPackageNameField ?: error("reflection not ready")
+        hook(method).intercept { chain ->
+            val ar = activityRecordField.get(chain.thisObject) ?: return@intercept chain.proceed()
+            val pkg = packageNameField.get(ar) as? String ?: return@intercept chain.proceed()
+            if (pkg in unlockedPackages && isFlagSecureDisabled(pkg)) return@intercept false
+            chain.proceed()
+        }
+        Logger.info("hooked isSecureLocked")
+    }.onFailure { Logger.warn("hookFlagSecure not available: ${it.message}") }
 }
