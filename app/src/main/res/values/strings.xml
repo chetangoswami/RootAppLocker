@@ -66,7 +66,7 @@
     <string name="settings_dynamic_color">Dynamic color</string>
     <string name="settings_dynamic_color_summary">Use wallpaper colors</string>
     <string name="settings_floating_nav_bar">Floating navigation</string>
-    <string name="settings_floating_nav_bar_summary">Floating pill instead of classic tab bar</string>
+    <string name="settings_floating_nav_bar_summary">Floating pill instead of classic navigation bar</string>
 
     <string name="settings_hide_launcher">Hide from launcher</string>
     <string name="settings_hide_launcher_summary">Hides app from launcher. You can still open it from Xposed manager</string>
