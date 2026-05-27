@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Biometric App Locker</string>
-    <string name="module_description">Gates selected apps behind a biometric prompt via Xposed lifecycle hooks.</string>
+    <string name="module_description">Requires biometric authentication before opening selected apps.</string>
 
     <string name="app_bar_title">Biometric App Locker</string>
 
@@ -19,14 +19,14 @@
     <string name="status_inactive">Not enabled</string>
     <string name="status_inactive_action">Enable the module in your Xposed manager, then reopen this app</string>
     <string name="status_reboot_required">Reboot required</string>
-    <string name="status_reboot_required_reason">Reboot to load the latest System Framework hooks</string>
+    <string name="status_reboot_required_reason">Reboot to activate updated System Framework hooks</string>
     <string name="status_restart_label">Restart app</string>
     <string name="status_locked_empty">No apps locked</string>
     <plurals name="status_locked_count">
         <item quantity="one">1 app locked</item>
         <item quantity="other">%1$d apps locked</item>
     </plurals>
-    <string name="status_loaded_at_boot">Service loaded at boot %1$s</string>
+    <string name="status_loaded_at_boot">System server hooks loaded at boot %1$s</string>
 
     <string name="dashboard_biometric_title">Hardware</string>
     <string name="dashboard_biometric_fingerprint">Fingerprint</string>
@@ -66,7 +66,7 @@
     <string name="settings_dynamic_color">Dynamic color</string>
     <string name="settings_dynamic_color_summary">Use wallpaper colors</string>
     <string name="settings_floating_nav_bar">Floating navigation</string>
-    <string name="settings_floating_nav_bar_summary">Floating pill instead of classic navigation bar</string>
+    <string name="settings_floating_nav_bar_summary">Uses the Material 3 Expressive floating toolbar instead of the classic navigation bar</string>
 
     <string name="settings_hide_launcher">Hide from launcher</string>
     <string name="settings_hide_launcher_summary">Hides app from launcher. You can still open it from Xposed manager</string>
@@ -122,7 +122,7 @@
 
     <string name="app_detail_section_advanced">Advanced</string>
     <string name="app_detail_open_app_info_title">Open system app info</string>
-    <string name="app_detail_open_app_info_summary">Use Android\'s Force stop action if changes do not apply until restart.</string>
+    <string name="app_detail_open_app_info_summary">Force stop the app here if changes aren\'t taking effect.</string>
 
     <string name="settings_updates">Updates</string>
     <string name="updates_check_title">Check for updates</string>
@@ -167,7 +167,7 @@
     <string name="change_type_chore">Maintenance</string>
     <string name="change_type_breaking">Breaking Changes</string>
 
-    <string name="updates_sheet_title_checking">Check for Updates</string>
+    <string name="updates_sheet_title_checking">Checking…</string>
     <string name="updates_sheet_title_up_to_date">Check for Updates</string>
     <string name="updates_sheet_title_available">Update available</string>
     <string name="updates_sheet_title_failed">Update check failed</string>
