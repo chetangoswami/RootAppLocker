@@ -4,6 +4,7 @@ import android.app.TaskInfo
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Handler
+import android.os.SystemClock
 import eu.hxreborn.biometricapplock.util.Logger
 import io.github.libxposed.api.XposedModule
 
@@ -153,7 +154,9 @@ private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
         hook(method).intercept { chain ->
             val awake = chain.args[0] as? Boolean
             if (awake == true && unlockedPackages.isNotEmpty()) {
-                val toRelock = unlockedPackages.filterNot { isUnlocked(it) }.toSet()
+                val now = SystemClock.elapsedRealtime()
+                val toRelock =
+                    unlockedPackages.filter { shouldRelockOnTransition(it, now) }.toSet()
                 if (toRelock.isNotEmpty()) removeFromUnlocked(toRelock)
                 Logger.debug {
                     val topPkg =

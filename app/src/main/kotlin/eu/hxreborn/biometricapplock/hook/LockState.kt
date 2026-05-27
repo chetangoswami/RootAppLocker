@@ -27,7 +27,19 @@ internal fun isUnlocked(pkg: String): Boolean {
     val ts = unlockedMap[pkg] ?: return false
     val delay = getEffectiveRelockDelay(pkg)
     if (delay == RELOCK_DELAY_NEVER) return true
+    if (delay == 0) return true
     return SystemClock.elapsedRealtime() - ts < delay * 1000L
+}
+
+internal fun shouldRelockOnTransition(
+    pkg: String,
+    now: Long,
+): Boolean {
+    val delay = getEffectiveRelockDelay(pkg)
+    if (delay == RELOCK_DELAY_NEVER) return false
+    if (delay == 0) return true
+    val ts = unlockedMap[pkg] ?: return true
+    return now - ts >= delay * 1000L
 }
 
 internal fun addUnlocked(pkg: String) {
@@ -51,11 +63,8 @@ internal val taskCache = ConcurrentHashMap<Int, TaskEntry>()
 internal fun relockOtherPackages(keepPkg: String?) {
     if (keepPkg == BiometricAuthActivity.MODULE_PACKAGE) return
     val now = SystemClock.elapsedRealtime()
-    unlockedMap.entries.removeIf { (pkg, ts) ->
-        if (pkg == keepPkg) return@removeIf false
-        val delay = getEffectiveRelockDelay(pkg)
-        if (delay == RELOCK_DELAY_NEVER) return@removeIf false
-        now - ts >= delay * 1000L
+    unlockedMap.entries.removeIf { (pkg, _) ->
+        pkg != keepPkg && shouldRelockOnTransition(pkg, now)
     }
 }
 
