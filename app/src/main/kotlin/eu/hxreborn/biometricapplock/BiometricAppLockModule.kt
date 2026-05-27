@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Process
 import eu.hxreborn.biometricapplock.hook.loadHookPrefs
 import eu.hxreborn.biometricapplock.hook.lockedPackages
+import eu.hxreborn.biometricapplock.hook.refreshSecureSurfaces
 import eu.hxreborn.biometricapplock.hook.registerSystemServerHooks
 import eu.hxreborn.biometricapplock.prefs.Prefs
 import eu.hxreborn.biometricapplock.util.Logger
@@ -42,10 +43,13 @@ class BiometricAppLockModule : XposedModule() {
         runCatching {
             val listener =
                 SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
-                    if (key != Prefs.LOCKED_PACKAGES.key) return@OnSharedPreferenceChangeListener
-                    lockedPackages = parseLockedPackages(Prefs.LOCKED_PACKAGES.read(sp))
-                    Logger.info("config updated locked=${lockedPackages.size}")
-                    Logger.debug { "locked=$lockedPackages" }
+                    if (key == Prefs.LOCKED_PACKAGES.key) {
+                        lockedPackages = parseLockedPackages(Prefs.LOCKED_PACKAGES.read(sp))
+                        Logger.info("config updated locked=${lockedPackages.size}")
+                    }
+                    runCatching { loadHookPrefs(sp) }
+                        .onFailure { Logger.warn("prefs reload failed: ${it.message}", it) }
+                    refreshSecureSurfaces()
                 }
             prefsListener = listener
             prefs.registerOnSharedPreferenceChangeListener(listener)

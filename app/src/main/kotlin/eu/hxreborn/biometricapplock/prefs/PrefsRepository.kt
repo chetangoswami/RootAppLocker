@@ -14,8 +14,8 @@ data class AppPrefs(
     val useDynamicColor: Boolean,
     val floatingNavBar: Boolean,
     val relockDelaySeconds: Int,
-    val disableFlagSecure: Boolean,
-    val showRecentsPreview: Boolean,
+    val blockScreenshots: Boolean,
+    val hideRecentsPreview: Boolean,
     val autoCheckUpdate: Boolean,
     val lastDismissedAvailableVersion: String,
 ) {
@@ -26,8 +26,8 @@ data class AppPrefs(
                 useDynamicColor = true,
                 floatingNavBar = true,
                 relockDelaySeconds = 0,
-                disableFlagSecure = false,
-                showRecentsPreview = false,
+                blockScreenshots = false,
+                hideRecentsPreview = false,
                 autoCheckUpdate = true,
                 lastDismissedAvailableVersion = "",
             )
@@ -47,8 +47,8 @@ class PrefsRepository(
                         useDynamicColor = Prefs.USE_DYNAMIC_COLOR.read(local),
                         floatingNavBar = Prefs.FLOATING_NAV_BAR.read(local),
                         relockDelaySeconds = Prefs.RELOCK_DELAY_SECONDS.read(local),
-                        disableFlagSecure = Prefs.DISABLE_FLAG_SECURE.read(local),
-                        showRecentsPreview = Prefs.SHOW_RECENTS_PREVIEW.read(local),
+                        blockScreenshots = Prefs.BLOCK_SCREENSHOTS.read(local),
+                        hideRecentsPreview = Prefs.HIDE_RECENTS_PREVIEW.read(local),
                         autoCheckUpdate = Prefs.AUTO_CHECK_UPDATE.read(local),
                         lastDismissedAvailableVersion =
                             Prefs.LAST_DISMISSED_AVAILABLE_VERSION.read(

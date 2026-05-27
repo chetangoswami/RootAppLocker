@@ -107,8 +107,8 @@ fun AppDetailScreen(
 
     val hasOverrides =
         overrides.relockDelaySeconds != null ||
-            overrides.flagSecureDisabled != null ||
-            overrides.showRecentsPreview != null
+            overrides.blockScreenshots != null ||
+            overrides.hideRecentsPreview != null
     val disabledModifier = if (hasOverrides) Modifier else Modifier.alpha(Tokens.DISABLED_ALPHA)
 
     var showRelockDialog by remember { mutableStateOf(false) }
@@ -209,14 +209,14 @@ fun AppDetailScreen(
             item {
                 PreferenceRow(
                     icon = Icons.Outlined.Screenshot,
-                    title = stringResource(R.string.app_detail_disable_flag_secure_title),
-                    summary = stringResource(R.string.app_detail_disable_flag_secure_summary),
+                    title = stringResource(R.string.app_detail_block_screenshots_title),
+                    summary = stringResource(R.string.app_detail_block_screenshots_summary),
                     onClick =
                         if (hasOverrides) {
                             {
-                                App.appOverridesRepository.setFlagSecureDisabled(
+                                App.appOverridesRepository.setBlockScreenshots(
                                     packageName,
-                                    overrides.flagSecureDisabled != true,
+                                    overrides.blockScreenshots != true,
                                 )
                             }
                         } else {
@@ -224,7 +224,7 @@ fun AppDetailScreen(
                         },
                     trailing = {
                         LockSwitch(
-                            checked = overrides.flagSecureDisabled == true,
+                            checked = overrides.blockScreenshots == true,
                             onCheckedChange = null,
                             enabled = hasOverrides,
                         )
@@ -236,24 +236,13 @@ fun AppDetailScreen(
             item {
                 PreferenceRow(
                     icon = Icons.Outlined.Layers,
-                    title = stringResource(R.string.app_detail_show_recents_preview_title),
-                    summary = stringResource(R.string.app_detail_show_recents_preview_summary),
-                    onClick =
-                        if (hasOverrides) {
-                            {
-                                App.appOverridesRepository.setShowRecentsPreview(
-                                    packageName,
-                                    overrides.showRecentsPreview != true,
-                                )
-                            }
-                        } else {
-                            null
-                        },
+                    title = stringResource(R.string.app_detail_hide_recents_preview_title),
+                    summary = stringResource(R.string.app_detail_hide_recents_preview_summary),
                     trailing = {
                         LockSwitch(
-                            checked = overrides.showRecentsPreview == true,
+                            checked = false,
                             onCheckedChange = null,
-                            enabled = hasOverrides,
+                            enabled = false,
                         )
                     },
                     modifier = disabledModifier,

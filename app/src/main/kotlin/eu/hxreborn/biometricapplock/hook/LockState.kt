@@ -1,11 +1,11 @@
 package eu.hxreborn.biometricapplock.hook
 
 import android.content.SharedPreferences
+import android.os.SystemClock
 import eu.hxreborn.biometricapplock.BiometricAuthActivity
 import eu.hxreborn.biometricapplock.prefs.Prefs
 import eu.hxreborn.biometricapplock.util.Logger
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicReference
 
 internal const val RELOCK_DELAY_NEVER = -1
 
@@ -17,33 +17,45 @@ internal data class TaskEntry(
 @Volatile
 internal var lockedPackages: Set<String> = emptySet()
 
-private val unlockedRef = AtomicReference<Set<String>>(emptySet())
+// pkg -> elapsedRealtime of last interaction; entry exists iff the pkg is currently considered unlocked
+private val unlockedMap = ConcurrentHashMap<String, Long>()
 
 internal val unlockedPackages: Set<String>
-    get() = unlockedRef.get()
+    get() = unlockedMap.keys.toSet()
 
-internal fun addUnlocked(packageName: String) {
-    unlockedRef.updateAndGet { it + packageName }
+internal fun isUnlocked(pkg: String): Boolean {
+    val ts = unlockedMap[pkg] ?: return false
+    val delay = getEffectiveRelockDelay(pkg)
+    if (delay == RELOCK_DELAY_NEVER) return true
+    return SystemClock.elapsedRealtime() - ts < delay * 1000L
+}
+
+internal fun addUnlocked(pkg: String) {
+    unlockedMap[pkg] = SystemClock.elapsedRealtime()
+}
+
+internal fun refreshUnlock(pkg: String) {
+    unlockedMap.computeIfPresent(pkg) { _, _ -> SystemClock.elapsedRealtime() }
 }
 
 internal fun clearUnlocked() {
-    unlockedRef.set(emptySet())
+    unlockedMap.clear()
 }
 
 internal fun removeFromUnlocked(pkgs: Set<String>) {
-    unlockedRef.updateAndGet { it - pkgs }
+    pkgs.forEach { unlockedMap.remove(it) }
 }
 
 internal val taskCache = ConcurrentHashMap<Int, TaskEntry>()
 
-internal fun relockOtherPackages(keepPackageName: String?) {
-    if (keepPackageName == BiometricAuthActivity.MODULE_PACKAGE) return
-    unlockedRef.updateAndGet { current ->
-        when {
-            current.isEmpty() -> current
-            keepPackageName != null && keepPackageName in current -> setOf(keepPackageName)
-            else -> emptySet()
-        }
+internal fun relockOtherPackages(keepPkg: String?) {
+    if (keepPkg == BiometricAuthActivity.MODULE_PACKAGE) return
+    val now = SystemClock.elapsedRealtime()
+    unlockedMap.entries.removeIf { (pkg, ts) ->
+        if (pkg == keepPkg) return@removeIf false
+        val delay = getEffectiveRelockDelay(pkg)
+        if (delay == RELOCK_DELAY_NEVER) return@removeIf false
+        now - ts >= delay * 1000L
     }
 }
 
@@ -51,55 +63,41 @@ internal fun relockOtherPackages(keepPackageName: String?) {
 
 @Volatile private var globalRelockDelaySeconds: Int = 0
 
-@Volatile private var globalFlagSecureDisabled: Boolean = false
-
-@Volatile private var globalShowRecentsPreview: Boolean = false
+@Volatile private var globalBlockScreenshots: Boolean = false
 
 private val appRelockOverrides = ConcurrentHashMap<String, Int>()
 
-private val appFlagSecureOverrides = ConcurrentHashMap<String, Boolean>()
-
-private val appRecentsPreviewOverrides = ConcurrentHashMap<String, Boolean>()
-
-@Volatile internal var screenOffElapsed = Long.MIN_VALUE
+private val appBlockScreenshotsOverrides = ConcurrentHashMap<String, Boolean>()
 
 internal fun getEffectiveRelockDelay(pkg: String): Int =
     appRelockOverrides[pkg] ?: globalRelockDelaySeconds
 
-internal fun isFlagSecureDisabled(pkg: String): Boolean =
-    appFlagSecureOverrides[pkg] ?: globalFlagSecureDisabled
-
-internal fun isRecentsPreviewEnabled(pkg: String): Boolean =
-    appRecentsPreviewOverrides[pkg] ?: globalShowRecentsPreview
+internal fun shouldBlockScreenshots(pkg: String): Boolean =
+    appBlockScreenshotsOverrides[pkg] ?: globalBlockScreenshots
 
 internal fun loadHookPrefs(prefs: SharedPreferences) {
     globalRelockDelaySeconds = Prefs.RELOCK_DELAY_SECONDS.read(prefs)
-    globalFlagSecureDisabled = Prefs.DISABLE_FLAG_SECURE.read(prefs)
-    globalShowRecentsPreview = Prefs.SHOW_RECENTS_PREVIEW.read(prefs)
+    globalBlockScreenshots = Prefs.BLOCK_SCREENSHOTS.read(prefs)
     appRelockOverrides.clear()
-    appFlagSecureOverrides.clear()
-    appRecentsPreviewOverrides.clear()
+    appBlockScreenshotsOverrides.clear()
     prefs.all.keys.forEach { key ->
+        if (!key.startsWith("app_override:")) return@forEach
         when {
-            key.startsWith("app_override:") && key.endsWith(":relock_delay_seconds") -> {
+            key.endsWith(":relock_delay_seconds") -> {
                 val pkg = key.removePrefix("app_override:").removeSuffix(":relock_delay_seconds")
                 appRelockOverrides[pkg] = prefs.getInt(key, 0)
             }
 
-            key.startsWith("app_override:") && key.endsWith(":flag_secure_disabled") -> {
-                val pkg = key.removePrefix("app_override:").removeSuffix(":flag_secure_disabled")
-                appFlagSecureOverrides[pkg] = prefs.getBoolean(key, false)
-            }
-
-            key.startsWith("app_override:") && key.endsWith(":show_recents_preview") -> {
-                val pkg = key.removePrefix("app_override:").removeSuffix(":show_recents_preview")
-                appRecentsPreviewOverrides[pkg] = prefs.getBoolean(key, false)
+            key.endsWith(":block_screenshots") -> {
+                val pkg = key.removePrefix("app_override:").removeSuffix(":block_screenshots")
+                appBlockScreenshotsOverrides[pkg] = prefs.getBoolean(key, false)
             }
         }
     }
     Logger.info(
         "prefs loaded relockDelay=$globalRelockDelaySeconds " +
-            "flagSecure=$globalFlagSecureDisabled recentsPreview=$globalShowRecentsPreview " +
-            "appOverrides=${appRelockOverrides.size}",
+            "blockScreenshots=$globalBlockScreenshots " +
+            "relockOverrides=${appRelockOverrides.size} " +
+            "blockOverrides=${appBlockScreenshotsOverrides.size}",
     )
 }

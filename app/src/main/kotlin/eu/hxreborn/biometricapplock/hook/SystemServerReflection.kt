@@ -70,13 +70,16 @@ internal class SystemServerReflection(
     val handlerField: Field =
         activityTaskManagerServiceClass.getDeclaredField("mH").apply { isAccessible = true }
 
-    private val rootWindowContainerField: Field =
+    val rootWindowContainerField: Field =
         activityTaskManagerServiceClass.getField("mRootWindowContainer")
     private val getTopResumedActivity: Method by lazy {
         rootWindowContainerField.type.getMethod("getTopResumedActivity")
     }
     private val packageNameField: Field by lazy {
         getTopResumedActivity.returnType.getField("packageName")
+    }
+    val refreshSecureSurfaceState: Method by lazy {
+        rootWindowContainerField.type.getMethod("refreshSecureSurfaceState")
     }
 
     fun findTopResumedPackageName(activityTaskManagerService: Any): String? {

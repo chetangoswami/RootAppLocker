@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.callbackFlow
 
 data class AppOverrides(
     val relockDelaySeconds: Int?,
-    val flagSecureDisabled: Boolean?,
-    val showRecentsPreview: Boolean?,
+    val blockScreenshots: Boolean?,
+    val hideRecentsPreview: Boolean?,
 )
 
 private fun SharedPreferences.getIntOrNull(key: String): Int? =
@@ -20,20 +20,21 @@ private fun SharedPreferences.getBooleanOrNull(key: String): Boolean? =
 
 class AppOverridesRepository(
     private val local: SharedPreferences,
+    private val remoteProvider: () -> SharedPreferences? = { null },
 ) {
     private fun relockKey(pkg: String) = "app_override:$pkg:relock_delay_seconds"
 
-    private fun flagSecureKey(pkg: String) = "app_override:$pkg:flag_secure_disabled"
+    private fun blockScreenshotsKey(pkg: String) = "app_override:$pkg:block_screenshots"
 
-    private fun recentsPreviewKey(pkg: String) = "app_override:$pkg:show_recents_preview"
+    private fun hideRecentsPreviewKey(pkg: String) = "app_override:$pkg:hide_recents_preview"
 
     private fun prefix(pkg: String) = "app_override:$pkg:"
 
     private fun currentOverrides(pkg: String) =
         AppOverrides(
             relockDelaySeconds = local.getIntOrNull(relockKey(pkg)),
-            flagSecureDisabled = local.getBooleanOrNull(flagSecureKey(pkg)),
-            showRecentsPreview = local.getBooleanOrNull(recentsPreviewKey(pkg)),
+            blockScreenshots = local.getBooleanOrNull(blockScreenshotsKey(pkg)),
+            hideRecentsPreview = local.getBooleanOrNull(hideRecentsPreviewKey(pkg)),
         )
 
     fun observe(pkg: String): Flow<AppOverrides> =
@@ -47,35 +48,45 @@ class AppOverridesRepository(
             awaitClose { local.unregisterOnSharedPreferenceChangeListener(listener) }
         }
 
+    private fun editLocalAndRemote(action: SharedPreferences.Editor.() -> Unit) {
+        local.edit(action = action)
+        runCatching {
+            remoteProvider()?.edit(commit = false) {
+                action()
+                Prefs.LAST_REMOTE_WRITE.write(this, System.currentTimeMillis())
+            }
+        }
+    }
+
     fun setRelockDelaySeconds(
         pkg: String,
         seconds: Int?,
     ) {
         val key = relockKey(pkg)
-        local.edit { if (seconds == null) remove(key) else putInt(key, seconds) }
+        editLocalAndRemote { if (seconds == null) remove(key) else putInt(key, seconds) }
     }
 
-    fun setFlagSecureDisabled(
+    fun setBlockScreenshots(
         pkg: String,
-        disabled: Boolean?,
+        blocked: Boolean?,
     ) {
-        val key = flagSecureKey(pkg)
-        local.edit { if (disabled == null) remove(key) else putBoolean(key, disabled) }
+        val key = blockScreenshotsKey(pkg)
+        editLocalAndRemote { if (blocked == null) remove(key) else putBoolean(key, blocked) }
     }
 
-    fun setShowRecentsPreview(
+    fun setHideRecentsPreview(
         pkg: String,
-        enabled: Boolean?,
+        hidden: Boolean?,
     ) {
-        val key = recentsPreviewKey(pkg)
-        local.edit { if (enabled == null) remove(key) else putBoolean(key, enabled) }
+        val key = hideRecentsPreviewKey(pkg)
+        editLocalAndRemote { if (hidden == null) remove(key) else putBoolean(key, hidden) }
     }
 
     fun reset(pkg: String) =
-        local.edit {
+        editLocalAndRemote {
             remove(relockKey(pkg))
-            remove(flagSecureKey(pkg))
-            remove(recentsPreviewKey(pkg))
+            remove(blockScreenshotsKey(pkg))
+            remove(hideRecentsPreviewKey(pkg))
         }
 
     fun prune(installedPackages: Set<String>) {
@@ -86,6 +97,6 @@ class AppOverridesRepository(
                 pkg !in installedPackages
             }
         if (keysToRemove.isEmpty()) return
-        local.edit { keysToRemove.forEach { remove(it) } }
+        editLocalAndRemote { keysToRemove.forEach { remove(it) } }
     }
 }

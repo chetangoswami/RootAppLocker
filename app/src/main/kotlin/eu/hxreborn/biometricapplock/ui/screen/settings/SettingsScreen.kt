@@ -162,34 +162,32 @@ fun SettingsScreen(
             item {
                 PreferenceRow(
                     icon = Icons.Outlined.Screenshot,
-                    title = stringResource(R.string.settings_disable_flag_secure_title),
-                    summary = stringResource(R.string.settings_disable_flag_secure_summary),
+                    title = stringResource(R.string.settings_block_screenshots_title),
+                    summary = stringResource(R.string.settings_block_screenshots_summary),
                     position = SectionPosition.Middle,
                     onClick = {
                         App.prefsRepository.save(
-                            Prefs.DISABLE_FLAG_SECURE,
-                            !prefs.disableFlagSecure,
+                            Prefs.BLOCK_SCREENSHOTS,
+                            !prefs.blockScreenshots,
                         )
                     },
                     trailing = {
-                        LockSwitch(checked = prefs.disableFlagSecure, onCheckedChange = null)
+                        LockSwitch(checked = prefs.blockScreenshots, onCheckedChange = null)
                     },
                 )
             }
             item {
                 PreferenceRow(
                     icon = Icons.Outlined.Layers,
-                    title = stringResource(R.string.settings_show_recents_preview_title),
-                    summary = stringResource(R.string.settings_show_recents_preview_summary),
+                    title = stringResource(R.string.settings_hide_recents_preview_title),
+                    summary = stringResource(R.string.settings_hide_recents_preview_summary),
                     position = SectionPosition.Middle,
-                    onClick = {
-                        App.prefsRepository.save(
-                            Prefs.SHOW_RECENTS_PREVIEW,
-                            !prefs.showRecentsPreview,
-                        )
-                    },
                     trailing = {
-                        LockSwitch(checked = prefs.showRecentsPreview, onCheckedChange = null)
+                        LockSwitch(
+                            checked = false,
+                            onCheckedChange = null,
+                            enabled = false,
+                        )
                     },
                 )
             }

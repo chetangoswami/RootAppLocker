@@ -75,10 +75,10 @@
     <string name="settings_relock_delay_title">Re-lock delay</string>
     <string name="settings_relock_delay_summary">How long to wait before locking an app again</string>
 
-    <string name="settings_disable_flag_secure_title">Disable FLAG_SECURE after unlock</string>
-    <string name="settings_disable_flag_secure_summary">Allows screenshots and screen recording after authentication</string>
-    <string name="settings_show_recents_preview_title">Show recents preview after unlock</string>
-    <string name="settings_show_recents_preview_summary">Shows the app\'s real content in the recents screen after authentication</string>
+    <string name="settings_block_screenshots_title">Block screenshots</string>
+    <string name="settings_block_screenshots_summary">Prevents screenshots and screen recording inside selected apps. May not apply if another module bypasses FLAG_SECURE</string>
+    <string name="settings_hide_recents_preview_title">Hide preview in recents</string>
+    <string name="settings_hide_recents_preview_summary">Hides the app\'s preview in recents while it\'s locked</string>
 
     <string name="settings_about">About</string>
     <string name="settings_about_entry">About</string>
@@ -119,10 +119,10 @@
     <string name="app_detail_relock_delay_never">Never</string>
 
 
-    <string name="app_detail_disable_flag_secure_title">Disable FLAG_SECURE after unlock</string>
-    <string name="app_detail_disable_flag_secure_summary">Allows screenshots and screen recording after authentication</string>
-    <string name="app_detail_show_recents_preview_title">Show recents preview after unlock</string>
-    <string name="app_detail_show_recents_preview_summary">Shows the app\'s real content in the recents screen after authentication</string>
+    <string name="app_detail_block_screenshots_title">Block screenshots</string>
+    <string name="app_detail_block_screenshots_summary">Prevents screenshots and screen recording inside selected apps. May not apply if another module bypasses FLAG_SECURE</string>
+    <string name="app_detail_hide_recents_preview_title">Hide preview in recents</string>
+    <string name="app_detail_hide_recents_preview_summary">Hides the app\'s preview in recents while it\'s locked</string>
 
     <string name="app_detail_section_advanced">Advanced</string>
     <string name="app_detail_open_app_info_title">Open system app info</string>

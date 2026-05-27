@@ -24,10 +24,7 @@ private fun mintToken(): String {
 
 private fun sweepExpiredTokens() {
     val cutoff = SystemClock.elapsedRealtime() - TOKEN_TTL_MS
-    val iter = pendingTokens.entries.iterator()
-    while (iter.hasNext()) {
-        if (iter.next().value < cutoff) iter.remove()
-    }
+    pendingTokens.entries.removeIf { it.value < cutoff }
 }
 
 private fun consumeToken(token: String): Boolean {
@@ -120,7 +117,8 @@ internal fun postAuthLaunch(
     val context = reflection.contextField.get(activityTaskManagerService) as Context
 
     val token = mintToken()
-    val intent = buildAuthIntent(entry.packageName, entry.topActivityClassName, token)
+    // cached top often isn't exported, launcher intent always is
+    val intent = buildAuthIntent(entry.packageName, null, token)
 
     handler.post {
         runCatching { context.startActivity(intent) }
@@ -133,13 +131,13 @@ internal fun postAuthLaunch(
 
 private fun buildAuthIntent(
     targetPackageName: String,
-    targetClassName: String,
+    targetClassName: String?,
     token: String,
 ) = Intent().apply {
     component =
         ComponentName(BiometricAuthActivity.MODULE_PACKAGE, BiometricAuthActivity.AUTH_ACTIVITY)
     putExtra(BiometricAuthActivity.EXTRA_TARGET_PKG, targetPackageName)
-    putExtra(BiometricAuthActivity.EXTRA_TARGET_CLS, targetClassName)
+    if (targetClassName != null) putExtra(BiometricAuthActivity.EXTRA_TARGET_CLS, targetClassName)
     putExtra(BiometricAuthActivity.EXTRA_AUTH_TOKEN, token)
     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 }
