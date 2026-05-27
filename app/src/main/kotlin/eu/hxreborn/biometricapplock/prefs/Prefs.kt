@@ -18,6 +18,7 @@ object Prefs {
     val AUTO_CHECK_UPDATE = BoolPref("auto_check_update", true)
     val LAST_UPDATE_CHECK_MS = LongPref("last_update_check_ms", 0L)
     val LAST_RELEASE_JSON = StringPref("last_release_json", "")
+    val LAST_REMOTE_VERSION_CODE = IntPref("last_remote_version_code", 0)
     val LAST_CHANGELOG_JSON = StringPref("last_changelog_json", "")
     val LAST_DISMISSED_AVAILABLE_VERSION = StringPref("last_dismissed_available_version", "")
     val RELEASE_ETAG = StringPref("release_etag", "")

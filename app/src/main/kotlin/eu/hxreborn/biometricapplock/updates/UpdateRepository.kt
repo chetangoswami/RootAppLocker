@@ -23,6 +23,9 @@ private const val TAG = "BiometricAppLock"
 private const val REPO = "hxreborn/biometric-app-lock"
 private const val RELEASE_URL = "https://api.github.com/repos/$REPO/releases/latest"
 private const val CHANGELOG_URL = "https://raw.githubusercontent.com/$REPO/main/CHANGELOG.json"
+private const val GRADLE_PROPS_URL_FORMAT =
+    "https://raw.githubusercontent.com/$REPO/%s/gradle.properties"
+private const val VERSION_CODE_KEY = "version.code="
 private const val AUTO_CHECK_THROTTLE_MS = 6 * 60 * 60 * 1000L
 private const val CONNECT_TIMEOUT_MS = 5_000
 private const val READ_TIMEOUT_MS = 8_000
@@ -62,8 +65,9 @@ class UpdateRepository(
 
     init {
         val cachedRelease = Prefs.LAST_RELEASE_JSON.read(prefs)
-        if (cachedRelease.isNotEmpty()) {
-            runCatching { compareRelease(cachedRelease) }
+        val cachedRemoteCode = Prefs.LAST_REMOTE_VERSION_CODE.read(prefs)
+        if (cachedRelease.isNotEmpty() && cachedRemoteCode > 0) {
+            runCatching { compareRelease(cachedRelease, cachedRemoteCode) }
         }
         val cachedJson = Prefs.LAST_CHANGELOG_JSON.read(prefs)
         if (cachedJson.isNotEmpty()) {
@@ -139,18 +143,37 @@ class UpdateRepository(
             }
         }
 
-    private fun compareRelease(body: String): UpdateState {
+    private fun compareRelease(
+        body: String,
+        remoteVersionCode: Int,
+    ): UpdateState {
         val obj = JSONObject(body)
         val tag = obj.getString("tag_name").trimStart('v', 'V')
         val url = obj.getString("html_url")
         val current = BuildConfig.VERSION_NAME
-        return if (isNewer(tag, current)) {
+        return if (remoteVersionCode > BuildConfig.VERSION_CODE) {
             UpdateState.Available(current, tag, url).also { _cachedAvailable.value = it }
         } else {
             _cachedAvailable.value = null
             UpdateState.UpToDate(current)
         }
     }
+
+    private fun parseVersionCode(gradleProps: String): Int? =
+        gradleProps
+            .lineSequence()
+            .firstOrNull { it.startsWith(VERSION_CODE_KEY) }
+            ?.removePrefix(VERSION_CODE_KEY)
+            ?.trim()
+            ?.toIntOrNull()
+
+    private fun fetchRemoteVersionCode(tag: String): Int? =
+        runCatching {
+            val conn = openConnection(GRADLE_PROPS_URL_FORMAT.format(tag))
+            if (conn.responseCode != 200) return@runCatching null
+            val body = conn.inputStream.bufferedReader().use { it.readText() }
+            parseVersionCode(body)
+        }.getOrNull()
 
     private fun fetchRelease(): UpdateState =
         try {
@@ -163,10 +186,9 @@ class UpdateRepository(
             when {
                 code == 304 -> {
                     val cached = Prefs.LAST_RELEASE_JSON.read(prefs)
-                    if (cached.isNotEmpty()) {
-                        compareRelease(
-                            cached,
-                        )
+                    val cachedCode = Prefs.LAST_REMOTE_VERSION_CODE.read(prefs)
+                    if (cached.isNotEmpty() && cachedCode > 0) {
+                        compareRelease(cached, cachedCode)
                     } else {
                         UpdateState.UpToDate(BuildConfig.VERSION_NAME)
                     }
@@ -200,12 +222,19 @@ class UpdateRepository(
 
                 else -> {
                     val body = conn.inputStream.bufferedReader().use { it.readText() }
+                    val tag = JSONObject(body).getString("tag_name")
+                    val remoteCode =
+                        fetchRemoteVersionCode(tag) ?: run {
+                            Log.w(TAG, "could not resolve remote version.code for tag=$tag")
+                            return UpdateState.Failed(FailureCause.Parse)
+                        }
                     prefs.edit {
                         Prefs.LAST_RELEASE_JSON.write(this, body)
+                        Prefs.LAST_REMOTE_VERSION_CODE.write(this, remoteCode)
                         val newEtag = conn.getHeaderField("ETag")
                         if (newEtag != null) Prefs.RELEASE_ETAG.write(this, newEtag)
                     }
-                    compareRelease(body)
+                    compareRelease(body, remoteCode)
                 }
             }
         } catch (e: Exception) {
@@ -232,23 +261,4 @@ class UpdateRepository(
         return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
             caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
-
-    private fun isNewer(
-        remote: String,
-        current: String,
-    ): Boolean =
-        runCatching {
-            val r = remote.split(".").map { it.toIntOrNull() ?: 0 }
-            val c = current.split(".").map { it.toIntOrNull() ?: 0 }
-            val len = maxOf(r.size, c.size)
-            (0 until len).firstNotNullOfOrNull { i ->
-                val rv = r.getOrElse(i) { 0 }
-                val cv = c.getOrElse(i) { 0 }
-                when {
-                    rv > cv -> true
-                    rv < cv -> false
-                    else -> null
-                }
-            } ?: false
-        }.getOrDefault(false)
 }
