@@ -1,6 +1,26 @@
 {
-  "version": "1.0.0-rc4",
+  "version": "1.0.0-rc6",
   "entries": [
+    {
+      "type": "feat",
+      "title": "per-app relock delay and live prefs effect",
+      "description": "Per-app overrides now reach system_server, relock delay applies to app switching, and Block Screenshots toggles take effect immediately.",
+      "version": "1.0.0-rc6",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/741c18ba3977c1e3b8123aef5c67b8770bf948f2",
+      "scope": null,
+      "breaking": false
+    },
+    {
+      "type": "fix",
+      "title": "skip home-category launches and guard null activity resolve",
+      "description": "FallbackHome and home button presses no longer cause a system_server boot loop when a system package is locked.",
+      "version": "1.0.0-rc5",
+      "date": "2026-05-27",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/9cdbbd2aaaf4788952dca473af3159cef9a5ea17",
+      "scope": "hook",
+      "breaking": false
+    },
     {
       "type": "fix",
       "title": "compare versionCode instead of parsing the version name",
