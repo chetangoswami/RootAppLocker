@@ -53,9 +53,13 @@ internal fun relockOtherPackages(keepPackageName: String?) {
 
 @Volatile private var globalFlagSecureDisabled: Boolean = false
 
+@Volatile private var globalShowRecentsPreview: Boolean = false
+
 private val appRelockOverrides = ConcurrentHashMap<String, Int>()
 
 private val appFlagSecureOverrides = ConcurrentHashMap<String, Boolean>()
+
+private val appRecentsPreviewOverrides = ConcurrentHashMap<String, Boolean>()
 
 @Volatile internal var screenOffElapsed = Long.MIN_VALUE
 
@@ -65,11 +69,16 @@ internal fun getEffectiveRelockDelay(pkg: String): Int =
 internal fun isFlagSecureDisabled(pkg: String): Boolean =
     appFlagSecureOverrides[pkg] ?: globalFlagSecureDisabled
 
+internal fun isRecentsPreviewEnabled(pkg: String): Boolean =
+    appRecentsPreviewOverrides[pkg] ?: globalShowRecentsPreview
+
 internal fun loadHookPrefs(prefs: SharedPreferences) {
     globalRelockDelaySeconds = Prefs.RELOCK_DELAY_SECONDS.read(prefs)
     globalFlagSecureDisabled = Prefs.DISABLE_FLAG_SECURE.read(prefs)
+    globalShowRecentsPreview = Prefs.SHOW_RECENTS_PREVIEW.read(prefs)
     appRelockOverrides.clear()
     appFlagSecureOverrides.clear()
+    appRecentsPreviewOverrides.clear()
     prefs.all.keys.forEach { key ->
         when {
             key.startsWith("app_override:") && key.endsWith(":relock_delay_seconds") -> {
@@ -81,10 +90,16 @@ internal fun loadHookPrefs(prefs: SharedPreferences) {
                 val pkg = key.removePrefix("app_override:").removeSuffix(":flag_secure_disabled")
                 appFlagSecureOverrides[pkg] = prefs.getBoolean(key, false)
             }
+
+            key.startsWith("app_override:") && key.endsWith(":show_recents_preview") -> {
+                val pkg = key.removePrefix("app_override:").removeSuffix(":show_recents_preview")
+                appRecentsPreviewOverrides[pkg] = prefs.getBoolean(key, false)
+            }
         }
     }
     Logger.info(
         "prefs loaded relockDelay=$globalRelockDelaySeconds " +
-            "flagSecure=$globalFlagSecureDisabled appOverrides=${appRelockOverrides.size}",
+            "flagSecure=$globalFlagSecureDisabled recentsPreview=$globalShowRecentsPreview " +
+            "appOverrides=${appRelockOverrides.size}",
     )
 }

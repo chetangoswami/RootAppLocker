@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.callbackFlow
 data class AppOverrides(
     val relockDelaySeconds: Int?,
     val flagSecureDisabled: Boolean?,
+    val showRecentsPreview: Boolean?,
 )
 
 private fun SharedPreferences.getIntOrNull(key: String): Int? =
@@ -24,12 +25,15 @@ class AppOverridesRepository(
 
     private fun flagSecureKey(pkg: String) = "app_override:$pkg:flag_secure_disabled"
 
+    private fun recentsPreviewKey(pkg: String) = "app_override:$pkg:show_recents_preview"
+
     private fun prefix(pkg: String) = "app_override:$pkg:"
 
     private fun currentOverrides(pkg: String) =
         AppOverrides(
             relockDelaySeconds = local.getIntOrNull(relockKey(pkg)),
             flagSecureDisabled = local.getBooleanOrNull(flagSecureKey(pkg)),
+            showRecentsPreview = local.getBooleanOrNull(recentsPreviewKey(pkg)),
         )
 
     fun observe(pkg: String): Flow<AppOverrides> =
@@ -59,10 +63,19 @@ class AppOverridesRepository(
         local.edit { if (disabled == null) remove(key) else putBoolean(key, disabled) }
     }
 
+    fun setShowRecentsPreview(
+        pkg: String,
+        enabled: Boolean?,
+    ) {
+        val key = recentsPreviewKey(pkg)
+        local.edit { if (enabled == null) remove(key) else putBoolean(key, enabled) }
+    }
+
     fun reset(pkg: String) =
         local.edit {
             remove(relockKey(pkg))
             remove(flagSecureKey(pkg))
+            remove(recentsPreviewKey(pkg))
         }
 
     fun prune(installedPackages: Set<String>) {

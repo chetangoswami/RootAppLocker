@@ -76,7 +76,9 @@
     <string name="settings_relock_delay_summary">How long to wait before locking an app again</string>
 
     <string name="settings_disable_flag_secure_title">Disable FLAG_SECURE after unlock</string>
-    <string name="settings_disable_flag_secure_summary">Allows screenshots, screen recording, and the recents screen preview after successful biometric authentication</string>
+    <string name="settings_disable_flag_secure_summary">Allows screenshots and screen recording after authentication</string>
+    <string name="settings_show_recents_preview_title">Show recents preview after unlock</string>
+    <string name="settings_show_recents_preview_summary">Shows the app\'s real content in the recents screen after authentication</string>
 
     <string name="settings_about">About</string>
     <string name="settings_about_entry">About</string>
@@ -118,7 +120,9 @@
 
 
     <string name="app_detail_disable_flag_secure_title">Disable FLAG_SECURE after unlock</string>
-    <string name="app_detail_disable_flag_secure_summary">Allows screenshots, screen recording, and the recents screen preview after successful biometric authentication</string>
+    <string name="app_detail_disable_flag_secure_summary">Allows screenshots and screen recording after authentication</string>
+    <string name="app_detail_show_recents_preview_title">Show recents preview after unlock</string>
+    <string name="app_detail_show_recents_preview_summary">Shows the app\'s real content in the recents screen after authentication</string>
 
     <string name="app_detail_section_advanced">Advanced</string>
     <string name="app_detail_open_app_info_title">Open system app info</string>

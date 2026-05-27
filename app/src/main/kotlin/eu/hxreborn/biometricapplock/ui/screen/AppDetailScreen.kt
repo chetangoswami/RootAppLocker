@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.outlined.Layers
 import androidx.compose.material.icons.outlined.Screenshot
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Tune
@@ -102,9 +103,12 @@ fun AppDetailScreen(
 
     val overrides by App.appOverridesRepository
         .observe(packageName)
-        .collectAsStateWithLifecycle(initialValue = AppOverrides(null, null))
+        .collectAsStateWithLifecycle(initialValue = AppOverrides(null, null, null))
 
-    val hasOverrides = overrides.relockDelaySeconds != null || overrides.flagSecureDisabled != null
+    val hasOverrides =
+        overrides.relockDelaySeconds != null ||
+            overrides.flagSecureDisabled != null ||
+            overrides.showRecentsPreview != null
     val disabledModifier = if (hasOverrides) Modifier else Modifier.alpha(Tokens.DISABLED_ALPHA)
 
     var showRelockDialog by remember { mutableStateOf(false) }
@@ -221,6 +225,33 @@ fun AppDetailScreen(
                     trailing = {
                         LockSwitch(
                             checked = overrides.flagSecureDisabled == true,
+                            onCheckedChange = null,
+                            enabled = hasOverrides,
+                        )
+                    },
+                    modifier = disabledModifier,
+                )
+            }
+
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.Layers,
+                    title = stringResource(R.string.app_detail_show_recents_preview_title),
+                    summary = stringResource(R.string.app_detail_show_recents_preview_summary),
+                    onClick =
+                        if (hasOverrides) {
+                            {
+                                App.appOverridesRepository.setShowRecentsPreview(
+                                    packageName,
+                                    overrides.showRecentsPreview != true,
+                                )
+                            }
+                        } else {
+                            null
+                        },
+                    trailing = {
+                        LockSwitch(
+                            checked = overrides.showRecentsPreview == true,
                             onCheckedChange = null,
                             enabled = hasOverrides,
                         )

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Layers
 import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.RoundedCorner
@@ -36,7 +37,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -165,11 +165,32 @@ fun SettingsScreen(
                     title = stringResource(R.string.settings_disable_flag_secure_title),
                     summary = stringResource(R.string.settings_disable_flag_secure_summary),
                     position = SectionPosition.Middle,
-                    onClick = null,
-                    trailing = {
-                        LockSwitch(checked = false, onCheckedChange = null, enabled = false)
+                    onClick = {
+                        App.prefsRepository.save(
+                            Prefs.DISABLE_FLAG_SECURE,
+                            !prefs.disableFlagSecure,
+                        )
                     },
-                    modifier = Modifier.alpha(Tokens.DISABLED_ALPHA),
+                    trailing = {
+                        LockSwitch(checked = prefs.disableFlagSecure, onCheckedChange = null)
+                    },
+                )
+            }
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.Layers,
+                    title = stringResource(R.string.settings_show_recents_preview_title),
+                    summary = stringResource(R.string.settings_show_recents_preview_summary),
+                    position = SectionPosition.Middle,
+                    onClick = {
+                        App.prefsRepository.save(
+                            Prefs.SHOW_RECENTS_PREVIEW,
+                            !prefs.showRecentsPreview,
+                        )
+                    },
+                    trailing = {
+                        LockSwitch(checked = prefs.showRecentsPreview, onCheckedChange = null)
+                    },
                 )
             }
             item {

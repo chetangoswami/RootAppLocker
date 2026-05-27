@@ -8,6 +8,7 @@ object Prefs {
     val LOCKED_PACKAGES = StringPref("locked_packages", "")
     val RELOCK_DELAY_SECONDS = IntPref("relock_delay_seconds", 0)
     val DISABLE_FLAG_SECURE = BoolPref("disable_flag_secure", false)
+    val SHOW_RECENTS_PREVIEW = BoolPref("show_recents_preview", false)
 
     // hook reads this to gauge cache staleness
     val LAST_REMOTE_WRITE = LongPref("_last_remote_write", 0L)
