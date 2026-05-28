@@ -11,11 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      mirror_tag: ${{ steps.mirror_tag.outputs.mirror_tag }}
 
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+
+      - name: Derive mirror tag
+        id: mirror_tag
+        run: |
+          code=$(grep '^version\.code=' gradle.properties | cut -d= -f2)
+          name=$(grep '^version\.name=' gradle.properties | cut -d= -f2)
+          echo "mirror_tag=${code}-${name}" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-java@v5
         with:
@@ -70,6 +79,7 @@ jobs:
       contents: read
     env:
       TAG_NAME: ${{ github.ref_name }}
+      MIRROR_TAG: ${{ needs.build.outputs.mirror_tag }}
 
     steps:
       - name: Download APK artifact
@@ -96,7 +106,7 @@ jobs:
         with:
           repository: Xposed-Modules-Repo/eu.hxreborn.biometricapplock
           token: ${{ secrets.XPOSED_REPO_PAT }}
-          tag_name: ${{ env.TAG_NAME }}
+          tag_name: ${{ env.MIRROR_TAG }}
           name: ${{ steps.release.outputs.name }}
           body: ${{ steps.release.outputs.body }}
           prerelease: ${{ steps.release.outputs.prerelease }}
