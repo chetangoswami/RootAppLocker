@@ -103,10 +103,10 @@ internal fun loadHookPrefs(prefs: SharedPreferences) {
             }
         }
     }
-    Logger.info(
+    Logger.debug {
         "prefs loaded relockDelay=$globalRelockDelaySeconds " +
             "blockScreenshots=$globalBlockScreenshots " +
             "relockOverrides=${appRelockOverrides.size} " +
-            "blockOverrides=${appBlockScreenshotsOverrides.size}",
-    )
+            "blockOverrides=${appBlockScreenshotsOverrides.size}"
+    }
 }
