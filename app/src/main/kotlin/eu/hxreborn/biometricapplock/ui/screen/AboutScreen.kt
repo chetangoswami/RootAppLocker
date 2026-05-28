@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Memory
@@ -181,8 +182,22 @@ fun AboutScreen(
                     icon = painterResource(R.drawable.ic_github_24),
                     title = stringResource(R.string.about_source_title),
                     summary = stringResource(R.string.about_source_summary),
+                    position = SectionPosition.Top,
                     onClick = {
                         context.startActivity(Intent(Intent.ACTION_VIEW, REPO_URL.toUri()))
+                    },
+                )
+            }
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.BugReport,
+                    title = stringResource(R.string.about_report_issue_title),
+                    summary = stringResource(R.string.about_report_issue_summary),
+                    position = SectionPosition.Bottom,
+                    onClick = {
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, "$REPO_URL/issues/new".toUri()),
+                        )
                     },
                 )
             }
