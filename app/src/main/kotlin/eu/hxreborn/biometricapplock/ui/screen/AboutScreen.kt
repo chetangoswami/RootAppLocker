@@ -3,6 +3,12 @@
 package eu.hxreborn.biometricapplock.ui.screen
 
 import android.content.Intent
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -59,6 +66,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private const val REPO_URL = "https://github.com/hxreborn/biometric-app-lock"
+private const val BLOB_SPIN_DURATION_MS = 8_000
 private val BlobSize: Dp = 128.dp
 private val BlobIconSize: Dp = 72.dp
 
@@ -83,6 +91,18 @@ fun AboutScreen(
                 }.getOrNull()
             }
     }
+
+    val infiniteTransition = rememberInfiniteTransition(label = "blob_spin")
+    val blobRotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(durationMillis = BLOB_SPIN_DURATION_MS, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart,
+            ),
+        label = "blob_rotation",
+    )
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -125,7 +145,14 @@ fun AboutScreen(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    SoftBlobBadge(size = BlobSize) {
+                    Box(
+                        modifier = Modifier.size(BlobSize),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        SoftBlobBadge(
+                            modifier = Modifier.graphicsLayer { rotationZ = blobRotation },
+                            size = BlobSize,
+                        ) {}
                         icon?.let {
                             Image(
                                 bitmap = it,
