@@ -60,6 +60,11 @@ internal fun removeFromUnlocked(pkgs: Set<String>) {
 
 internal val taskCache = ConcurrentHashMap<Int, TaskEntry>()
 
+internal fun clearRuntimeStateForPackage(pkg: String) {
+    unlockedMap.remove(pkg)
+    taskCache.entries.removeIf { it.value.packageName == pkg }
+}
+
 internal fun relockOtherPackages(keepPkg: String?) {
     if (keepPkg == BiometricAuthActivity.MODULE_PACKAGE) return
     val now = SystemClock.elapsedRealtime()

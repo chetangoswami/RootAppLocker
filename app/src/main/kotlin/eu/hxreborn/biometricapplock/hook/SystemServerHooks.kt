@@ -1,15 +1,20 @@
 package eu.hxreborn.biometricapplock.hook
 
 import android.app.TaskInfo
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Handler
 import android.os.SystemClock
+import eu.hxreborn.biometricapplock.receiver.registerPackageEvents
 import eu.hxreborn.biometricapplock.util.Logger
 import io.github.libxposed.api.XposedModule
+import java.util.concurrent.atomic.AtomicBoolean
 
 @Volatile
 internal var atmsRef: Any? = null
+
+private val packageEventsRegistered = AtomicBoolean(false)
 
 private fun captureAtms(interceptor: Any): Any? =
     runCatching {
@@ -17,6 +22,15 @@ private fun captureAtms(interceptor: Any): Any? =
         val sup = r.supervisorField.get(interceptor) ?: return null
         r.activityTaskManagerServiceField.get(sup)
     }.getOrNull()
+
+private fun ensurePackageEventsRegistered() {
+    val atms = atmsRef ?: return
+    if (!packageEventsRegistered.compareAndSet(false, true)) return
+    val r = reflection ?: return
+    val ctx = r.contextField.get(atms) as? Context ?: return
+    val handler = r.handlerField.get(atms) as? Handler ?: return
+    registerPackageEvents(ctx, handler)
+}
 
 internal fun refreshSecureSurfaces() {
     val atms = atmsRef ?: return
@@ -56,7 +70,10 @@ private fun XposedModule.hookLaunchIntercept(classLoader: ClassLoader) {
                 11,
             )
         hook(method).intercept { chain ->
-            if (atmsRef == null) atmsRef = captureAtms(chain.thisObject)
+            if (atmsRef == null) {
+                atmsRef = captureAtms(chain.thisObject)
+                ensurePackageEventsRegistered()
+            }
 
             val intent = chain.args[0] as? Intent
             val activityInfo = chain.args[2] as? ActivityInfo
