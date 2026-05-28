@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notification Tester</string>
+    <string name="target_alpha_label">Target Alpha</string>
+    <string name="target_beta_label">Target Beta</string>
+    <string name="channel_name">Test Notifications</string>
+    <string name="channel_description">Notification launch reproducer</string>
+
+    <string name="header">Notification Tester</string>
+
+    <string name="btn_request_permission">Request notification permission</string>
+    <string name="btn_post_alpha_now">Post Alpha notification (now)</string>
+    <string name="btn_post_beta_now">Post Beta notification (now)</string>
+    <string name="btn_post_alpha_delayed">Post Alpha notification in 10 s</string>
+    <string name="btn_post_beta_delayed">Post Beta notification in 10 s</string>
+    <string name="btn_open_alpha_direct">Open Target Alpha directly</string>
+    <string name="btn_open_beta_direct">Open Target Beta directly</string>
+
+    <string name="alpha_header">TARGET ALPHA</string>
+    <string name="beta_header">TARGET BETA</string>
+    <string name="alpha_subtitle">TargetAlphaActivity</string>
+    <string name="beta_subtitle">TargetBetaActivity</string>
+</resources>
