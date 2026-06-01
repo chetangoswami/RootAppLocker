@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,15 +38,16 @@ fun ChangelogSheet(
     onDismiss: () -> Unit,
     showCheckingState: Boolean = true,
 ) {
+    val app = App.from(LocalContext.current)
     val uriHandler = LocalUriHandler.current
     val coroutineScope = rememberCoroutineScope()
-    val cachedEntries by App.updateRepository.cachedChangelog.collectAsStateWithLifecycle()
-    val cachedAvailable by App.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
-    val updateState by App.updateRepository.currentState.collectAsStateWithLifecycle()
+    val cachedEntries by app.updateRepository.cachedChangelog.collectAsStateWithLifecycle()
+    val cachedAvailable by app.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
+    val updateState by app.updateRepository.currentState.collectAsStateWithLifecycle()
     var minDelayPassed by remember { mutableStateOf(!showCheckingState) }
 
     LaunchedEffect(Unit) {
-        App.updateRepository.fetchChangelog()
+        app.updateRepository.fetchChangelog()
         if (showCheckingState) {
             delay(1000L)
             minDelayPassed = true
@@ -98,10 +100,10 @@ fun ChangelogSheet(
         onDismiss = onDismiss,
         onDownload = { url -> uriHandler.openUri(url) },
         onRetry = {
-            coroutineScope.launch { App.updateRepository.checkNow() }
+            coroutineScope.launch { app.updateRepository.checkNow() }
         },
         onLater = { version ->
-            App.prefsRepository.save(Prefs.LAST_DISMISSED_AVAILABLE_VERSION, version)
+            app.prefsRepository.save(Prefs.LAST_DISMISSED_AVAILABLE_VERSION, version)
         },
     )
 }

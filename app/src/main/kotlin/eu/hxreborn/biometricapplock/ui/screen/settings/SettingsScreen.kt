@@ -71,9 +71,10 @@ fun SettingsScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     val context = LocalContext.current
+    val app = App.from(context)
     val coroutineScope = rememberCoroutineScope()
-    val prefs by App.prefsRepository.state.collectAsStateWithLifecycle(initialValue = AppPrefs.Defaults)
-    val cachedAvailable by App.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
+    val prefs by app.prefsRepository.state.collectAsStateWithLifecycle(initialValue = AppPrefs.Defaults)
+    val cachedAvailable by app.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var showThemeDialog by remember { mutableStateOf(false) }
     var showRelockDialog by remember { mutableStateOf(false) }
@@ -84,7 +85,7 @@ fun SettingsScreen(
         ThemeDialog(
             current = prefs.themeMode,
             onSelect = { mode ->
-                App.prefsRepository.save(Prefs.DARK_THEME_CONFIG, mode.prefValue)
+                app.prefsRepository.save(Prefs.DARK_THEME_CONFIG, mode.prefValue)
                 showThemeDialog = false
             },
             onDismiss = { showThemeDialog = false },
@@ -95,7 +96,7 @@ fun SettingsScreen(
         RelockDelayDialog(
             currentSeconds = prefs.relockDelaySeconds,
             onSelect = { seconds ->
-                App.prefsRepository.save(Prefs.RELOCK_DELAY_SECONDS, seconds)
+                app.prefsRepository.save(Prefs.RELOCK_DELAY_SECONDS, seconds)
                 showRelockDialog = false
             },
             onDismiss = { showRelockDialog = false },
@@ -105,7 +106,7 @@ fun SettingsScreen(
     if (showWhatsNew) {
         val uriHandler = LocalUriHandler.current
         val whatsNewItems =
-            App.updateRepository.bundledChangelog
+            app.updateRepository.bundledChangelog
                 .filter { it.version == BuildConfig.VERSION_NAME }
                 .map { entry ->
                     val type = ChangeType.from(entry.type, entry.breaking)
@@ -166,7 +167,7 @@ fun SettingsScreen(
                     summary = stringResource(R.string.settings_block_screenshots_summary),
                     position = SectionPosition.Middle,
                     onClick = {
-                        App.prefsRepository.save(
+                        app.prefsRepository.save(
                             Prefs.BLOCK_SCREENSHOTS,
                             !prefs.blockScreenshots,
                         )
@@ -226,7 +227,7 @@ fun SettingsScreen(
                     summary = stringResource(R.string.settings_dynamic_color_summary),
                     position = SectionPosition.Middle,
                     onClick = {
-                        App.prefsRepository.save(Prefs.USE_DYNAMIC_COLOR, !prefs.useDynamicColor)
+                        app.prefsRepository.save(Prefs.USE_DYNAMIC_COLOR, !prefs.useDynamicColor)
                     },
                     trailing = {
                         LockSwitch(checked = prefs.useDynamicColor, onCheckedChange = null)
@@ -240,7 +241,7 @@ fun SettingsScreen(
                     summary = stringResource(R.string.settings_floating_nav_bar_summary),
                     position = SectionPosition.Bottom,
                     onClick = {
-                        App.prefsRepository.save(Prefs.FLOATING_NAV_BAR, !prefs.floatingNavBar)
+                        app.prefsRepository.save(Prefs.FLOATING_NAV_BAR, !prefs.floatingNavBar)
                     },
                     trailing = {
                         LockSwitch(checked = prefs.floatingNavBar, onCheckedChange = null)
@@ -257,7 +258,7 @@ fun SettingsScreen(
                     position = SectionPosition.Top,
                     onClick = {
                         onShowUpdateSheet()
-                        coroutineScope.launch { App.updateRepository.checkNow() }
+                        coroutineScope.launch { app.updateRepository.checkNow() }
                     },
                     trailing = {
                         if (showDotIndicator) {
@@ -279,7 +280,7 @@ fun SettingsScreen(
                     summary = stringResource(R.string.updates_auto_check_summary),
                     position = SectionPosition.Bottom,
                     onClick = {
-                        App.prefsRepository.save(Prefs.AUTO_CHECK_UPDATE, !prefs.autoCheckUpdate)
+                        app.prefsRepository.save(Prefs.AUTO_CHECK_UPDATE, !prefs.autoCheckUpdate)
                     },
                     trailing = {
                         LockSwitch(checked = prefs.autoCheckUpdate, onCheckedChange = null)

@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.rememberNavBackStack
 import eu.hxreborn.biometricapplock.App
@@ -29,13 +30,14 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MainScaffold(viewModel: ScopeViewModel) {
+    val app = App.from(LocalContext.current)
     val backStack = rememberNavBackStack(Screen.Dashboard)
     val currentKey = backStack.lastOrNull() as? Screen
     val isTopLevel = bottomNavItems.any { it.key == currentKey }
 
-    val updateState by App.updateRepository.currentState.collectAsStateWithLifecycle()
-    val cachedAvailable by App.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
-    val prefs by App.prefsRepository.state.collectAsStateWithLifecycle(initialValue = AppPrefs.Defaults)
+    val updateState by app.updateRepository.currentState.collectAsStateWithLifecycle()
+    val cachedAvailable by app.updateRepository.cachedAvailable.collectAsStateWithLifecycle()
+    val prefs by app.prefsRepository.state.collectAsStateWithLifecycle(initialValue = AppPrefs.Defaults)
 
     var showUpdateSheet by remember { mutableStateOf(false) }
     var shownForVersion by remember { mutableStateOf<String?>(null) }
@@ -45,7 +47,7 @@ fun MainScaffold(viewModel: ScopeViewModel) {
 
     LaunchedEffect(updateState) {
         val state = updateState
-        val dismissed = App.prefsRepository.read(Prefs.LAST_DISMISSED_AVAILABLE_VERSION)
+        val dismissed = app.prefsRepository.read(Prefs.LAST_DISMISSED_AVAILABLE_VERSION)
         if (state is UpdateState.Available &&
             state.latestVersion != dismissed &&
             shownForVersion != state.latestVersion

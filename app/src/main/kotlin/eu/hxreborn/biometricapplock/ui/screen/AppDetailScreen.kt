@@ -75,6 +75,7 @@ fun AppDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val app = App.from(context)
     val pm = context.packageManager
 
     val appName by produceState(initialValue = packageName, key1 = packageName) {
@@ -101,7 +102,7 @@ fun AppDetailScreen(
             }
     }
 
-    val overrides by App.appOverridesRepository
+    val overrides by app.appOverridesRepository
         .observe(packageName)
         .collectAsStateWithLifecycle(initialValue = AppOverrides(null, null, null))
 
@@ -117,7 +118,7 @@ fun AppDetailScreen(
         RelockDelayDialog(
             currentSeconds = overrides.relockDelaySeconds ?: 0,
             onSelect = { seconds ->
-                App.appOverridesRepository.setRelockDelaySeconds(packageName, seconds)
+                app.appOverridesRepository.setRelockDelaySeconds(packageName, seconds)
                 showRelockDialog = false
             },
             onDismiss = { showRelockDialog = false },
@@ -176,9 +177,9 @@ fun AppDetailScreen(
                     summary = null,
                     onClick = {
                         if (hasOverrides) {
-                            App.appOverridesRepository.reset(packageName)
+                            app.appOverridesRepository.reset(packageName)
                         } else {
-                            App.appOverridesRepository.setRelockDelaySeconds(packageName, 0)
+                            app.appOverridesRepository.setRelockDelaySeconds(packageName, 0)
                         }
                     },
                     trailing = {
@@ -186,9 +187,9 @@ fun AppDetailScreen(
                             checked = hasOverrides,
                             onCheckedChange = { enabled ->
                                 if (enabled) {
-                                    App.appOverridesRepository.setRelockDelaySeconds(packageName, 0)
+                                    app.appOverridesRepository.setRelockDelaySeconds(packageName, 0)
                                 } else {
-                                    App.appOverridesRepository.reset(packageName)
+                                    app.appOverridesRepository.reset(packageName)
                                 }
                             },
                         )
@@ -214,7 +215,7 @@ fun AppDetailScreen(
                     onClick =
                         if (hasOverrides) {
                             {
-                                App.appOverridesRepository.setBlockScreenshots(
+                                app.appOverridesRepository.setBlockScreenshots(
                                     packageName,
                                     overrides.blockScreenshots != true,
                                 )

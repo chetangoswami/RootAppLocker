@@ -36,6 +36,7 @@ sealed interface ServiceLoadEvent {
 class ScopeViewModel(
     application: Application,
 ) : AndroidViewModel(application) {
+    private val app = App.from(application)
     private val localPrefs =
         application.getSharedPreferences(Prefs.GROUP, Context.MODE_PRIVATE)
 
@@ -69,7 +70,7 @@ class ScopeViewModel(
         }
 
     init {
-        App.boundService?.let { onServiceBound(it) }
+        app.boundService?.let { onServiceBound(it) }
         _scope.value = readLockedPackages()
     }
 
@@ -116,7 +117,7 @@ class ScopeViewModel(
     }
 
     private fun saveLockedPackages(packages: Set<String>) {
-        App.prefsRepository.save(Prefs.LOCKED_PACKAGES, packages.joinToString("|"))
+        app.prefsRepository.save(Prefs.LOCKED_PACKAGES, packages.joinToString("|"))
     }
 
     companion object {

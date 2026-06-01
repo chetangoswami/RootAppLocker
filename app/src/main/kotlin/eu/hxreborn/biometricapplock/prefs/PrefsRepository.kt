@@ -84,7 +84,10 @@ class PrefsRepository(
         val remote = remoteProvider() ?: return
         runCatching {
             remote.edit(commit = false) {
+                Prefs.all.forEach { it.copy(local, this) }
+
                 local.all.forEach { (key, value) ->
+                    if (!key.startsWith("app_override:")) return@forEach
                     when (value) {
                         is Boolean -> {
                             putBoolean(key, value)
@@ -98,15 +101,10 @@ class PrefsRepository(
                             putLong(key, value)
                         }
 
-                        is Float -> {
-                            putFloat(key, value)
-                        }
-
                         is String -> {
                             putString(key, value)
                         }
 
-                        // remote-prefs cannot deserialize EmptySet from emptySet<String>()
                         else -> {
                             Log.w(
                                 TAG,
@@ -115,6 +113,7 @@ class PrefsRepository(
                         }
                     }
                 }
+
                 Prefs.LAST_REMOTE_WRITE.write(this, System.currentTimeMillis())
             }
         }

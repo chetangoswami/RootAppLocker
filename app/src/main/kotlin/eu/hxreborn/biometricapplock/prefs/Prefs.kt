@@ -23,4 +23,24 @@ object Prefs {
     val LAST_DISMISSED_AVAILABLE_VERSION = StringPref("last_dismissed_available_version", "")
     val RELEASE_ETAG = StringPref("release_etag", "")
     val CHANGELOG_ETAG = StringPref("changelog_etag", "")
+
+    val all: List<PrefSpec<*>> =
+        listOf(
+            DARK_THEME_CONFIG,
+            USE_DYNAMIC_COLOR,
+            LOCKED_PACKAGES,
+            RELOCK_DELAY_SECONDS,
+            BLOCK_SCREENSHOTS,
+            HIDE_RECENTS_PREVIEW,
+            LAST_REMOTE_WRITE,
+            FLOATING_NAV_BAR,
+            AUTO_CHECK_UPDATE,
+            LAST_UPDATE_CHECK_MS,
+            LAST_RELEASE_JSON,
+            LAST_REMOTE_VERSION_CODE,
+            LAST_CHANGELOG_JSON,
+            LAST_DISMISSED_AVAILABLE_VERSION,
+            RELEASE_ETAG,
+            CHANGELOG_ETAG,
+        )
 }

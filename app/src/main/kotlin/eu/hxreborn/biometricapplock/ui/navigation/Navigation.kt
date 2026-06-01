@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -148,12 +149,13 @@ fun MainNavDisplay(
     onShowUpdateSheet: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val app = App.from(LocalContext.current)
     val slideInDistance = with(LocalDensity.current) { Tokens.NavSlideDistance.roundToPx() }
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            App.updateRepository.maybeAutoCheck()
+            app.updateRepository.maybeAutoCheck()
         }
     }
 

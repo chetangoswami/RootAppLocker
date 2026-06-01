@@ -26,9 +26,12 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        App.addServiceListener(this)
+        App.from(this).addServiceListener(this)
         setContent {
-            val prefs by App.prefsRepository.state.collectAsStateWithLifecycle(initialValue = AppPrefs.Defaults)
+            val prefs by App
+                .from(this)
+                .prefsRepository.state
+                .collectAsStateWithLifecycle(initialValue = AppPrefs.Defaults)
             val darkTheme =
                 when (prefs.themeMode) {
                     ThemeMode.FOLLOW_SYSTEM -> isSystemInDarkTheme()
@@ -66,6 +69,6 @@ class MainActivity :
 
     override fun onDestroy() {
         super.onDestroy()
-        App.removeServiceListener(this)
+        App.from(this).removeServiceListener(this)
     }
 }
