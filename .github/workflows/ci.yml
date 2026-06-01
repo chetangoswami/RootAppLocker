@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
     steps:
       - uses: actions/checkout@v6
 
@@ -28,3 +30,31 @@ jobs:
 
       - name: Lint and build debug APK
         run: ./gradlew :app:ktlintCheck :app:assembleDebug --no-daemon
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      - name: Decode keystore
+        if: env.RELEASE_KEYSTORE != ''
+        run: echo "$RELEASE_KEYSTORE" | base64 -d > ${{ runner.temp }}/release.keystore
+
+      - name: Build release APK
+        if: env.RELEASE_KEYSTORE != ''
+        env:
+          RELEASE_STORE_FILE: ${{ runner.temp }}/release.keystore
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+        run: ./gradlew :app:assembleRelease --no-daemon
+
+      - name: Upload release APK
+        if: env.RELEASE_KEYSTORE != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          retention-days: 14
