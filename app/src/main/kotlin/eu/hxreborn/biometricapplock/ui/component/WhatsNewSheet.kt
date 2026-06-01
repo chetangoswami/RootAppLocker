@@ -68,9 +68,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -121,15 +121,17 @@ fun WhatsNewSheet(
 
     val scope = rememberCoroutineScope()
     val contentAlpha = remember { Animatable(0f) }
-    val contentOffsetY = remember { Animatable(24f) }
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val contentHeight = remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
+    val screenHeight =
+        with(density) {
+            LocalWindowInfo.current.containerSize.height
+                .toDp()
+        }
+    val contentHeight = remember { mutableStateOf(0.dp) }
 
     LaunchedEffect(Unit) {
         haptics.performHapticFeedback(HapticFeedbackType.Confirm)
         launch { contentAlpha.animateTo(1f, tween(300)) }
-        launch { contentOffsetY.animateTo(0f, tween(300)) }
     }
 
     val dismiss: () -> Unit = {
@@ -150,10 +152,7 @@ fun WhatsNewSheet(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = Tokens.SheetContentPadding)
-                    .graphicsLayer {
-                        alpha = contentAlpha.value
-                        translationY = contentOffsetY.value
-                    },
+                    .graphicsLayer { alpha = contentAlpha.value },
         ) {
             val itemCount =
                 when (state) {
