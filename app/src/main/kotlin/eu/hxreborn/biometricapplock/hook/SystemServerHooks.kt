@@ -161,7 +161,7 @@ private fun XposedModule.hookRecentsLaunch(classLoader: ClassLoader) {
     }.onFailure { Logger.error("hookRecentsLaunch failed: ${it.message}", it) }
 }
 
-// Relocks unlocked packages on screen-on once their relock delay has elapsed
+// Relocks on screen transitions
 private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
     runCatching {
         val method =
@@ -172,7 +172,17 @@ private fun XposedModule.hookScreenAwake(classLoader: ClassLoader) {
             )
         hook(method).intercept { chain ->
             val awake = chain.args[0] as? Boolean
+            if (awake == false) {
+                // screen off drops all unlock state so locked apps re-auth on next launch
+                if (shouldRelockOnScreenOff() && unlockedPackages.isNotEmpty()) {
+                    val cleared = unlockedPackages.size
+                    clearUnlocked()
+                    Logger.debug { "screen off relock cleared=$cleared" }
+                }
+                return@intercept chain.proceed()
+            }
             if (awake == true && unlockedPackages.isNotEmpty()) {
+                // screen on relocks only packages whose delay has elapsed
                 val now = SystemClock.elapsedRealtime()
                 val toRelock =
                     unlockedPackages.filter { shouldRelockOnTransition(it, now) }.toSet()

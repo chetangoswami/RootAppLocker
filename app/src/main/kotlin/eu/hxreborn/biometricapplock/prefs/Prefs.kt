@@ -7,6 +7,7 @@ object Prefs {
     val USE_DYNAMIC_COLOR = BoolPref("use_dynamic_color", true)
     val LOCKED_PACKAGES = StringPref("locked_packages", "")
     val RELOCK_DELAY_SECONDS = IntPref("relock_delay_seconds", 0)
+    val RELOCK_ON_SCREEN_OFF = BoolPref("relock_on_screen_off", true)
     val BLOCK_SCREENSHOTS = BoolPref("block_screenshots", false)
     val HIDE_RECENTS_PREVIEW = BoolPref("hide_recents_preview", false)
 
@@ -30,6 +31,7 @@ object Prefs {
             USE_DYNAMIC_COLOR,
             LOCKED_PACKAGES,
             RELOCK_DELAY_SECONDS,
+            RELOCK_ON_SCREEN_OFF,
             BLOCK_SCREENSHOTS,
             HIDE_RECENTS_PREVIEW,
             LAST_REMOTE_WRITE,

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.outlined.Layers
 import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.RoundedCorner
+import androidx.compose.material.icons.outlined.ScreenLockPortrait
 import androidx.compose.material.icons.outlined.Screenshot
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Update
@@ -158,6 +159,23 @@ fun SettingsScreen(
                     position = SectionPosition.Top,
                     onClick = { showRelockDialog = true },
                     trailing = { ValueText(relockDelaySummary(prefs.relockDelaySeconds)) },
+                )
+            }
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.ScreenLockPortrait,
+                    title = stringResource(R.string.settings_relock_screen_off_title),
+                    summary = stringResource(R.string.settings_relock_screen_off_summary),
+                    position = SectionPosition.Middle,
+                    onClick = {
+                        app.prefsRepository.save(
+                            Prefs.RELOCK_ON_SCREEN_OFF,
+                            !prefs.relockOnScreenOff,
+                        )
+                    },
+                    trailing = {
+                        LockSwitch(checked = prefs.relockOnScreenOff, onCheckedChange = null)
+                    },
                 )
             }
             item {

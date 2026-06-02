@@ -79,6 +79,8 @@ internal fun relockOtherPackages(keepPkg: String?) {
 
 @Volatile private var globalBlockScreenshots: Boolean = false
 
+@Volatile private var globalRelockOnScreenOff: Boolean = true
+
 private val appRelockOverrides = ConcurrentHashMap<String, Int>()
 
 private val appBlockScreenshotsOverrides = ConcurrentHashMap<String, Boolean>()
@@ -89,8 +91,11 @@ internal fun getEffectiveRelockDelay(pkg: String): Int =
 internal fun shouldBlockScreenshots(pkg: String): Boolean =
     appBlockScreenshotsOverrides[pkg] ?: globalBlockScreenshots
 
+internal fun shouldRelockOnScreenOff(): Boolean = globalRelockOnScreenOff
+
 internal fun loadHookPrefs(prefs: SharedPreferences) {
     globalRelockDelaySeconds = Prefs.RELOCK_DELAY_SECONDS.read(prefs)
+    globalRelockOnScreenOff = Prefs.RELOCK_ON_SCREEN_OFF.read(prefs)
     globalBlockScreenshots = Prefs.BLOCK_SCREENSHOTS.read(prefs)
     appRelockOverrides.clear()
     appBlockScreenshotsOverrides.clear()
@@ -110,6 +115,7 @@ internal fun loadHookPrefs(prefs: SharedPreferences) {
     }
     Logger.debug {
         "prefs loaded relockDelay=$globalRelockDelaySeconds " +
+            "relockOnScreenOff=$globalRelockOnScreenOff " +
             "blockScreenshots=$globalBlockScreenshots " +
             "relockOverrides=${appRelockOverrides.size} " +
             "blockOverrides=${appBlockScreenshotsOverrides.size}"

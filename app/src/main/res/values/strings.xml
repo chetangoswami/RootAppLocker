@@ -74,6 +74,8 @@
     <string name="settings_lock">Lock &amp; privacy</string>
     <string name="settings_relock_delay_title">Re-lock delay</string>
     <string name="settings_relock_delay_summary">How long to wait before locking an app again</string>
+    <string name="settings_relock_screen_off_title">Re-lock on screen off</string>
+    <string name="settings_relock_screen_off_summary">Locks all protected apps as soon as the screen turns off, ignoring the re-lock delay</string>
 
     <string name="settings_block_screenshots_title">Block screenshots</string>
     <string name="settings_block_screenshots_summary">Prevents screenshots and screen recording inside selected apps. May not apply if another module bypasses FLAG_SECURE</string>
