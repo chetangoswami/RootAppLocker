@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Android-11%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 11+">
+  <img src="https://img.shields.io/badge/Android-13%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 13+">
   <img src="https://img.shields.io/badge/libxposed-API_101-ff69b4?style=for-the-badge" alt="libxposed API 101">
   <img src="https://img.shields.io/github/downloads/hxreborn/biometric-app-lock/total?style=for-the-badge&logo=github&label=Downloads&cacheSeconds=600" alt="Downloads">
 </p>
@@ -28,7 +28,7 @@ A reboot is required after install or update because framework hooks only load a
 
 ## Requirements
 
-- Android 11+ with an enrolled biometric
+- Android 13+ with an enrolled biometric
 - Xposed manager with libxposed API 101 support
 
 ## Install
@@ -40,7 +40,7 @@ A reboot is required after install or update because framework hooks only load a
 
 ## Prevent uninstall
 
-Toggle in Settings → Lock & privacy. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
+Toggle in Settings → Privacy & stealth. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
 
 > [!IMPORTANT]
 > To remove the module with the toggle on:
@@ -49,7 +49,7 @@ Toggle in Settings → Lock & privacy. While on, the module blocks every attempt
 
 ## Reporting issues
 
-About → Links → Share logs exports the module's log lines as a text file and opens a share sheet. Reproduce the issue first, then share via [email](mailto:hxreborn@duck.com), [GitHub issue](https://github.com/hxreborn/biometric-app-lock/issues/new), or [Telegram](https://t.me/hxreb0rn).
+Settings → About → Share logs exports the module's log lines as a text file and opens a share sheet. Reproduce the issue first, then share via [email](mailto:hxreborn@duck.com), [GitHub issue](https://github.com/hxreborn/biometric-app-lock/issues/new), or [Telegram](https://t.me/hxreb0rn).
 
 Root is required to read the LSPosed logs. If unavailable, the row is disabled. Only this module's own log lines are exported — no other data is gathered. Debug builds are the most useful for diagnosing issues.
 
