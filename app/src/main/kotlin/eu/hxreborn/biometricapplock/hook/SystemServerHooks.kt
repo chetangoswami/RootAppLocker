@@ -7,6 +7,9 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Handler
 import android.os.SystemClock
+import android.widget.Toast
+import eu.hxreborn.biometricapplock.BiometricAuthActivity
+import eu.hxreborn.biometricapplock.R
 import eu.hxreborn.biometricapplock.receiver.registerPackageEvents
 import eu.hxreborn.biometricapplock.util.Logger
 import io.github.libxposed.api.XposedModule
@@ -31,6 +34,21 @@ private fun ensurePackageEventsRegistered() {
     val ctx = r.contextField.get(atms) as? Context ?: return
     val handler = r.handlerField.get(atms) as? Handler ?: return
     registerPackageEvents(ctx, handler)
+}
+
+// show the toast on the ATMS handler thread because deletePackageX holds the PMS lock
+private fun postUninstallBlockedToast() {
+    val atms = atmsRef ?: return
+    val r = reflection ?: return
+    val handler = r.handlerField.get(atms) as? Handler ?: return
+    val ctx = r.contextField.get(atms) as? Context ?: return
+    handler.post {
+        runCatching {
+            val pkgCtx = ctx.createPackageContext(BiometricAuthActivity.MODULE_PACKAGE, 0)
+            val message = pkgCtx.getString(R.string.uninstall_blocked_toast)
+            Toast.makeText(pkgCtx, message, Toast.LENGTH_LONG).show()
+        }.onFailure { Logger.warn("uninstall toast failed: ${it.message}") }
+    }
 }
 
 internal fun refreshSecureSurfaces() {
@@ -60,6 +78,39 @@ internal fun XposedModule.registerSystemServerHooks(
     hookRecentsLaunch(classLoader)
     hookScreenAwake(classLoader)
     hookFlagSecure(classLoader)
+    hookUninstall(classLoader)
+}
+
+// every user-initiated uninstall (launcher, Settings, Play Store, adb) funnels through deletePackageX
+private fun XposedModule.hookUninstall(classLoader: ClassLoader) {
+    runCatching {
+        val method =
+            classLoader.findMethod(
+                "com.android.server.pm.DeletePackageHelper",
+                "deletePackageX",
+                5,
+            )
+        hook(method).intercept { chain ->
+            // fail open so arg drift lets the delete run instead of throwing in system_server
+            val shouldBlock =
+                runCatching {
+                    val packageName = chain.args.getOrNull(0) as? String
+                    val removedBySystem = chain.args.getOrNull(4) as? Boolean
+                    packageName == BiometricAuthActivity.MODULE_PACKAGE &&
+                        removedBySystem == false &&
+                        shouldPreventModuleUninstall()
+                }.getOrDefault(false)
+
+            if (shouldBlock) {
+                Logger.info("blocked uninstall pkg=${BiometricAuthActivity.MODULE_PACKAGE}")
+                postUninstallBlockedToast()
+                // DELETE_FAILED_INTERNAL_ERROR aborts the deletion without running it
+                return@intercept -1
+            }
+            chain.proceed()
+        }
+        Logger.info("hooked deletePackageX args=${method.parameterCount}")
+    }.onFailure { Logger.warn("hookUninstall not available: ${it.message}") }
 }
 
 // ActivityStarter routes all launches through here

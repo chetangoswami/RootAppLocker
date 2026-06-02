@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AppBlocking
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.material.icons.outlined.Info
@@ -207,6 +208,23 @@ fun SettingsScreen(
                             onCheckedChange = null,
                             enabled = false,
                         )
+                    },
+                )
+            }
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.AppBlocking,
+                    title = stringResource(R.string.settings_prevent_uninstall_title),
+                    summary = stringResource(R.string.settings_prevent_uninstall_summary),
+                    position = SectionPosition.Middle,
+                    onClick = {
+                        app.prefsRepository.save(
+                            Prefs.PREVENT_MODULE_UNINSTALL,
+                            !prefs.preventModuleUninstall,
+                        )
+                    },
+                    trailing = {
+                        LockSwitch(checked = prefs.preventModuleUninstall, onCheckedChange = null)
                     },
                 )
             }

@@ -10,6 +10,7 @@ object Prefs {
     val RELOCK_ON_SCREEN_OFF = BoolPref("relock_on_screen_off", true)
     val BLOCK_SCREENSHOTS = BoolPref("block_screenshots", false)
     val HIDE_RECENTS_PREVIEW = BoolPref("hide_recents_preview", false)
+    val PREVENT_MODULE_UNINSTALL = BoolPref("prevent_module_uninstall", false)
 
     // hook reads this to gauge cache staleness
     val LAST_REMOTE_WRITE = LongPref("_last_remote_write", 0L)
@@ -34,6 +35,7 @@ object Prefs {
             RELOCK_ON_SCREEN_OFF,
             BLOCK_SCREENSHOTS,
             HIDE_RECENTS_PREVIEW,
+            PREVENT_MODULE_UNINSTALL,
             LAST_REMOTE_WRITE,
             FLOATING_NAV_BAR,
             AUTO_CHECK_UPDATE,

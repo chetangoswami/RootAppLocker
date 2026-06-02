@@ -38,6 +38,13 @@ A reboot is required after install or update because framework hooks only load a
 3. Reboot
 4. Select apps to lock in the Apps tab
 
+## Prevent uninstall
+
+Toggle in Settings → Lock & privacy. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
+
+> [!IMPORTANT]
+> Can't open the app to turn the toggle off? Disable the module in your Xposed manager and reboot (the block only loads at boot), or boot into safe mode where Xposed is off. Either one lets you uninstall.
+
 ## License
 
 [![GPL-3.0-only](https://img.shields.io/badge/LICENSE-GPL--3.0--only-%23A42E2B?style=for-the-badge&logo=gnu&logoColor=white&logoPosition=right)](LICENSE)
