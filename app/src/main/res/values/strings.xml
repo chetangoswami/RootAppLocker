@@ -82,7 +82,7 @@
     <string name="settings_hide_recents_preview_title">Hide preview in recents</string>
     <string name="settings_hide_recents_preview_summary">Hides the app\'s preview in recents while it\'s locked</string>
     <string name="settings_prevent_uninstall_title">Prevent uninstall</string>
-    <string name="settings_prevent_uninstall_summary">Stops this app from being uninstalled. Turn it off here before removing the module</string>
+    <string name="settings_prevent_uninstall_summary">Blocks uninstall attempts. Disable the module in your Xposed manager and reboot to uninstall it.</string>
     <string name="uninstall_blocked_toast">This app is protected and can\'t be uninstalled</string>
 
     <string name="settings_about">About</string>
@@ -195,4 +195,13 @@
         <item quantity="one">1 change</item>
         <item quantity="other">%1$d changes</item>
     </plurals>
+
+    <string name="about_send_logs_title">Share logs</string>
+    <string name="about_send_logs_summary">Exports module logs as a text file. Reproduce the issue first, then attach to a GitHub issue, send via email, or share via Telegram</string>
+    <string name="about_send_logs_no_root">Exports module logs as a text file. Reproduce the issue first, then attach to a GitHub issue, send via email, or share via Telegram. Requires root</string>
+    <string name="diagnostics_share_title">Share logs</string>
+    <string name="diagnostics_share_body">Logs attached. Describe what went wrong and how to reproduce it.</string>
+    <string name="diagnostics_collecting">Collecting logs…</string>
+    <string name="diagnostics_no_root">Root unavailable. LSPosed logs may be missing.</string>
+    <string name="diagnostics_no_logs">No logs found. Reproduce the issue, then try again.</string>
 </resources>
