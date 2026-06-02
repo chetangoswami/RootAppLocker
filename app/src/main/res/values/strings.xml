@@ -65,13 +65,14 @@
     <string name="settings_theme_dark">Dark</string>
     <string name="settings_dynamic_color">Dynamic color</string>
     <string name="settings_dynamic_color_summary">Use wallpaper colors</string>
-    <string name="settings_floating_nav_bar">Floating navigation</string>
-    <string name="settings_floating_nav_bar_summary">Uses the Material 3 Expressive floating toolbar instead of the classic navigation bar</string>
+    <string name="settings_floating_nav_bar">Floating navigation bar</string>
+    <string name="settings_floating_nav_bar_summary">Replaces the classic nav bar with a M3E floating nav bar</string>
 
     <string name="settings_hide_launcher">Hide from launcher</string>
     <string name="settings_hide_launcher_summary">Hides app from launcher. You can still open it from Xposed manager</string>
 
-    <string name="settings_lock">Lock &amp; privacy</string>
+    <string name="settings_lock">Lock behavior</string>
+    <string name="settings_protection">Privacy &amp; stealth</string>
     <string name="settings_relock_delay_title">Re-lock delay</string>
     <string name="settings_relock_delay_summary">How long to wait before locking an app again</string>
     <string name="settings_relock_screen_off_title">Re-lock on screen off</string>

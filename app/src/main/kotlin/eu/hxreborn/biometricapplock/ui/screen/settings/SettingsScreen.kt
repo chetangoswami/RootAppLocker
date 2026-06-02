@@ -184,7 +184,7 @@ fun SettingsScreen(
                     icon = Icons.Outlined.Screenshot,
                     title = stringResource(R.string.settings_block_screenshots_title),
                     summary = stringResource(R.string.settings_block_screenshots_summary),
-                    position = SectionPosition.Middle,
+                    position = SectionPosition.Bottom,
                     onClick = {
                         app.prefsRepository.save(
                             Prefs.BLOCK_SCREENSHOTS,
@@ -196,17 +196,19 @@ fun SettingsScreen(
                     },
                 )
             }
+
+            item { SettingsSectionHeader(title = stringResource(R.string.settings_protection)) }
             item {
                 PreferenceRow(
                     icon = Icons.Outlined.Layers,
                     title = stringResource(R.string.settings_hide_recents_preview_title),
                     summary = stringResource(R.string.settings_hide_recents_preview_summary),
-                    position = SectionPosition.Middle,
+                    position = SectionPosition.Top,
+                    enabled = false,
                     trailing = {
                         LockSwitch(
                             checked = false,
                             onCheckedChange = null,
-                            enabled = false,
                         )
                     },
                 )
