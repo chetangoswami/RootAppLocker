@@ -1,6 +1,26 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "entries": [
+    {
+      "type": "feat",
+      "title": "add Share logs to About screen",
+      "description": "Adds Share logs in About → Links to export module logs and diagnose issues. Debug builds produce more verbose output. Restart after updating for new hooks to take effect.",
+      "version": "1.2.0",
+      "date": "2026-06-02",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/66bd390352cceb54d1680a2cfcb632f79a8e108c",
+      "scope": "ui",
+      "breaking": false
+    },
+    {
+      "type": "feat",
+      "title": "prevent module uninstall",
+      "description": "Added a toggle to stop the app from being uninstalled",
+      "version": "1.2.0",
+      "date": "2026-06-02",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/de59f4aac2ae3ec1907fbcc25a93c5e1913d354c",
+      "scope": "hook",
+      "breaking": false
+    },
     {
       "type": "feat",
       "title": "re-lock apps when the screen turns off",
@@ -129,16 +149,6 @@
       "date": "2026-05-27",
       "url": "https://github.com/hxreborn/biometric-app-lock/commit/741c18ba3977c1e3b8123aef5c67b8770bf948f2",
       "scope": null,
-      "breaking": false
-    },
-    {
-      "type": "fix",
-      "title": "skip home-category launches and guard null activity resolve",
-      "description": "FallbackHome and home button presses no longer cause a system_server boot loop when a system package is locked.",
-      "version": "1.0.0-rc5",
-      "date": "2026-05-27",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/9cdbbd2aaaf4788952dca473af3159cef9a5ea17",
-      "scope": "hook",
       "breaking": false
     }
   ]
