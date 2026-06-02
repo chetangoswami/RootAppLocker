@@ -21,6 +21,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.semantics.disabled
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import eu.hxreborn.biometricapplock.ui.component.SectionCard
 import eu.hxreborn.biometricapplock.ui.component.SectionPosition
@@ -94,6 +96,7 @@ fun PreferenceRowContent(
             .defaultMinSize(minHeight = Tokens.PreferenceRowMinHeight)
             .alpha(if (enabled) 1f else 0.38f)
             .then(if (enabled && onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+            .then(if (!enabled) Modifier.semantics(mergeDescendants = true) { disabled() } else Modifier)
             .padding(
                 horizontal = Tokens.PreferenceRowHorizontalPadding,
                 vertical = Tokens.PreferenceRowVerticalPadding,
