@@ -11,18 +11,19 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.hxreborn.biometricapplock.App
 import eu.hxreborn.biometricapplock.R
@@ -86,26 +87,22 @@ class MainActivity :
                 themeMode = prefs.themeMode,
                 useDynamicColor = prefs.useDynamicColor,
             ) {
-                if (!prefs.selfLock) {
+                Box(modifier = Modifier.fillMaxSize()) {
                     MainScaffold(viewModel = viewModel)
-                } else {
-                    AnimatedContent(
-                        targetState = lockState is SelfLockState.Unlocked,
-                        transitionSpec = {
-                            val spec = tween<Float>(durationMillis = 200, easing = FastOutSlowInEasing)
-                            fadeIn(spec) + scaleIn(spec, initialScale = 0.96f) togetherWith
-                                fadeOut(spec) + scaleOut(spec, targetScale = 0.96f)
-                        },
-                        label = "self_lock_gate",
-                    ) { unlocked ->
-                        if (unlocked) {
-                            MainScaffold(viewModel = viewModel)
-                        } else {
-                            SelfLockScreen(
-                                state = lockState,
-                                onUnlock = { promptUnlock() },
-                                onUseCredential = { promptUnlock(credentialOnly = true) },
-                            )
+                    if (prefs.selfLock) {
+                        val spec = tween<Float>(durationMillis = 200, easing = FastOutSlowInEasing)
+                        AnimatedVisibility(
+                            visible = lockState !is SelfLockState.Unlocked,
+                            enter = fadeIn(spec),
+                            exit = fadeOut(spec),
+                        ) {
+                            Surface(modifier = Modifier.fillMaxSize()) {
+                                SelfLockScreen(
+                                    state = lockState,
+                                    onUnlock = { promptUnlock() },
+                                    onUseCredential = { promptUnlock(credentialOnly = true) },
+                                )
+                            }
                         }
                     }
                 }
