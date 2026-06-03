@@ -77,6 +77,8 @@
     <string name="settings_relock_delay_summary">How long to wait before locking an app again</string>
     <string name="settings_relock_screen_off_title">Re-lock on screen off</string>
     <string name="settings_relock_screen_off_summary">Locks all protected apps as soon as the screen turns off, ignoring the re-lock delay</string>
+    <string name="settings_relock_task_removed_title">Re-lock on task removed</string>
+    <string name="settings_relock_task_removed_summary">Locks a protected app again when its task is swiped off the recents screen</string>
 
     <string name="settings_block_screenshots_title">Block screenshots</string>
     <string name="settings_block_screenshots_summary">Prevents screenshots and screen recording inside selected apps. May not apply if another module bypasses FLAG_SECURE</string>
@@ -119,7 +121,7 @@
 
     <string name="app_detail_override_title">Override global settings</string>
     <string name="app_detail_relock_delay_title">Re-lock delay</string>
-    <string name="app_detail_relock_delay_immediate">Instantly</string>
+    <string name="app_detail_relock_delay_immediate">Immediately</string>
     <string name="app_detail_relock_delay_30s">After 30 seconds</string>
     <string name="app_detail_relock_delay_1m">After 1 minute</string>
     <string name="app_detail_relock_delay_5m">After 5 minutes</string>

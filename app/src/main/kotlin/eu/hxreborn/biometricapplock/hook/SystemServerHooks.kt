@@ -76,6 +76,7 @@ internal fun XposedModule.registerSystemServerHooks(
     hookLaunchIntercept(classLoader)
     hookActivityLaunched(classLoader)
     hookRecentsLaunch(classLoader)
+    hookTaskRemoved(classLoader)
     hookScreenAwake(classLoader)
     hookFlagSecure(classLoader)
     hookUninstall(classLoader)
@@ -228,6 +229,42 @@ private fun XposedModule.hookRecentsLaunch(classLoader: ClassLoader) {
         }
         Logger.info("hooked startActivityFromRecents args=${method.parameterCount}")
     }.onFailure { Logger.error("hookRecentsLaunch failed: ${it.message}", it) }
+}
+
+// relock a locked task when it is swiped off recents through the cleanUpRemovedTask hook
+private fun XposedModule.hookTaskRemoved(classLoader: ClassLoader) {
+    runCatching {
+        val supervisorClass =
+            classLoader.anyClassFromNames(
+                "com.android.server.wm.ActivityTaskSupervisor",
+                "com.android.server.wm.ActivityStackSupervisor",
+            )
+        // both removal-method names are tried so the hook survives the A13 to A14 rename
+        val method =
+            supervisorClass.declaredMethods.firstOrNull {
+                it.name == "cleanUpRemovedTask" || it.name == "cleanUpRemovedTaskLocked"
+            } ?: error("cleanUpRemovedTask not found")
+        val taskIdField =
+            classLoader
+                .loadClass("com.android.server.wm.Task")
+                .getDeclaredField("mTaskId")
+                .apply { isAccessible = true }
+        hook(method).intercept { chain ->
+            val result = chain.proceed()
+            // runs after proceed and lock-free to stay safe under mGlobalLock
+            runCatching {
+                if (!shouldRelockOnTaskRemoved()) return@runCatching
+                val taskId = chain.args.getOrNull(0)?.let { taskIdField.getInt(it) }
+                val entry = taskId?.let { taskCache.remove(it) } ?: return@runCatching
+                removeFromUnlocked(setOf(entry.packageName))
+                Logger.debug { "task removed relock pkg=${entry.packageName} taskId=$taskId" }
+            }
+            result
+        }
+        Logger.info("hooked ${method.name} args=${method.parameterCount}")
+    }.onFailure {
+        Logger.warn("hookTaskRemoved unavailable (cleanUpRemovedTask/mTaskId): ${it.message}")
+    }
 }
 
 // Relocks on screen transitions
