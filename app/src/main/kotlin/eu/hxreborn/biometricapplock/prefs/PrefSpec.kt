@@ -13,10 +13,18 @@ sealed class PrefSpec<T : Any>(
         value: T,
     )
 
-    fun copy(
+    // skip the write when the destination already holds this value, so a cross-process
+    // listener does not fire for an unchanged key
+    fun copyIfChanged(
         from: SharedPreferences,
-        to: SharedPreferences.Editor,
-    ) = write(to, read(from))
+        to: SharedPreferences,
+        editor: SharedPreferences.Editor,
+    ): Boolean {
+        val value = read(from)
+        if (read(to) == value) return false
+        write(editor, value)
+        return true
+    }
 }
 
 class BoolPref(

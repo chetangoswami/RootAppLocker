@@ -89,11 +89,17 @@ class PrefsRepository(
     fun syncToRemote() {
         val remote = remoteProvider() ?: return
         runCatching {
+            var changed = false
             remote.edit(commit = false) {
-                Prefs.all.forEach { it.copy(local, this) }
+                Prefs.all.forEach { spec ->
+                    if (spec === Prefs.LAST_REMOTE_WRITE) return@forEach
+                    if (spec.copyIfChanged(local, remote, this)) changed = true
+                }
 
                 local.all.forEach { (key, value) ->
                     if (!key.startsWith("app_override:")) return@forEach
+                    if (remote.all[key] == value) return@forEach
+                    changed = true
                     when (value) {
                         is Boolean -> {
                             putBoolean(key, value)
@@ -120,7 +126,7 @@ class PrefsRepository(
                     }
                 }
 
-                Prefs.LAST_REMOTE_WRITE.write(this, System.currentTimeMillis())
+                if (changed) Prefs.LAST_REMOTE_WRITE.write(this, System.currentTimeMillis())
             }
         }
     }
