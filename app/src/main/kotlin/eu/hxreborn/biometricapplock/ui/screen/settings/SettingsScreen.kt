@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AppBlocking
+import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.material.icons.outlined.Info
@@ -232,6 +233,23 @@ fun SettingsScreen(
                     },
                     trailing = {
                         LockSwitch(checked = prefs.relockOnScreenOff, onCheckedChange = null)
+                    },
+                )
+            }
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.DeleteSweep,
+                    title = stringResource(R.string.settings_relock_task_removed_title),
+                    summary = stringResource(R.string.settings_relock_task_removed_summary),
+                    position = SectionPosition.Middle,
+                    onClick = {
+                        app.prefsRepository.save(
+                            Prefs.RELOCK_ON_TASK_REMOVED,
+                            !prefs.relockOnTaskRemoved,
+                        )
+                    },
+                    trailing = {
+                        LockSwitch(checked = prefs.relockOnTaskRemoved, onCheckedChange = null)
                     },
                 )
             }

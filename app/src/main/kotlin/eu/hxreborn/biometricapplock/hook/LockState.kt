@@ -81,6 +81,8 @@ internal fun relockOtherPackages(keepPkg: String?) {
 
 @Volatile private var globalRelockOnScreenOff: Boolean = true
 
+@Volatile private var globalRelockOnTaskRemoved: Boolean = true
+
 @Volatile private var globalPreventModuleUninstall: Boolean = false
 
 private val appRelockOverrides = ConcurrentHashMap<String, Int>()
@@ -95,11 +97,14 @@ internal fun shouldBlockScreenshots(pkg: String): Boolean =
 
 internal fun shouldRelockOnScreenOff(): Boolean = globalRelockOnScreenOff
 
+internal fun shouldRelockOnTaskRemoved(): Boolean = globalRelockOnTaskRemoved
+
 internal fun shouldPreventModuleUninstall(): Boolean = globalPreventModuleUninstall
 
 internal fun loadHookPrefs(prefs: SharedPreferences) {
     globalRelockDelaySeconds = Prefs.RELOCK_DELAY_SECONDS.read(prefs)
     globalRelockOnScreenOff = Prefs.RELOCK_ON_SCREEN_OFF.read(prefs)
+    globalRelockOnTaskRemoved = Prefs.RELOCK_ON_TASK_REMOVED.read(prefs)
     globalBlockScreenshots = Prefs.BLOCK_SCREENSHOTS.read(prefs)
     globalPreventModuleUninstall = Prefs.PREVENT_MODULE_UNINSTALL.read(prefs)
     appRelockOverrides.clear()
@@ -121,6 +126,7 @@ internal fun loadHookPrefs(prefs: SharedPreferences) {
     Logger.debug {
         "prefs loaded relockDelay=$globalRelockDelaySeconds " +
             "relockOnScreenOff=$globalRelockOnScreenOff " +
+            "relockOnTaskRemoved=$globalRelockOnTaskRemoved " +
             "blockScreenshots=$globalBlockScreenshots " +
             "preventUninstall=$globalPreventModuleUninstall " +
             "relockOverrides=${appRelockOverrides.size} " +
