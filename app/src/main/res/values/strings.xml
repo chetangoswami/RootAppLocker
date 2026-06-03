@@ -70,6 +70,8 @@
 
     <string name="settings_hide_launcher">Hide from launcher</string>
     <string name="settings_hide_launcher_summary">Hides app from launcher. You can still open it from Xposed manager</string>
+    <string name="settings_hide_launcher_confirm_title">Hide from launcher?</string>
+    <string name="settings_hide_launcher_confirm_body">The app icon will be removed from your launcher. You can open it only from your Xposed manager.</string>
 
     <string name="settings_lock">Lock behavior</string>
     <string name="settings_protection">Privacy &amp; stealth</string>

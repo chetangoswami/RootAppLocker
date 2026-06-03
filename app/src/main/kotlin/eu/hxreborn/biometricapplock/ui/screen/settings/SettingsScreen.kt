@@ -29,12 +29,14 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -95,6 +97,7 @@ fun SettingsScreen(
     var showLogActions by remember { mutableStateOf(false) }
     var pendingSaveFile by remember { mutableStateOf<File?>(null) }
     var launcherIconHidden by remember { mutableStateOf(!LauncherIconHelper.isLauncherIconVisible(context)) }
+    var showHideLauncherConfirm by remember { mutableStateOf(false) }
 
     val saveLogsLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
@@ -131,6 +134,30 @@ fun SettingsScreen(
                 showRelockDialog = false
             },
             onDismiss = { showRelockDialog = false },
+        )
+    }
+
+    if (showHideLauncherConfirm) {
+        AlertDialog(
+            onDismissRequest = { showHideLauncherConfirm = false },
+            title = { Text(stringResource(R.string.settings_hide_launcher_confirm_title)) },
+            text = { Text(stringResource(R.string.settings_hide_launcher_confirm_body)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        LauncherIconHelper.setLauncherIconVisible(context, false)
+                        launcherIconHidden = true
+                        showHideLauncherConfirm = false
+                    },
+                ) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showHideLauncherConfirm = false }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            },
         )
     }
 
@@ -295,9 +322,12 @@ fun SettingsScreen(
                     summary = stringResource(R.string.settings_hide_launcher_summary),
                     position = SectionPosition.Bottom,
                     onClick = {
-                        val hidden = !launcherIconHidden
-                        LauncherIconHelper.setLauncherIconVisible(context, !hidden)
-                        launcherIconHidden = hidden
+                        if (launcherIconHidden) {
+                            LauncherIconHelper.setLauncherIconVisible(context, true)
+                            launcherIconHidden = false
+                        } else {
+                            showHideLauncherConfirm = true
+                        }
                     },
                     trailing = {
                         LockSwitch(checked = launcherIconHidden, onCheckedChange = null)
