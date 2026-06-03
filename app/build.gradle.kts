@@ -1,3 +1,7 @@
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -9,6 +13,21 @@ val cfgModuleName: String = providers.gradleProperty("module.name").get()
 val cfgModuleAuthor: String = providers.gradleProperty("module.author").get()
 val cfgModuleDescription: String = providers.gradleProperty("module.description").get()
 val cfgXposedApi: Int = providers.gradleProperty("xposed.api").get().toInt()
+
+val gitSha: String =
+    runCatching {
+        providers
+            .exec { commandLine("git", "rev-parse", "--short", "HEAD") }
+            .standardOutput.asText
+            .get()
+            .trim()
+    }.getOrDefault("nogit")
+
+val buildTimeUtc: String =
+    DateTimeFormatter
+        .ofPattern("yyyy-MM-dd HH:mm 'UTC'")
+        .withZone(ZoneOffset.UTC)
+        .format(Instant.now())
 
 android {
     namespace = "eu.hxreborn.biometricapplock"
@@ -23,6 +42,8 @@ android {
         versionName = project.property("version.name").toString()
 
         buildConfigField("int", "LIBXPOSED_API_VERSION", "$cfgXposedApi")
+        buildConfigField("String", "GIT_SHA", "\"$gitSha\"")
+        buildConfigField("String", "BUILD_TIME", "\"$buildTimeUtc\"")
     }
 
     buildFeatures {
