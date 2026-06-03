@@ -48,7 +48,7 @@ import eu.hxreborn.biometricapplock.R
 import eu.hxreborn.biometricapplock.ui.theme.Tokens
 import kotlinx.coroutines.launch
 
-// Save runs SAF, Send opens the share sheet. Both return false to keep the sheet open on failure.
+// Save runs SAF and Send opens the share sheet, both returning false to keep the sheet open on failure
 @Composable
 fun LogActionsSheet(
     onSave: suspend () -> Boolean,

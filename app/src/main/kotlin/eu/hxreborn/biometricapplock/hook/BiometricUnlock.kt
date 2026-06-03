@@ -8,8 +8,8 @@ import android.os.Handler
 import eu.hxreborn.biometricapplock.BiometricAuthActivity
 import eu.hxreborn.biometricapplock.util.Logger
 
-// consumes the auth token and unlocks the package, returning the entry to resume; null when this
-// is not a valid auth pass
+// consumes the auth token and unlocks the package, returning the entry to resume,
+// or null when this is not a valid auth pass
 internal fun resolveAuthToken(
     intent: Intent?,
     packageName: String?,

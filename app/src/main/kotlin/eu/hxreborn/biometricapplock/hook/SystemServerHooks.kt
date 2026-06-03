@@ -248,7 +248,7 @@ private fun XposedModule.hookTaskRemoved(classLoader: ClassLoader) {
                 "com.android.server.wm.ActivityTaskSupervisor",
                 "com.android.server.wm.ActivityStackSupervisor",
             )
-        // both removal-method names are tried so the hook survives the A13 to A14 rename
+        // tries both removal-method names so the hook survives the A13 to A14 rename
         val method =
             supervisorClass.declaredMethods.firstOrNull {
                 it.name == "cleanUpRemovedTask" || it.name == "cleanUpRemovedTaskLocked"

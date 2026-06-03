@@ -62,7 +62,7 @@ internal fun SelfLockScreen(
             state is SelfLockState.Locked && state.error -> R.string.self_lock_error_failed
             else -> null
         }
-    // Hold the last message so it stays readable while the error row animates out.
+    // Hold the last message so it stays readable while the error row animates out
     var lastErrorRes by remember { mutableIntStateOf(R.string.self_lock_error_failed) }
     LaunchedEffect(errorRes) {
         if (errorRes != null) lastErrorRes = errorRes
@@ -72,7 +72,7 @@ internal fun SelfLockScreen(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        // Top lighter than bottom so the content sits above the system biometric sheet.
+        // Top lighter than bottom so the content sits above the system biometric sheet
         Spacer(Modifier.weight(1f))
         Column(
             modifier = Modifier.fillMaxWidth().padding(horizontal = Tokens.ScreenHorizontalPadding),

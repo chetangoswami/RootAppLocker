@@ -20,8 +20,8 @@ object DiagnosticsExporter {
 
     private const val CONTACT_EMAIL = "hxreborn@duck.com"
 
-    // system_server hooks log to LSPosed's own file, the module process logs to logcat.
-    // -b all reads every logcat buffer so nothing is missed if a line lands off the main one.
+    // system_server hooks log to LSPosed's own file while the module process logs to logcat
+    // -b all reads every logcat buffer so nothing is missed if a line lands off the main one
     private const val HOOK_LOG_COMMAND =
         "( grep -h ${Logger.TAG} /data/adb/lspd/log.old/verbose_*.log; " +
             "grep -h ${Logger.TAG} /data/adb/lspd/log/verbose_*.log ) 2>/dev/null"

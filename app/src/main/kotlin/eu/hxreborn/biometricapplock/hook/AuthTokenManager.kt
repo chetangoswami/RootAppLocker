@@ -5,8 +5,6 @@ import android.os.SystemClock
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
-// one-time tokens bridging the hook and the auth activity, each holding the exact launch we
-// intercepted so the auth pass can resume it instead of a rebuilt intent
 private const val TOKEN_TTL_MS = 2 * 60 * 1000L
 
 internal class PendingAuth(
