@@ -90,11 +90,23 @@ private val appRelockOverrides = ConcurrentHashMap<String, Int>()
 
 private val appBlockScreenshotsOverrides = ConcurrentHashMap<String, Boolean>()
 
+private val appAllowedActivities = ConcurrentHashMap<String, Set<String>>()
+
 internal fun getEffectiveRelockDelay(pkg: String): Int =
     appRelockOverrides[pkg] ?: globalRelockDelaySeconds
 
 internal fun shouldBlockScreenshots(pkg: String): Boolean =
     appBlockScreenshotsOverrides[pkg] ?: globalBlockScreenshots
+
+internal fun isActivityAllowed(
+    pkg: String,
+    className: String?,
+    targetActivity: String?,
+): Boolean {
+    val allowed = appAllowedActivities[pkg] ?: return false
+    if (className != null && className in allowed) return true
+    return targetActivity != null && targetActivity in allowed
+}
 
 internal fun shouldRelockOnScreenOff(): Boolean = globalRelockOnScreenOff
 
@@ -113,6 +125,7 @@ internal fun loadHookPrefs(prefs: SharedPreferences) {
     globalUseOpaqueUnlockPrompt = Prefs.USE_OPAQUE_UNLOCK_PROMPT.read(prefs)
     appRelockOverrides.clear()
     appBlockScreenshotsOverrides.clear()
+    appAllowedActivities.clear()
     prefs.all.keys.forEach { key ->
         if (!key.startsWith("app_override:")) return@forEach
         when {
@@ -125,6 +138,17 @@ internal fun loadHookPrefs(prefs: SharedPreferences) {
                 val pkg = key.removePrefix("app_override:").removeSuffix(":block_screenshots")
                 appBlockScreenshotsOverrides[pkg] = prefs.getBoolean(key, false)
             }
+
+            key.endsWith(":allowed_activities") -> {
+                val pkg = key.removePrefix("app_override:").removeSuffix(":allowed_activities")
+                val activities =
+                    prefs
+                        .getString(key, "")
+                        ?.split('\n')
+                        ?.filterTo(mutableSetOf()) { it.isNotBlank() }
+                        .orEmpty()
+                if (activities.isNotEmpty()) appAllowedActivities[pkg] = activities
+            }
         }
     }
     Logger.debug {
@@ -135,6 +159,7 @@ internal fun loadHookPrefs(prefs: SharedPreferences) {
             "preventUninstall=$globalPreventModuleUninstall " +
             "opaquePrompt=$globalUseOpaqueUnlockPrompt " +
             "relockOverrides=${appRelockOverrides.size} " +
-            "blockOverrides=${appBlockScreenshotsOverrides.size}"
+            "blockOverrides=${appBlockScreenshotsOverrides.size} " +
+            "allowActivityOverrides=${appAllowedActivities.size}"
     }
 }

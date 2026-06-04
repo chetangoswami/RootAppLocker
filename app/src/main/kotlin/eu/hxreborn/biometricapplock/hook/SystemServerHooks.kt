@@ -139,6 +139,10 @@ private fun XposedModule.hookLaunchIntercept(classLoader: ClassLoader) {
             if (result == true) return@intercept true
             if (packageName == null || packageName !in lockedPackages) return@intercept false
             if (intent?.hasCategory(Intent.CATEGORY_HOME) == true) return@intercept false
+            if (isActivityAllowed(packageName, activityInfo.name, activityInfo.targetActivity)) {
+                Logger.debug { "intercept allowlisted pkg=$packageName comp=${activityInfo.name}" }
+                return@intercept false
+            }
             if (isUnlocked(packageName)) {
                 refreshUnlock(packageName)
                 Logger.debug { "intercept pass pkg=$packageName comp=${activityInfo.name}" }

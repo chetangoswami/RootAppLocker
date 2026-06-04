@@ -35,6 +35,15 @@ open class BiometricAuthActivity : Activity() {
         }
         Log.i(TAG, "gating $targetPkg via=${javaClass.simpleName}")
         val pkg = targetPkg ?: return
+        intent.getStringExtra(EXTRA_TARGET_ACTIVITY)?.let { activity ->
+            runCatching {
+                App
+                    .from(
+                        this,
+                    ).appOverridesRepository
+                    .recordRecentActivity(pkg, activity)
+            }
+        }
         val label =
             runCatching {
                 packageManager.getApplicationInfo(pkg, 0).loadLabel(packageManager).toString()
@@ -145,6 +154,7 @@ open class BiometricAuthActivity : Activity() {
 
         const val EXTRA_TARGET_PKG = "$MODULE_PACKAGE.TARGET_PKG"
         const val EXTRA_AUTH_TOKEN = "$MODULE_PACKAGE.AUTH_TOKEN"
+        const val EXTRA_TARGET_ACTIVITY = "$MODULE_PACKAGE.TARGET_ACTIVITY"
 
         private const val AUTH_OK = 1
         private const val AUTH_CANCELLED = 2

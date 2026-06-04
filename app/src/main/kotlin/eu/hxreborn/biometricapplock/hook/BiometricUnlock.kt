@@ -54,7 +54,8 @@ internal fun tryRedirect(
             val userId = reflection.userIdField.getInt(interceptor)
             val startFlags = reflection.startFlagsField.getInt(interceptor)
 
-            val authIntent = buildAuthIntent(packageName, token, shouldUseOpaqueUnlockPrompt())
+            val authIntent =
+                buildAuthIntent(packageName, token, shouldUseOpaqueUnlockPrompt(), className)
             originalIntent?.let { stashLaunch(token, it) }
 
             val resolveArgs =
@@ -144,6 +145,7 @@ private fun buildAuthIntent(
     targetPackageName: String,
     token: String,
     opaque: Boolean,
+    className: String? = null,
 ) = Intent().apply {
     val authActivity =
         if (opaque) {
@@ -154,5 +156,8 @@ private fun buildAuthIntent(
     component = ComponentName(BiometricAuthActivity.MODULE_PACKAGE, authActivity)
     putExtra(BiometricAuthActivity.EXTRA_TARGET_PKG, targetPackageName)
     putExtra(BiometricAuthActivity.EXTRA_AUTH_TOKEN, token)
+    if (!className.isNullOrEmpty()) {
+        putExtra(BiometricAuthActivity.EXTRA_TARGET_ACTIVITY, className)
+    }
     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 }

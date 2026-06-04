@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Screenshot
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Tune
@@ -71,6 +72,7 @@ fun AppDetailScreen(
     packageName: String,
     onBack: () -> Unit,
     contentPadding: PaddingValues,
+    onNavigateToAllowedActivities: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -229,6 +231,23 @@ fun AppDetailScreen(
                         )
                     },
                     modifier = disabledModifier,
+                )
+            }
+
+            item {
+                PreferenceRow(
+                    icon = Icons.Outlined.Apps,
+                    title = stringResource(R.string.app_detail_allowed_section),
+                    summary =
+                        if (overrides.allowedActivities.isEmpty()) {
+                            stringResource(R.string.app_detail_allowed_row_empty)
+                        } else {
+                            stringResource(
+                                R.string.app_detail_allowed_count,
+                                overrides.allowedActivities.size,
+                            )
+                        },
+                    onClick = { onNavigateToAllowedActivities(packageName) },
                 )
             }
 

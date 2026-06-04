@@ -144,6 +144,18 @@
     <string name="app_detail_block_screenshots_title">Block screenshots</string>
     <string name="app_detail_block_screenshots_summary">Blocks screenshots, screen recording, and the recents preview inside selected apps. May not apply if another module bypasses FLAG_SECURE</string>
 
+    <string name="app_detail_allowed_section">Allowed activities</string>
+    <string name="app_detail_allowed_row_empty">Choose activities that skip the unlock prompt</string>
+    <string name="app_detail_allowed_count">%1$d allowed</string>
+    <string name="app_detail_allowed_screen_desc">Checked activities skip the unlock prompt. Going back from one can reach the rest of the app without asking again.</string>
+    <string name="app_detail_allowed_recent">Prompted %1$s</string>
+    <string name="app_detail_allowed_main_badge">Launcher</string>
+    <string name="app_detail_allowed_main_confirm_title">Allow the launcher activity?</string>
+    <string name="app_detail_allowed_main_confirm_body">This is the screen that opens when you tap the app icon. Allowing it leaves the whole app unprotected.</string>
+    <string name="app_detail_allowed_search">Search activities</string>
+    <string name="app_detail_allowed_no_matches">No activities match</string>
+    <string name="app_detail_allowed_browse_empty">This app declares no activities</string>
+
     <string name="app_detail_section_advanced">Advanced</string>
     <string name="app_detail_open_app_info_title">Open system app info</string>
     <string name="app_detail_open_app_info_summary">Force stop the app here if changes aren\'t taking effect.</string>
