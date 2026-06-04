@@ -1,6 +1,26 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "entries": [
+    {
+      "type": "feat",
+      "title": "add activity whitelist",
+      "description": "Adds an option to whitelist activities from any app.",
+      "version": "1.4.0",
+      "date": "2026-06-04",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/a0e429192229f7e146fd2b65f4e8506a70479ab1",
+      "scope": null,
+      "breaking": false
+    },
+    {
+      "type": "feat",
+      "title": "add solid unlock screen",
+      "description": "Adds an option for a solid unlock screen on phones where the see-through one closes by itself.",
+      "version": "1.4.0",
+      "date": "2026-06-04",
+      "url": "https://github.com/hxreborn/biometric-app-lock/commit/b8a4573e2701ef69ee2cd131e9ee85b876490b4d",
+      "scope": null,
+      "breaking": false
+    },
     {
       "type": "refactor",
       "title": "move log export to its own section",
@@ -239,66 +259,6 @@
       "date": "2026-06-01",
       "url": "https://github.com/hxreborn/biometric-app-lock/commit/b5632b3fca35681f1d8017306a2bf30cf647e3cc",
       "scope": "app",
-      "breaking": false
-    },
-    {
-      "type": "fix",
-      "title": "drop the screen flash after biometric unlock",
-      "description": "Unlocking no longer flashes the home screen before the app appears.",
-      "version": "1.0.1",
-      "date": "2026-05-29",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/ea6051c13d24b73bf5b641a7a5a8da3d75c7b612",
-      "scope": "auth",
-      "breaking": false
-    },
-    {
-      "type": "fix",
-      "title": "open the locked app when launching from a notification",
-      "description": "Tapping a notification for a locked app now opens it after you authenticate.",
-      "version": "1.0.1",
-      "date": "2026-05-29",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/e4ef4c56b9117589573f8fa20cb0185dd5be63bd",
-      "scope": "auth",
-      "breaking": false
-    },
-    {
-      "type": "fix",
-      "title": "clear unlock state when a locked app is removed or wiped",
-      "description": "Uninstalling, updating, or clearing data for a locked app now drops its unlock token so the next launch requires biometric authentication.",
-      "version": "1.0.1",
-      "date": "2026-05-28",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/cde73859848e1638beb3b4c07486a4a591770822",
-      "scope": "hook",
-      "breaking": false
-    },
-    {
-      "type": "feat",
-      "title": "link to the issue tracker from about",
-      "description": "The About screen now has a direct link to GitHub issues.",
-      "version": "1.0.1",
-      "date": "2026-05-28",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/e40da716ef722d1c15901b0be81c9dda55154ffe",
-      "scope": "ui",
-      "breaking": false
-    },
-    {
-      "type": "feat",
-      "title": "spin the about screen badge",
-      "description": "The About screen badge now spins slowly.",
-      "version": "1.0.1",
-      "date": "2026-05-28",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/b3fbdbed41611a44a7468f3d963f36e2caabf7f0",
-      "scope": "ui",
-      "breaking": false
-    },
-    {
-      "type": "perf",
-      "title": "skip activity recreation on biometric unlock",
-      "description": "The post-auth relaunch now sends a full MAIN + LAUNCHER intent so Android brings the existing task forward instead of recreating its top activity.",
-      "version": "1.0.1",
-      "date": "2026-05-28",
-      "url": "https://github.com/hxreborn/biometric-app-lock/commit/feb81fa6336b723204aa0b5bc970e819e613d7c5",
-      "scope": "auth",
       "breaking": false
     }
   ]
