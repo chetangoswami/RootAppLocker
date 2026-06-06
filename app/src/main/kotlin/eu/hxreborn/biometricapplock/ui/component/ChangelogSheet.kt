@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Undo
@@ -23,13 +23,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.BuildConfig
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.updates.ChangeType
-import eu.hxreborn.biometricapplock.updates.UpdateSheetState
-import eu.hxreborn.biometricapplock.updates.toSheetState
+import com.example.rootapplocker.App
+import com.example.rootapplocker.BuildConfig
+import com.example.rootapplocker.R
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.updates.ChangeType
+import com.example.rootapplocker.updates.UpdateSheetState
+import com.example.rootapplocker.updates.toSheetState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

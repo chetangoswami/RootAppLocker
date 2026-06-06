@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.screen
+package com.example.rootapplocker.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -15,8 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.theme.Tokens
 
 @Composable
 fun relockDelaySummary(seconds: Int): String =

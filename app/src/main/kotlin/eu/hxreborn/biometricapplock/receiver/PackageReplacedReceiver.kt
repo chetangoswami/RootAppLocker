@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.receiver
+package com.example.rootapplocker.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context

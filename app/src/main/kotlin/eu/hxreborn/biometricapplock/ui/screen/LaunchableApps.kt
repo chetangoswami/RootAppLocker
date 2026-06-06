@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.screen
+package com.example.rootapplocker.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.Intent

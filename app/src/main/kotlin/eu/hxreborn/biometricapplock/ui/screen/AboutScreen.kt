@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 
-package eu.hxreborn.biometricapplock.ui.screen
+package com.example.rootapplocker.ui.screen
 
 import android.content.Intent
 import androidx.compose.animation.core.LinearEasing
@@ -54,15 +54,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
-import eu.hxreborn.biometricapplock.BuildConfig
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.component.ExpandedTitle
-import eu.hxreborn.biometricapplock.ui.component.SectionPosition
-import eu.hxreborn.biometricapplock.ui.component.SoftBlobBadge
-import eu.hxreborn.biometricapplock.ui.screen.settings.PreferenceRow
-import eu.hxreborn.biometricapplock.ui.screen.settings.SettingsSectionHeader
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.viewmodel.FrameworkInfo
+import com.example.rootapplocker.BuildConfig
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.component.ExpandedTitle
+import com.example.rootapplocker.ui.component.SectionPosition
+import com.example.rootapplocker.ui.component.SoftBlobBadge
+import com.example.rootapplocker.ui.screen.settings.PreferenceRow
+import com.example.rootapplocker.ui.screen.settings.SettingsSectionHeader
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.viewmodel.FrameworkInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.prefs
+package com.example.rootapplocker.prefs
 
 enum class ThemeMode {
     FOLLOW_SYSTEM,

@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.ui.theme.Tokens
 
 enum class SectionPosition { Single, Top, Middle, Bottom }
 

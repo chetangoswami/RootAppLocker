@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.hook
+package com.example.rootapplocker.hook
 
 import android.content.Intent
 import android.os.SystemClock

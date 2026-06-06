@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -34,9 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.graphics.drawable.toBitmap
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.screen.settings.SettingsSectionHeader
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.screen.settings.SettingsSectionHeader
+import com.example.rootapplocker.ui.theme.Tokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

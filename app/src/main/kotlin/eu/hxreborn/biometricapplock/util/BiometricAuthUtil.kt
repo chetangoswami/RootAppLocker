@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.util
+package com.example.rootapplocker.util
 
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricManager.Authenticators

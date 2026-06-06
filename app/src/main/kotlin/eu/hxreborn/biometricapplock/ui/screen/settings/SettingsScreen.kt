@@ -1,7 +1,7 @@
 @file:Suppress("AssignedValueIsNeverRead")
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 
-package eu.hxreborn.biometricapplock.ui.screen.settings
+package com.example.rootapplocker.ui.screen.settings
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -55,27 +55,27 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.BuildConfig
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.prefs.AppPrefs
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.prefs.ThemeMode
-import eu.hxreborn.biometricapplock.ui.component.ExpandedTitle
-import eu.hxreborn.biometricapplock.ui.component.FeatureSheetItem
-import eu.hxreborn.biometricapplock.ui.component.LockSwitch
-import eu.hxreborn.biometricapplock.ui.component.LogActionsSheet
-import eu.hxreborn.biometricapplock.ui.component.SectionPosition
-import eu.hxreborn.biometricapplock.ui.component.WhatsNewSheet
-import eu.hxreborn.biometricapplock.ui.component.changeTypeLabelRes
-import eu.hxreborn.biometricapplock.ui.screen.RelockDelayDialog
-import eu.hxreborn.biometricapplock.ui.screen.relockDelaySummary
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.util.LauncherIconHelper
-import eu.hxreborn.biometricapplock.ui.viewmodel.FrameworkInfo
-import eu.hxreborn.biometricapplock.updates.ChangeType
-import eu.hxreborn.biometricapplock.updates.UpdateSheetState
-import eu.hxreborn.biometricapplock.util.DiagnosticsExporter
+import com.example.rootapplocker.App
+import com.example.rootapplocker.BuildConfig
+import com.example.rootapplocker.R
+import com.example.rootapplocker.prefs.AppPrefs
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.prefs.ThemeMode
+import com.example.rootapplocker.ui.component.ExpandedTitle
+import com.example.rootapplocker.ui.component.FeatureSheetItem
+import com.example.rootapplocker.ui.component.LockSwitch
+import com.example.rootapplocker.ui.component.LogActionsSheet
+import com.example.rootapplocker.ui.component.SectionPosition
+import com.example.rootapplocker.ui.component.WhatsNewSheet
+import com.example.rootapplocker.ui.component.changeTypeLabelRes
+import com.example.rootapplocker.ui.screen.RelockDelayDialog
+import com.example.rootapplocker.ui.screen.relockDelaySummary
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.util.LauncherIconHelper
+import com.example.rootapplocker.ui.viewmodel.FrameworkInfo
+import com.example.rootapplocker.updates.ChangeType
+import com.example.rootapplocker.updates.UpdateSheetState
+import com.example.rootapplocker.util.DiagnosticsExporter
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.io.File

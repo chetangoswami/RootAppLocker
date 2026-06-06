@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
@@ -23,10 +23,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.viewmodel.ModuleStatus
-import eu.hxreborn.biometricapplock.ui.viewmodel.ServiceLoadEvent
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.viewmodel.ModuleStatus
+import com.example.rootapplocker.ui.viewmodel.ServiceLoadEvent
 
 private data class StatusVisual(
     val icon: ImageVector,

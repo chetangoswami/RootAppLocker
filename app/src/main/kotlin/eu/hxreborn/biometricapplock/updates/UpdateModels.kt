@@ -1,7 +1,7 @@
-package eu.hxreborn.biometricapplock.updates
+package com.example.rootapplocker.updates
 
 import androidx.annotation.StringRes
-import eu.hxreborn.biometricapplock.R
+import com.example.rootapplocker.R
 import kotlinx.serialization.Serializable
 
 sealed interface UpdateState {

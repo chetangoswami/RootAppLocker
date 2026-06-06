@@ -3,7 +3,7 @@
     ExperimentalMaterial3ExpressiveApi::class,
 )
 
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import android.text.format.DateUtils
 import androidx.compose.animation.AnimatedContent
@@ -83,12 +83,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.updates.ChangeType
-import eu.hxreborn.biometricapplock.updates.FailureCause
-import eu.hxreborn.biometricapplock.updates.UpdateSheetState
-import eu.hxreborn.biometricapplock.updates.titleRes
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.updates.ChangeType
+import com.example.rootapplocker.updates.FailureCause
+import com.example.rootapplocker.updates.UpdateSheetState
+import com.example.rootapplocker.updates.titleRes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

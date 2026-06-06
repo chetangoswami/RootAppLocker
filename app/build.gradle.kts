@@ -11,7 +11,7 @@ val cfgModuleDescription: String = providers.gradleProperty("module.description"
 val cfgXposedApi: Int = providers.gradleProperty("xposed.api").get().toInt()
 
 android {
-    namespace = "eu.hxreborn.biometricapplock"
+    namespace = "com.example.rootapplocker"
     compileSdk = 37
 
     defaultConfig {

@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.util
+package com.example.rootapplocker.util
 
 import android.content.ClipDescription
 import android.content.Context
@@ -6,8 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
-import eu.hxreborn.biometricapplock.BuildConfig
-import eu.hxreborn.biometricapplock.R
+import com.example.rootapplocker.BuildConfig
+import com.example.rootapplocker.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File

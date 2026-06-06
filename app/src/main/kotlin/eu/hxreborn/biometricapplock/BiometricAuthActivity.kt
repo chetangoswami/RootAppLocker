@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock
+package com.example.rootapplocker
 
 import android.app.Activity
 import android.content.Intent
@@ -8,8 +8,8 @@ import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.util.Log
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.util.pickAuthenticators
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.util.pickAuthenticators
 
 private const val TAG = "BiometricAppLock"
 
@@ -146,7 +146,7 @@ open class BiometricAuthActivity : Activity() {
     }
 
     companion object {
-        const val MODULE_PACKAGE = "eu.hxreborn.biometricapplock"
+        const val MODULE_PACKAGE = "com.example.rootapplocker"
         const val AUTH_ACTIVITY = "$MODULE_PACKAGE.BiometricAuthActivity"
 
         // opaque-window variant, launched when the solid unlock screen is enabled

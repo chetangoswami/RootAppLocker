@@ -3,7 +3,7 @@
     ExperimentalMaterial3ExpressiveApi::class,
 )
 
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
@@ -44,8 +44,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.theme.Tokens
 import kotlinx.coroutines.launch
 
 // Save runs SAF and Send opens the share sheet, both returning false to keep the sheet open on failure

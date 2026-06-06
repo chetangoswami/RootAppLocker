@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui
+package com.example.rootapplocker.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -37,9 +37,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.viewmodel.SelfLockState
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.viewmodel.SelfLockState
 
 @Composable
 internal fun SelfLockScreen(

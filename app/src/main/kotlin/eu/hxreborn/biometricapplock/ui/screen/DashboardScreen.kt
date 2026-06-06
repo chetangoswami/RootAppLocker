@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.screen
+package com.example.rootapplocker.ui.screen
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,13 +17,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.component.BiometricHardwareSection
-import eu.hxreborn.biometricapplock.ui.component.ExpandedTitle
-import eu.hxreborn.biometricapplock.ui.component.LockedAppsSection
-import eu.hxreborn.biometricapplock.ui.component.StatusCard
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.viewmodel.ScopeViewModel
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.component.BiometricHardwareSection
+import com.example.rootapplocker.ui.component.ExpandedTitle
+import com.example.rootapplocker.ui.component.LockedAppsSection
+import com.example.rootapplocker.ui.component.StatusCard
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.viewmodel.ScopeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

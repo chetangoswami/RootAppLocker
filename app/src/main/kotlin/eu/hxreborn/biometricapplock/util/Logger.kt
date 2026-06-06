@@ -1,8 +1,8 @@
-package eu.hxreborn.biometricapplock.util
+package com.example.rootapplocker.util
 
 import android.util.Log
-import eu.hxreborn.biometricapplock.BuildConfig
-import eu.hxreborn.biometricapplock.module
+import com.example.rootapplocker.BuildConfig
+import com.example.rootapplocker.module
 
 object Logger {
     const val TAG = "BiometricAppLock"

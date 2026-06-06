@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3ComponentOverrideApi::class)
 
-package eu.hxreborn.biometricapplock.ui.navigation
+package com.example.rootapplocker.ui.navigation
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.ui.theme.Tokens
 import kotlinx.coroutines.launch
 
 internal val LocalSelectedIndex: ProvidableCompositionLocal<Int> =

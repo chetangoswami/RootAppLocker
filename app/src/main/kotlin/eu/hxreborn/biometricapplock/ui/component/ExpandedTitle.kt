@@ -1,11 +1,11 @@
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.ui.theme.Tokens
 
 @Composable
 fun ExpandedTitle(text: String) {

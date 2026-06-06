@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.util
+package com.example.rootapplocker.ui.util
 
 import android.content.Context
 import android.content.Intent

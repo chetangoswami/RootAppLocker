@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.hook
+package com.example.rootapplocker.hook
 
 import android.app.TaskInfo
 import android.content.Context
@@ -8,10 +8,10 @@ import android.os.Build
 import android.os.Handler
 import android.os.SystemClock
 import android.widget.Toast
-import eu.hxreborn.biometricapplock.BiometricAuthActivity
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.receiver.registerPackageEvents
-import eu.hxreborn.biometricapplock.util.Logger
+import com.example.rootapplocker.BiometricAuthActivity
+import com.example.rootapplocker.R
+import com.example.rootapplocker.receiver.registerPackageEvents
+import com.example.rootapplocker.util.Logger
 import io.github.libxposed.api.XposedModule
 import java.util.concurrent.atomic.AtomicBoolean
 

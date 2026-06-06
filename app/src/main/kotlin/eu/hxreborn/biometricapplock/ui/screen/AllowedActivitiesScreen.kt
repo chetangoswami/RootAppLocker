@@ -1,7 +1,7 @@
 @file:Suppress("AssignedValueIsNeverRead")
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package eu.hxreborn.biometricapplock.ui.screen
+package com.example.rootapplocker.ui.screen
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -57,13 +57,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.prefs.AppOverrides
-import eu.hxreborn.biometricapplock.ui.component.ExpandedTitle
-import eu.hxreborn.biometricapplock.ui.component.SectionCard
-import eu.hxreborn.biometricapplock.ui.component.SectionPosition
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.App
+import com.example.rootapplocker.R
+import com.example.rootapplocker.prefs.AppOverrides
+import com.example.rootapplocker.ui.component.ExpandedTitle
+import com.example.rootapplocker.ui.component.SectionCard
+import com.example.rootapplocker.ui.component.SectionPosition
+import com.example.rootapplocker.ui.theme.Tokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

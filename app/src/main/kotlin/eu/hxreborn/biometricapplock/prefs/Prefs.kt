@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.prefs
+package com.example.rootapplocker.prefs
 
 object Prefs {
     const val GROUP = "biometric_app_lock_prefs"

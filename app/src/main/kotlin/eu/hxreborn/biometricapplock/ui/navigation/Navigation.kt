@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.navigation
+package com.example.rootapplocker.ui.navigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -69,16 +69,16 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.ui.NavDisplay
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.ui.screen.AboutScreen
-import eu.hxreborn.biometricapplock.ui.screen.AllowedActivitiesScreen
-import eu.hxreborn.biometricapplock.ui.screen.AppDetailScreen
-import eu.hxreborn.biometricapplock.ui.screen.AppListScreen
-import eu.hxreborn.biometricapplock.ui.screen.DashboardScreen
-import eu.hxreborn.biometricapplock.ui.screen.settings.SettingsScreen
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.viewmodel.ScopeViewModel
+import com.example.rootapplocker.App
+import com.example.rootapplocker.R
+import com.example.rootapplocker.ui.screen.AboutScreen
+import com.example.rootapplocker.ui.screen.AllowedActivitiesScreen
+import com.example.rootapplocker.ui.screen.AppDetailScreen
+import com.example.rootapplocker.ui.screen.AppListScreen
+import com.example.rootapplocker.ui.screen.DashboardScreen
+import com.example.rootapplocker.ui.screen.settings.SettingsScreen
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.viewmodel.ScopeViewModel
 import kotlinx.serialization.Serializable
 import soup.compose.material.motion.animation.materialSharedAxisXIn
 import soup.compose.material.motion.animation.materialSharedAxisXOut

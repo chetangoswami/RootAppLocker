@@ -1,12 +1,12 @@
-package eu.hxreborn.biometricapplock.hook
+package com.example.rootapplocker.hook
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Handler
-import eu.hxreborn.biometricapplock.BiometricAuthActivity
-import eu.hxreborn.biometricapplock.util.Logger
+import com.example.rootapplocker.BiometricAuthActivity
+import com.example.rootapplocker.util.Logger
 
 // system_server and the auth activity talk through a one-time token in the launch intent, no
 // broadcasts or binder. the hook creates a token and redirects the launch to the auth activity, and a

@@ -1,9 +1,9 @@
-package eu.hxreborn.biometricapplock.ui.util
+package com.example.rootapplocker.ui.util
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
-import eu.hxreborn.biometricapplock.BuildConfig
+import com.example.rootapplocker.BuildConfig
 
 object LauncherIconHelper {
     private const val ALIAS_NAME = "${BuildConfig.APPLICATION_ID}.LauncherAlias"

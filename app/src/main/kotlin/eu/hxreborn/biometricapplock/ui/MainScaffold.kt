@@ -1,6 +1,6 @@
 @file:Suppress("AssignedValueIsNeverRead")
 
-package eu.hxreborn.biometricapplock.ui
+package com.example.rootapplocker.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -23,19 +23,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.rememberNavBackStack
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.prefs.AppPrefs
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.ui.component.ChangelogSheet
-import eu.hxreborn.biometricapplock.ui.component.DebugBadge
-import eu.hxreborn.biometricapplock.ui.navigation.BottomNav
-import eu.hxreborn.biometricapplock.ui.navigation.ClassicBottomNav
-import eu.hxreborn.biometricapplock.ui.navigation.MainNavDisplay
-import eu.hxreborn.biometricapplock.ui.navigation.Screen
-import eu.hxreborn.biometricapplock.ui.navigation.bottomNavItems
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.viewmodel.ScopeViewModel
-import eu.hxreborn.biometricapplock.updates.UpdateState
+import com.example.rootapplocker.App
+import com.example.rootapplocker.prefs.AppPrefs
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.ui.component.ChangelogSheet
+import com.example.rootapplocker.ui.component.DebugBadge
+import com.example.rootapplocker.ui.navigation.BottomNav
+import com.example.rootapplocker.ui.navigation.ClassicBottomNav
+import com.example.rootapplocker.ui.navigation.MainNavDisplay
+import com.example.rootapplocker.ui.navigation.Screen
+import com.example.rootapplocker.ui.navigation.bottomNavItems
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.viewmodel.ScopeViewModel
+import com.example.rootapplocker.updates.UpdateState
 import kotlinx.coroutines.delay
 
 @Composable

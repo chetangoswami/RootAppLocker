@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.screen.settings
+package com.example.rootapplocker.ui.screen.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +24,9 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
-import eu.hxreborn.biometricapplock.ui.component.SectionCard
-import eu.hxreborn.biometricapplock.ui.component.SectionPosition
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
+import com.example.rootapplocker.ui.component.SectionCard
+import com.example.rootapplocker.ui.component.SectionPosition
+import com.example.rootapplocker.ui.theme.Tokens
 
 @Composable
 fun SettingsSectionHeader(

@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.prefs
+package com.example.rootapplocker.prefs
 
 import android.content.SharedPreferences
 import android.util.Log

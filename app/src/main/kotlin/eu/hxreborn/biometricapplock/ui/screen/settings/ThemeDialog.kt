@@ -1,5 +1,5 @@
 
-package eu.hxreborn.biometricapplock.ui.screen.settings
+package com.example.rootapplocker.ui.screen.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.prefs.ThemeMode
+import com.example.rootapplocker.R
+import com.example.rootapplocker.prefs.ThemeMode
 import android.R as AndroidR
 
 @Composable

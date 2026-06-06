@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Biometric App Locker</string>
-    <string name="module_description">Blocks access to selected apps at the System Framework level until you authenticate via fingerprint or face unlock.</string>
+    <string name="app_name">Root App Locker</string>
+    <string name="module_description">Blocks access to selected apps at the System Framework level until you authenticate.</string>
 
-    <string name="app_bar_title">Biometric App Locker</string>
+    <string name="app_bar_title">Root App Locker</string>
 
     <string name="tab_dashboard">Dashboard</string>
     <string name="tab_apps">Apps</string>
@@ -111,7 +111,7 @@
 
     <string name="about_title">About</string>
     <string name="about_back_cd">Back</string>
-    <string name="about_app_name">Biometric App Locker</string>
+    <string name="about_app_name">Root App Locker</string>
     <string name="about_source_title">Source code</string>
     <string name="about_source_summary">Browse the project on GitHub</string>
     <string name="about_report_issue_title">Report an issue</string>

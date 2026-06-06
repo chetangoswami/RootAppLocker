@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.util
+package com.example.rootapplocker.util
 
 import android.util.Log
 import java.util.UUID

@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.updates
+package com.example.rootapplocker.updates
 
 import android.app.Application
 import android.content.Context
@@ -6,8 +6,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.core.content.edit
-import eu.hxreborn.biometricapplock.BuildConfig
-import eu.hxreborn.biometricapplock.prefs.Prefs
+import com.example.rootapplocker.BuildConfig
+import com.example.rootapplocker.prefs.Prefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,7 +1,7 @@
 @file:Suppress("AssignedValueIsNeverRead")
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 
-package eu.hxreborn.biometricapplock.ui.screen
+package com.example.rootapplocker.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -55,15 +55,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.prefs.AppOverrides
-import eu.hxreborn.biometricapplock.ui.component.ExpandedTitle
-import eu.hxreborn.biometricapplock.ui.component.LockSwitch
-import eu.hxreborn.biometricapplock.ui.screen.settings.PreferenceRow
-import eu.hxreborn.biometricapplock.ui.screen.settings.SettingsSectionHeader
-import eu.hxreborn.biometricapplock.ui.theme.Tokens
-import eu.hxreborn.biometricapplock.ui.util.openAppInfo
+import com.example.rootapplocker.App
+import com.example.rootapplocker.R
+import com.example.rootapplocker.prefs.AppOverrides
+import com.example.rootapplocker.ui.component.ExpandedTitle
+import com.example.rootapplocker.ui.component.LockSwitch
+import com.example.rootapplocker.ui.screen.settings.PreferenceRow
+import com.example.rootapplocker.ui.screen.settings.SettingsSectionHeader
+import com.example.rootapplocker.ui.theme.Tokens
+import com.example.rootapplocker.ui.util.openAppInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

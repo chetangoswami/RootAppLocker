@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.viewmodel
+package com.example.rootapplocker.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

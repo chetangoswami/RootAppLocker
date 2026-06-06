@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.viewmodel
+package com.example.rootapplocker.ui.viewmodel
 
 import android.app.Application
 import android.content.Context
@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.util.RootShell
+import com.example.rootapplocker.App
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.util.RootShell
 import io.github.libxposed.service.XposedService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

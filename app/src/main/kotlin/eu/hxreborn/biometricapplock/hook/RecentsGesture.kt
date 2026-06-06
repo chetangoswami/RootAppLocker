@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.hook
+package com.example.rootapplocker.hook
 
 // https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/app/ActivityOptions.java
 // stable since API 28

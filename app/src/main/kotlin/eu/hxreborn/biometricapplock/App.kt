@@ -1,12 +1,12 @@
-package eu.hxreborn.biometricapplock
+package com.example.rootapplocker
 
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import eu.hxreborn.biometricapplock.prefs.AppOverridesRepository
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.prefs.PrefsRepository
-import eu.hxreborn.biometricapplock.updates.UpdateRepository
+import com.example.rootapplocker.prefs.AppOverridesRepository
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.prefs.PrefsRepository
+import com.example.rootapplocker.updates.UpdateRepository
 import io.github.libxposed.service.XposedService
 import io.github.libxposed.service.XposedServiceHelper
 import java.util.concurrent.CopyOnWriteArrayList

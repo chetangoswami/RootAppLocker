@@ -1,13 +1,13 @@
-package eu.hxreborn.biometricapplock
+package com.example.rootapplocker
 
 import android.content.SharedPreferences
 import android.os.Process
-import eu.hxreborn.biometricapplock.hook.loadHookPrefs
-import eu.hxreborn.biometricapplock.hook.lockedPackages
-import eu.hxreborn.biometricapplock.hook.refreshSecureSurfaces
-import eu.hxreborn.biometricapplock.hook.registerSystemServerHooks
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.util.Logger
+import com.example.rootapplocker.hook.loadHookPrefs
+import com.example.rootapplocker.hook.lockedPackages
+import com.example.rootapplocker.hook.refreshSecureSurfaces
+import com.example.rootapplocker.hook.registerSystemServerHooks
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.util.Logger
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
 import io.github.libxposed.api.XposedModuleInterface.SystemServerStartingParam

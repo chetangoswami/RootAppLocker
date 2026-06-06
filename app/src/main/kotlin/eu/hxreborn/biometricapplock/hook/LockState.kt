@@ -1,10 +1,10 @@
-package eu.hxreborn.biometricapplock.hook
+package com.example.rootapplocker.hook
 
 import android.content.SharedPreferences
 import android.os.SystemClock
-import eu.hxreborn.biometricapplock.BiometricAuthActivity
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.util.Logger
+import com.example.rootapplocker.BiometricAuthActivity
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.util.Logger
 import java.util.concurrent.ConcurrentHashMap
 
 internal const val RELOCK_DELAY_NEVER = -1

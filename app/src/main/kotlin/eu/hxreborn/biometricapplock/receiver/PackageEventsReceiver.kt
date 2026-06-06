@@ -1,12 +1,12 @@
-package eu.hxreborn.biometricapplock.receiver
+package com.example.rootapplocker.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
-import eu.hxreborn.biometricapplock.hook.clearRuntimeStateForPackage
-import eu.hxreborn.biometricapplock.util.Logger
+import com.example.rootapplocker.hook.clearRuntimeStateForPackage
+import com.example.rootapplocker.util.Logger
 
 private val packageEventsReceiver =
     object : BroadcastReceiver() {

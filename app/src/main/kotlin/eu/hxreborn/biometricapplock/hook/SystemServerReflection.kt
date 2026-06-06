@@ -1,8 +1,8 @@
-package eu.hxreborn.biometricapplock.hook
+package com.example.rootapplocker.hook
 
 import android.content.Intent
 import android.os.Build
-import eu.hxreborn.biometricapplock.util.Logger
+import com.example.rootapplocker.util.Logger
 import java.lang.reflect.Executable
 import java.lang.reflect.Field
 import java.lang.reflect.Method

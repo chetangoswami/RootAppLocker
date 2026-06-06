@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.theme
+package com.example.rootapplocker.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -11,7 +11,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import eu.hxreborn.biometricapplock.prefs.ThemeMode
+import com.example.rootapplocker.prefs.ThemeMode
 
 private val LightColorScheme =
     lightColorScheme(

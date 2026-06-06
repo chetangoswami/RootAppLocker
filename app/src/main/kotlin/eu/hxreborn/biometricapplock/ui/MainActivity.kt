@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui
+package com.example.rootapplocker.ui
 
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricManager.Authenticators
@@ -25,16 +25,16 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import eu.hxreborn.biometricapplock.App
-import eu.hxreborn.biometricapplock.R
-import eu.hxreborn.biometricapplock.prefs.AppPrefs
-import eu.hxreborn.biometricapplock.prefs.Prefs
-import eu.hxreborn.biometricapplock.prefs.ThemeMode
-import eu.hxreborn.biometricapplock.ui.theme.BiometricAppLockTheme
-import eu.hxreborn.biometricapplock.ui.viewmodel.ScopeViewModel
-import eu.hxreborn.biometricapplock.ui.viewmodel.SelfLockState
-import eu.hxreborn.biometricapplock.ui.viewmodel.SelfLockViewModel
-import eu.hxreborn.biometricapplock.util.pickAuthenticators
+import com.example.rootapplocker.App
+import com.example.rootapplocker.R
+import com.example.rootapplocker.prefs.AppPrefs
+import com.example.rootapplocker.prefs.Prefs
+import com.example.rootapplocker.prefs.ThemeMode
+import com.example.rootapplocker.ui.theme.BiometricAppLockTheme
+import com.example.rootapplocker.ui.viewmodel.ScopeViewModel
+import com.example.rootapplocker.ui.viewmodel.SelfLockState
+import com.example.rootapplocker.ui.viewmodel.SelfLockViewModel
+import com.example.rootapplocker.util.pickAuthenticators
 import io.github.libxposed.service.XposedService
 import io.github.libxposed.service.XposedServiceHelper
 

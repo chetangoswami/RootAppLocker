@@ -1,5 +1,5 @@
 
-package eu.hxreborn.biometricapplock.ui.component
+package com.example.rootapplocker.ui.component
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons

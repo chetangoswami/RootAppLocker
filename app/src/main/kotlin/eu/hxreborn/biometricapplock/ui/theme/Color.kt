@@ -1,4 +1,4 @@
-package eu.hxreborn.biometricapplock.ui.theme
+package com.example.rootapplocker.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
