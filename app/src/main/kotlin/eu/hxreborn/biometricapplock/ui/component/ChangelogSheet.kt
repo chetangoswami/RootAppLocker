@@ -1,7 +1,7 @@
 package com.example.rootapplocker.ui.component
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Undo
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.BugReport
@@ -115,7 +115,7 @@ internal fun changeTypeIcon(type: ChangeType): ImageVector =
         ChangeType.Perf -> Icons.Outlined.Bolt
         ChangeType.Security -> Icons.Outlined.Shield
         ChangeType.Refactor -> Icons.Outlined.Tune
-        ChangeType.Revert -> Icons.AutoMirrored.Outlined.Undo
+        ChangeType.Revert -> Icons.Outlined.Refresh
         ChangeType.Ci -> Icons.Outlined.Cloud
         ChangeType.Test -> Icons.Outlined.Science
         ChangeType.Misc -> Icons.Outlined.MoreHoriz

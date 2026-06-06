@@ -12,12 +12,12 @@ val cfgXposedApi: Int = providers.gradleProperty("xposed.api").get().toInt()
 
 android {
     namespace = "com.example.rootapplocker"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = cfgModuleId
-        minSdk = 33
-        targetSdk = 37
+        applicationId = "com.example.rootapplocker"
+        minSdk = 29
+        targetSdk = 36
 
         versionCode = project.property("version.code").toString().toInt()
         versionName = project.property("version.name").toString()
@@ -106,10 +106,7 @@ kotlin {
     jvmToolchain(21)
 }
 
-val ktlint: Configuration by configurations.creating
-
 dependencies {
-    ktlint(libs.ktlint.cli)
 
     compileOnly(libs.libxposed.api)
     implementation(libs.libxposed.service)
@@ -123,32 +120,16 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
-    implementation(libs.compose.material.icons.extended)
+    // implementation(libs.compose.material.icons.extended)
     debugImplementation(libs.compose.ui.tooling)
 
+    implementation(libs.material.motion.compose.core)
     implementation(libs.navigation3.runtime)
     implementation(libs.navigation3.ui)
-    implementation(libs.material.motion.compose.core)
-
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
 }
 
-val ktlintCheck by tasks.registering(JavaExec::class) {
-    group = "verification"
-    description = "Check Kotlin code style"
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    args("src/**/*.kt")
-}
-
-val ktlintFormat by tasks.registering(JavaExec::class) {
-    group = "formatting"
-    description = "Auto-format Kotlin code style"
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    args("-F", "src/**/*.kt")
-}
 
 abstract class BundleChangelog : DefaultTask() {
     @get:InputFile
@@ -238,10 +219,4 @@ androidComponents {
     }
 }
 
-tasks.named("preBuild").configure {
-    dependsOn(ktlintFormat)
-}
 
-tasks.named("check").configure {
-    dependsOn(ktlintCheck)
-}

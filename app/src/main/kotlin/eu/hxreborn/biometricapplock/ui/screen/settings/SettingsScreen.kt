@@ -1,5 +1,5 @@
 @file:Suppress("AssignedValueIsNeverRead")
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.example.rootapplocker.ui.screen.settings
 
@@ -15,26 +15,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AppBlocking
-import androidx.compose.material.icons.outlined.Contrast
-import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Fingerprint
-import androidx.compose.material.icons.outlined.FormatPaint
+import androidx.compose.material.icons.outlined.Build
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.NewReleases
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.RoundedCorner
-import androidx.compose.material.icons.outlined.ScreenLockPortrait
-import androidx.compose.material.icons.outlined.Screenshot
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.TouchApp
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -73,6 +67,7 @@ import com.example.rootapplocker.ui.screen.relockDelaySummary
 import com.example.rootapplocker.ui.theme.Tokens
 import com.example.rootapplocker.ui.util.LauncherIconHelper
 import com.example.rootapplocker.ui.viewmodel.FrameworkInfo
+
 import com.example.rootapplocker.updates.ChangeType
 import com.example.rootapplocker.updates.UpdateSheetState
 import com.example.rootapplocker.util.DiagnosticsExporter
@@ -204,13 +199,21 @@ fun SettingsScreen(
         }
         LogActionsSheet(
             onSave = {
+                var success = false
                 collect { file ->
                     pendingSaveFile = file
                     saveLogsLauncher.launch(file.name)
+                    success = true
                 }
+                success
             },
             onSend = {
-                collect { file -> DiagnosticsExporter.share(context, file) }
+                var success = false
+                collect { file -> 
+                    DiagnosticsExporter.share(context, file)
+                    success = true
+                }
+                success
             },
             onDismiss = { showLogActions = false },
         )
@@ -240,7 +243,7 @@ fun SettingsScreen(
             item { SettingsSectionHeader(title = stringResource(R.string.settings_lock)) }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.Timer,
+                    icon = Icons.Outlined.Build,
                     title = stringResource(R.string.settings_relock_delay_title),
                     summary = stringResource(R.string.settings_relock_delay_summary),
                     position = SectionPosition.Top,
@@ -250,7 +253,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.ScreenLockPortrait,
+                    icon = Icons.Outlined.Lock,
                     title = stringResource(R.string.settings_relock_screen_off_title),
                     summary = stringResource(R.string.settings_relock_screen_off_summary),
                     position = SectionPosition.Middle,
@@ -267,7 +270,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.DeleteSweep,
+                    icon = Icons.Outlined.Delete,
                     title = stringResource(R.string.settings_relock_task_removed_title),
                     summary = stringResource(R.string.settings_relock_task_removed_summary),
                     position = SectionPosition.Bottom,
@@ -286,7 +289,7 @@ fun SettingsScreen(
             item { SettingsSectionHeader(title = stringResource(R.string.settings_unlock_prompt)) }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.TouchApp,
+                    icon = Icons.Outlined.Edit,
                     title = stringResource(R.string.settings_unlock_confirmation_title),
                     summary = stringResource(R.string.settings_unlock_confirmation_summary),
                     position = SectionPosition.Top,
@@ -303,7 +306,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.Contrast,
+                    icon = Icons.Outlined.Settings,
                     title = stringResource(R.string.settings_opaque_unlock_prompt_title),
                     summary = stringResource(R.string.settings_opaque_unlock_prompt_summary),
                     position = SectionPosition.Bottom,
@@ -322,7 +325,7 @@ fun SettingsScreen(
             item { SettingsSectionHeader(title = stringResource(R.string.settings_protection)) }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.Screenshot,
+                    icon = Icons.Outlined.Settings,
                     title = stringResource(R.string.settings_block_screenshots_title),
                     summary = stringResource(R.string.settings_block_screenshots_summary),
                     position = SectionPosition.Top,
@@ -339,7 +342,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.AppBlocking,
+                    icon = Icons.Outlined.Warning,
                     title = stringResource(R.string.settings_prevent_uninstall_title),
                     summary = stringResource(R.string.settings_prevent_uninstall_summary),
                     position = SectionPosition.Middle,
@@ -356,7 +359,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.Fingerprint,
+                    icon = Icons.Outlined.Lock,
                     title = stringResource(R.string.settings_self_lock_title),
                     summary = stringResource(R.string.settings_self_lock_summary),
                     position = SectionPosition.Middle,
@@ -370,7 +373,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.VisibilityOff,
+                    icon = Icons.Outlined.Close,
                     title = stringResource(R.string.settings_hide_launcher),
                     summary = stringResource(R.string.settings_hide_launcher_summary),
                     position = SectionPosition.Bottom,
@@ -391,7 +394,7 @@ fun SettingsScreen(
             item { SettingsSectionHeader(title = stringResource(R.string.settings_appearance)) }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.Palette,
+                    icon = Icons.Outlined.Edit,
                     title = stringResource(R.string.settings_theme),
                     summary = stringResource(R.string.settings_theme_summary),
                     position = SectionPosition.Top,
@@ -401,7 +404,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.FormatPaint,
+                    icon = Icons.Outlined.Edit,
                     title = stringResource(R.string.settings_dynamic_color),
                     summary = stringResource(R.string.settings_dynamic_color_summary),
                     position = SectionPosition.Middle,
@@ -415,7 +418,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.RoundedCorner,
+                    icon = Icons.Outlined.Settings,
                     title = stringResource(R.string.settings_floating_nav_bar),
                     summary = stringResource(R.string.settings_floating_nav_bar_summary),
                     position = SectionPosition.Bottom,
@@ -431,7 +434,7 @@ fun SettingsScreen(
             item { SettingsSectionHeader(title = stringResource(R.string.settings_updates)) }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.Download,
+                    icon = Icons.Outlined.Refresh,
                     title = stringResource(R.string.updates_check_title),
                     summary = stringResource(R.string.updates_check_summary),
                     position = SectionPosition.Top,
@@ -454,7 +457,7 @@ fun SettingsScreen(
             }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.Update,
+                    icon = Icons.Outlined.Refresh,
                     title = stringResource(R.string.updates_auto_check_title),
                     summary = stringResource(R.string.updates_auto_check_summary),
                     position = SectionPosition.Bottom,
@@ -489,7 +492,7 @@ fun SettingsScreen(
             item { SettingsSectionHeader(title = stringResource(R.string.settings_about)) }
             item {
                 PreferenceRow(
-                    icon = Icons.Outlined.NewReleases,
+                    icon = Icons.Outlined.Info,
                     title = stringResource(R.string.about_whats_new_title),
                     summary = stringResource(R.string.about_whats_new_summary, BuildConfig.VERSION_NAME),
                     position = SectionPosition.Top,

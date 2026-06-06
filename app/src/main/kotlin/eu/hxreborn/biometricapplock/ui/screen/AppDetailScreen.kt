@@ -1,8 +1,9 @@
 @file:Suppress("AssignedValueIsNeverRead")
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.example.rootapplocker.ui.screen
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,15 +20,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Screenshot
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material3.CircularWavyProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -255,7 +254,7 @@ fun AppDetailScreen(
 
             item {
                 PreferenceRow(
-                    icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                    icon = Icons.Outlined.Settings,
                     title = stringResource(R.string.app_detail_open_app_info_title),
                     summary = stringResource(R.string.app_detail_open_app_info_summary),
                     onClick = { openAppInfo(context, packageName) },
@@ -318,7 +317,7 @@ private fun DetailAppIcon(
             Image(icon, contentDescription = null, modifier = Modifier.fillMaxSize())
         } else {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularWavyProgressIndicator(modifier = Modifier.size(Tokens.LoadingIndicatorSize))
+                CircularProgressIndicator(modifier = Modifier.size(Tokens.LoadingIndicatorSize))
             }
         }
     }

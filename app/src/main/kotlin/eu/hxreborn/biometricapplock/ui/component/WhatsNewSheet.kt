@@ -1,7 +1,4 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalMaterial3ExpressiveApi::class,
-)
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 
 package com.example.rootapplocker.ui.component
 
@@ -41,19 +38,17 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LoadingIndicator
-import androidx.compose.material3.MaterialShapes
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetState
-import androidx.compose.material3.toShape
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -112,10 +107,7 @@ fun WhatsNewSheet(
     onLater: (String) -> Unit = {},
 ) {
     val sheetState =
-        rememberBottomSheetState(
-            initialValue = SheetValue.Hidden,
-            enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
-        )
+        rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val haptics = LocalHapticFeedback.current
     val title = stringResource(state.titleRes)
 
@@ -145,7 +137,6 @@ fun WhatsNewSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        sheetGesturesEnabled = contentHeight.value < screenHeight / 2,
     ) {
         Column(
             modifier =
@@ -286,7 +277,7 @@ private fun SheetBody(
                         ) {
                             when (target) {
                                 UpdateSheetState.Checking -> {
-                                    LoadingIndicator(modifier = Modifier.size(Tokens.UpToDateBadgeSize))
+                                    CircularProgressIndicator(modifier = Modifier.size(Tokens.UpToDateBadgeSize))
                                 }
 
                                 is UpdateSheetState.UpToDate -> {
@@ -490,7 +481,7 @@ private fun ItemList(items: List<FeatureSheetItem>) {
                 label = label,
                 items = group,
                 index = index,
-                badgeShape = shuffledShapes[index].toShape(),
+                badgeShape = shuffledShapes[index],
             )
         }
     }
@@ -498,16 +489,7 @@ private fun ItemList(items: List<FeatureSheetItem>) {
 
 private val sectionBadgeShapes =
     listOf(
-        MaterialShapes.Cookie4Sided,
-        MaterialShapes.Clover4Leaf,
-        MaterialShapes.PuffyDiamond,
-        MaterialShapes.Flower,
-        MaterialShapes.Ghostish,
-        MaterialShapes.Cookie9Sided,
-        MaterialShapes.Gem,
-        MaterialShapes.Pill,
-        MaterialShapes.Puffy,
-        MaterialShapes.ClamShell,
+        androidx.compose.foundation.shape.CircleShape,
     )
 
 @Composable
@@ -516,7 +498,7 @@ private fun TypeSection(
     label: String,
     items: List<FeatureSheetItem>,
     index: Int = 0,
-    badgeShape: Shape = MaterialShapes.Cookie9Sided.toShape(),
+    badgeShape: Shape = androidx.compose.foundation.shape.CircleShape,
 ) {
     val cs = MaterialTheme.colorScheme
     val cardAlpha = remember { Animatable(0f) }

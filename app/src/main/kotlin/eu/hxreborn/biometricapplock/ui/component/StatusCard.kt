@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material3.Icon
@@ -148,7 +148,7 @@ private fun statusVisual(status: ModuleStatus): StatusVisual {
 
         ModuleStatus.NotEnabled -> {
             StatusVisual(
-                icon = Icons.AutoMirrored.Outlined.HelpOutline,
+                icon = Icons.Outlined.Info,
                 container = scheme.surfaceContainerHighest,
                 content = scheme.onSurfaceVariant,
             )

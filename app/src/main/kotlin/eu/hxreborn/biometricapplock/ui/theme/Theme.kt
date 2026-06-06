@@ -2,9 +2,8 @@ package com.example.rootapplocker.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.MaterialExpressiveTheme
-import androidx.compose.material3.MotionScheme
+
+
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -91,7 +90,7 @@ private val DarkColorScheme =
         surfaceContainerHighest = surfaceContainerHighestDark,
     )
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 @Composable
 fun BiometricAppLockTheme(
     themeMode: ThemeMode = ThemeMode.FOLLOW_SYSTEM,
@@ -122,9 +121,8 @@ fun BiometricAppLockTheme(
             }
         }
 
-    MaterialExpressiveTheme(
+    androidx.compose.material3.MaterialTheme(
         colorScheme = colorScheme,
-        motionScheme = MotionScheme.expressive(),
         content = content,
     )
 }

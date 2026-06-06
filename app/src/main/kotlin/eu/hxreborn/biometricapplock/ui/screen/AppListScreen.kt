@@ -46,7 +46,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -194,7 +194,8 @@ private fun rememberInstalledApps(refreshKey: Int): AppLoadState {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppSearchBar(
-    textFieldState: TextFieldState,
+    query: String,
+    onQueryChange: (String) -> Unit,
     showSystemApps: Boolean,
     onSystemToggle: (Boolean) -> Unit,
     selectedCount: Int,
@@ -205,14 +206,15 @@ private fun AppSearchBar(
     var showMenu by remember { mutableStateOf(false) }
 
     TextField(
-        state = textFieldState,
+        value = query,
+        onValueChange = onQueryChange,
         modifier = modifier.fillMaxWidth(),
         placeholder = { Text(stringResource(R.string.apps_search_placeholder)) },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
         trailingIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (textFieldState.text.isNotEmpty()) {
-                    IconButton(onClick = { textFieldState.clearText() }) {
+                if (query.isNotEmpty()) {
+                    IconButton(onClick = { onQueryChange("") }) {
                         Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.apps_search_clear_cd))
                     }
                 }
@@ -439,7 +441,7 @@ private fun ShimmerListItem(modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppListScreen(
     viewModel: ScopeViewModel,
@@ -455,7 +457,7 @@ fun AppListScreen(
     val framework by viewModel.framework.collectAsStateWithLifecycle()
     val serviceAvailable = framework != null
 
-    val searchTextFieldState = rememberTextFieldState()
+    var query by remember { mutableStateOf("") }
     var debouncedQuery by remember { mutableStateOf("") }
     var showSystemApps by remember { mutableStateOf(true) }
     var refreshKey by remember { mutableIntStateOf(0) }
@@ -482,11 +484,9 @@ fun AppListScreen(
     val clearedMessage = stringResource(R.string.apps_snackbar_selection_cleared)
     val undoLabel = stringResource(R.string.apps_snackbar_undo)
 
-    LaunchedEffect(searchTextFieldState) {
-        snapshotFlow { searchTextFieldState.text.toString() }.collectLatest { query ->
-            delay(Tokens.SEARCH_DEBOUNCE_MS)
-            debouncedQuery = query
-        }
+    LaunchedEffect(query) {
+        delay(Tokens.SEARCH_DEBOUNCE_MS)
+        debouncedQuery = query
     }
 
     val filteredApps =
@@ -545,7 +545,8 @@ fun AppListScreen(
                             ),
                     )
                     AppSearchBar(
-                        textFieldState = searchTextFieldState,
+                        query = query,
+                        onQueryChange = { query = it },
                         showSystemApps = showSystemApps,
                         onSystemToggle = { showSystemApps = it },
                         selectedCount = selectableScope.size,
@@ -583,24 +584,14 @@ fun AppListScreen(
             if (refreshIndicatorActive) {
                 MaterialTheme.colorScheme.primaryContainer
             } else {
-                PullToRefreshDefaults.loadingIndicatorContainerColor
+                MaterialTheme.colorScheme.surfaceContainerHigh
             }
         val refreshIndicatorColor =
             if (refreshIndicatorActive) {
                 MaterialTheme.colorScheme.onPrimaryContainer
             } else {
-                PullToRefreshDefaults.loadingIndicatorColor
+                MaterialTheme.colorScheme.onSurfaceVariant
             }
-
-        LaunchedEffect(pullState) {
-            var previousFraction = pullState.distanceFraction
-            snapshotFlow { pullState.distanceFraction }.collect { fraction ->
-                if (previousFraction < 1f && fraction >= 1f && !currentIsRefreshing) {
-                    haptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
-                }
-                previousFraction = fraction
-            }
-        }
 
         Box(
             modifier =
@@ -619,7 +610,7 @@ fun AppListScreen(
                 state = pullState,
                 modifier = Modifier.fillMaxSize(),
                 indicator = {
-                    PullToRefreshDefaults.LoadingIndicator(
+                    PullToRefreshDefaults.Indicator(
                         state = pullState,
                         isRefreshing = isRefreshing,
                         modifier = Modifier.align(Alignment.TopCenter),

@@ -29,7 +29,7 @@ import com.example.rootapplocker.prefs.Prefs
 import com.example.rootapplocker.ui.component.ChangelogSheet
 import com.example.rootapplocker.ui.component.DebugBadge
 import com.example.rootapplocker.ui.navigation.BottomNav
-import com.example.rootapplocker.ui.navigation.ClassicBottomNav
+
 import com.example.rootapplocker.ui.navigation.MainNavDisplay
 import com.example.rootapplocker.ui.navigation.Screen
 import com.example.rootapplocker.ui.navigation.bottomNavItems
@@ -82,19 +82,11 @@ fun MainScaffold(viewModel: ScopeViewModel) {
                 enter = slideInVertically { it },
                 exit = slideOutVertically { it },
             ) {
-                if (prefs.floatingNavBar) {
-                    BottomNav(
-                        backStack = backStack,
-                        currentKey = currentKey,
-                        showUpdateBadge = hasUnseenUpdate,
-                    )
-                } else {
-                    ClassicBottomNav(
-                        backStack = backStack,
-                        currentKey = currentKey,
-                        showUpdateBadge = hasUnseenUpdate,
-                    )
-                }
+                BottomNav(
+                    backStack = backStack,
+                    currentKey = currentKey,
+                    showUpdateBadge = hasUnseenUpdate,
+                )
             }
         },
     ) { contentPadding ->

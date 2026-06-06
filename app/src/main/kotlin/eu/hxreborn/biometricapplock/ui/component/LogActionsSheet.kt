@@ -1,7 +1,4 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalMaterial3ExpressiveApi::class,
-)
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 
 package com.example.rootapplocker.ui.component
 
@@ -25,15 +22,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,10 +53,7 @@ fun LogActionsSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetState =
-        rememberBottomSheetState(
-            initialValue = SheetValue.Hidden,
-            enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
-        )
+        rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var collecting by remember { mutableStateOf(false) }
 
@@ -78,7 +72,6 @@ fun LogActionsSheet(
     ModalBottomSheet(
         onDismissRequest = { if (!collecting) onDismiss() },
         sheetState = sheetState,
-        sheetGesturesEnabled = !collecting,
     ) {
         Box(
             modifier =
@@ -102,7 +95,7 @@ fun LogActionsSheet(
                 label = "logActions",
             ) { busy ->
                 if (busy) {
-                    LoadingIndicator(modifier = Modifier.size(Tokens.LogActionButtonSize))
+                    CircularProgressIndicator(modifier = Modifier.size(Tokens.LogActionButtonSize))
                 } else {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

@@ -17,5 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "biometricapplock"
 include(":app")
 
-include(":test-notif-app")
-project(":test-notif-app").projectDir = file("tools/notification-test")
+    

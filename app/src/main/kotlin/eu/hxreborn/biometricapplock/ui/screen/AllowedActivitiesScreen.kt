@@ -21,8 +21,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.clearText
-import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -239,8 +239,7 @@ fun AllowedActivitiesScreen(
             (recents.map { it.className } + declared + allowed).distinct()
         }
 
-    val searchState = rememberTextFieldState()
-    val query = searchState.text.toString()
+    var query by remember { mutableStateOf("") }
     val filtered =
         remember(ordered, query) {
             if (query.isBlank()) ordered else ordered.filter { it.contains(query, ignoreCase = true) }
@@ -308,7 +307,8 @@ fun AllowedActivitiesScreen(
         ) {
             item(key = "search") {
                 TextField(
-                    state = searchState,
+                    value = query,
+                    onValueChange = { query = it },
                     modifier =
                         Modifier
                             .fillMaxWidth()
@@ -317,7 +317,7 @@ fun AllowedActivitiesScreen(
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                     trailingIcon = {
                         if (query.isNotEmpty()) {
-                            IconButton(onClick = { searchState.clearText() }) {
+                            IconButton(onClick = { query = "" }) {
                                 Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.apps_search_clear_cd))
                             }
                         }

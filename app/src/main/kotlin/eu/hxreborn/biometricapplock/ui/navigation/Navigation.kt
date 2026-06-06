@@ -5,6 +5,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Spring
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Apps
@@ -26,15 +29,12 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FloatingToolbarDefaults
-import androidx.compose.material3.HorizontalFloatingToolbar
-import androidx.compose.material3.Icon
+
 import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
-import androidx.compose.material3.ToggleButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -254,7 +254,6 @@ fun MainNavDisplay(
 }
 
 @OptIn(
-    ExperimentalMaterial3ExpressiveApi::class,
     ExperimentalMaterial3Api::class,
 )
 @Composable
@@ -274,12 +273,12 @@ fun BottomNav(
 
     val pillAnimatedX by animateFloatAsState(
         targetValue = pillTargetX,
-        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         label = "navPillX",
     )
     val pillAnimatedWidth by animateFloatAsState(
         targetValue = pillTargetWidth,
-        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         label = "navPillWidth",
     )
     val pillColor = MaterialTheme.colorScheme.primary
@@ -292,27 +291,27 @@ fun BottomNav(
                 .padding(bottom = Tokens.FloatingBarBottomPadding),
         contentAlignment = Alignment.BottomCenter,
     ) {
-        HorizontalFloatingToolbar(
-            expanded = true,
-            colors =
-                FloatingToolbarDefaults.vibrantFloatingToolbarColors(
-                    toolbarContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    toolbarContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
+        Surface(
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            shadowElevation = 8.dp,
         ) {
-            CompositionLocalProvider(LocalRippleConfiguration provides null) {
+            Row(
+                modifier = Modifier.padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CompositionLocalProvider(LocalRippleConfiguration provides null) {
                 bottomNavItems.forEachIndexed { index, item ->
                     val selected = currentKey == item.key
                     val onSelectTab =
                         dropUnlessResumed {
-                            haptics.performHapticFeedback(HapticFeedbackType.ContextClick)
                             backStack.clear()
                             backStack.add(item.key)
                         }
 
-                    ToggleButton(
-                        checked = selected,
-                        onCheckedChange = { if (!selected) onSelectTab() },
+                    Surface(
+                        onClick = { if (!selected) onSelectTab() },
                         modifier =
                             Modifier
                                 .height(Tokens.FloatingBarItemHeight)
@@ -335,19 +334,9 @@ fun BottomNav(
                                         Modifier
                                     },
                                 ),
-                        colors =
-                            ToggleButtonDefaults.toggleButtonColors(
-                                containerColor = Color.Transparent,
-                                checkedContainerColor = Color.Transparent,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                checkedContentColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
-                        shapes =
-                            ToggleButtonDefaults.shapes(
-                                shape = CircleShape,
-                                pressedShape = CircleShape,
-                                checkedShape = CircleShape,
-                            ),
+                        color = Color.Transparent,
+                        contentColor = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimaryContainer,
+                        shape = CircleShape,
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             val isSettingsTab = item.key is Screen.Settings
@@ -366,8 +355,8 @@ fun BottomNav(
                             }
                             AnimatedVisibility(
                                 visible = selected,
-                                enter = expandHorizontally(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec()),
-                                exit = shrinkHorizontally(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec()),
+                                enter = expandHorizontally(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)),
+                                exit = shrinkHorizontally(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)),
                             ) {
                                 Text(
                                     text = stringResource(item.titleRes),
@@ -381,6 +370,7 @@ fun BottomNav(
                         }
                     }
                 }
+            }
             }
         }
     }
